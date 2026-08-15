@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260" width="400" height="260" role="img" aria-label="Premium car detailing">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fce7f3"/>
+      <stop offset="100%" stop-color="#fbcfe8"/>
+    </linearGradient>
+    <linearGradient id="car" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f472b6"/>
+      <stop offset="100%" stop-color="#be185d"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="260" fill="url(#bg)"/>
+  <ellipse cx="200" cy="215" rx="160" ry="14" fill="#f9a8d4" opacity="0.5"/>
+  <g>
+    <path d="M115 125 Q150 95 285 95 L320 125 L320 180 Q320 188 312 188 L108 188 Q100 188 100 180 Z" fill="url(#car)"/>
+    <path d="M115 125 Q150 100 285 100 L310 125 Z" fill="#db2777"/>
+    <rect x="110" y="133" width="45" height="36" rx="6" fill="#fbcfe8"/>
+    <rect x="168" y="133" width="60" height="36" rx="6" fill="#fbcfe8"/>
+    <rect x="240" y="133" width="50" height="36" rx="6" fill="#fbcfe8"/>
+    <circle cx="152" cy="186" r="25" fill="#831843"/>
+    <circle cx="152" cy="186" r="12" fill="#fce7f3"/>
+    <circle cx="270" cy="186" r="25" fill="#831843"/>
+    <circle cx="270" cy="186" r="12" fill="#fce7f3"/>
+  </g>
+  <g fill="#f9a8d4">
+    <circle cx="60" cy="70" r="6"/>
+    <circle cx="92" cy="52" r="4"/>
+    <circle cx="330" cy="60" r="5"/>
+    <circle cx="352" cy="90" r="4"/>
+    <circle cx="52" cy="110" r="4"/>
+  </g>
+</svg>

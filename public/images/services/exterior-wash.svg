@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260" width="400" height="260" role="img" aria-label="Exterior car wash">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#dbeafe"/>
+      <stop offset="100%" stop-color="#e0e7ff"/>
+    </linearGradient>
+    <linearGradient id="car" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#1e3a8a"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="260" fill="url(#bg)"/>
+  <ellipse cx="200" cy="215" rx="160" ry="14" fill="#c7d2fe" opacity="0.6"/>
+  <g>
+    <rect x="90" y="120" width="220" height="80" rx="16" fill="url(#car)"/>
+    <path d="M120 120 L150 90 Q160 80 180 80 L260 80 Q280 80 290 95 L310 120 Z" fill="url(#car)"/>
+    <circle cx="150" cy="185" r="26" fill="#111827"/>
+    <circle cx="150" cy="185" r="12" fill="#9ca3af"/>
+    <circle cx="270" cy="185" r="26" fill="#111827"/>
+    <circle cx="270" cy="185" r="12" fill="#9ca3af"/>
+    <rect x="110" y="135" width="40" height="34" rx="6" fill="#93c5fd"/>
+    <rect x="165" y="135" width="55" height="34" rx="6" fill="#93c5fd"/>
+    <rect x="235" y="135" width="55" height="34" rx="6" fill="#93c5fd"/>
+  </g>
+  <g fill="#2563eb" opacity="0.85">
+    <circle cx="60" cy="80" r="6"/>
+    <circle cx="92" cy="64" r="4"/>
+    <circle cx="328" cy="70" r="5"/>
+    <circle cx="350" cy="96" r="4"/>
+    <circle cx="55" cy="120" r="4"/>
+  </g>
+</svg>

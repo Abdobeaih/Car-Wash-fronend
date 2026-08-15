@@ -1,0 +1,20 @@
+
+> web@1.0.0 dev
+> next dev
+
+▲ Next.js 16.3.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.213.1:3000
+- Environments: .env.local
+✓ Ready in 1060ms
+✓ Running next.config.mjs took 37ms
+
+ GET /login 200 in 905ms (next.js: 520ms, application-code: 385ms)
+[?25h
+npm error Lifecycle script `dev` failed with error:
+npm error code 1
+npm error path C:\Users\mohey\OneDrive\Desktop\Car-Wash\apps\web
+npm error workspace web@1.0.0
+npm error location C:\Users\mohey\OneDrive\Desktop\Car-Wash\apps\web
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c next dev
