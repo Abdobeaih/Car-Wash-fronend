@@ -40,14 +40,14 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      <div>
+      <div className="text-center sm:text-left">
         <h1 className="text-2xl font-bold text-gray-900">Welcome back, {user?.name?.split(' ')[0]}</h1>
         <p className="mt-1 text-sm text-gray-500">Manage your vehicles and bookings from here.</p>
       </div>
 
-      <section className="card flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-600 text-lg font-bold text-white">
+      <section className="card flex flex-col items-center gap-4 text-center sm:flex-row sm:justify-between sm:text-left">
+        <div className="flex flex-col items-center gap-4 sm:flex-row">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-600 text-lg font-bold text-white">
             {(user?.name?.[0] ?? 'U').toUpperCase()}
           </div>
           <div>
@@ -55,7 +55,7 @@ export default function DashboardPage() {
             <p className="text-sm text-gray-500">{user?.email}</p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-end">
           <RoleBadge role={user?.role ?? 'CUSTOMER'} />
           <Link
             href="/dashboard/profile"
@@ -75,7 +75,7 @@ export default function DashboardPage() {
             </Link>
           </div>
           {upcoming ? (
-            <div className="mt-4">
+            <div className="mt-4 text-center sm:text-left">
               <StatusBadge status={upcoming.status} />
               <h3 className="mt-2 font-medium text-gray-900">
                 {(upcoming.serviceId as { name?: string })?.name ?? 'Service'}
@@ -120,7 +120,7 @@ export default function DashboardPage() {
           ) : (
             <ul className="mt-4 divide-y divide-gray-100">
               {vehicles.slice(0, 3).map((v) => (
-                <li key={v._id} className="flex items-center justify-between py-3">
+                <li key={v._id} className="flex flex-col items-center gap-2 py-3 text-center sm:flex-row sm:justify-between sm:text-left">
                   <div>
                     <p className="font-medium text-gray-900">
                       {v.brand} {v.model}
@@ -129,7 +129,7 @@ export default function DashboardPage() {
                       {v.year} · {v.color} · {v.plateNumber}
                     </p>
                   </div>
-                  <span className="badge bg-gray-100 text-gray-600">{v.vehicleType}</span>
+                  <span className="badge shrink-0 bg-gray-100 text-gray-600">{v.vehicleType}</span>
                 </li>
               ))}
             </ul>
@@ -152,7 +152,7 @@ export default function DashboardPage() {
               <li key={b._id}>
                 <Link
                   href={`/dashboard/bookings/${b._id}`}
-                  className="flex flex-wrap items-center justify-between gap-2 py-3"
+                  className="flex flex-col items-center gap-2 py-3 text-center sm:flex-row sm:flex-wrap sm:justify-between sm:text-left"
                 >
                   <div>
                     <p className="font-medium text-gray-900">

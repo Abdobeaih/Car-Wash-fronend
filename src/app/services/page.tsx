@@ -49,7 +49,7 @@ export default async function ServicesPage() {
             <Link
               key={service._id}
               href={`/services/${service.slug}`}
-              className="card group overflow-hidden p-0 transition hover:shadow-md"
+              className="card group overflow-hidden p-0 text-center transition hover:shadow-md sm:text-left"
             >
               <Image
                 src={service.image}
@@ -63,7 +63,7 @@ export default async function ServicesPage() {
                   {service.name}
                 </h2>
                 <p className="mt-2 line-clamp-2 text-sm text-gray-600">{service.description}</p>
-                <div className="mt-4 flex items-center justify-between">
+                <div className="mt-4 flex flex-col items-center gap-1 sm:flex-row sm:justify-between">
                   <span className="text-lg font-bold text-brand-600">
                     {formatMoney(service.basePrice)}
                   </span>

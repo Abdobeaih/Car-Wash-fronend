@@ -36,18 +36,18 @@ export default async function HomePage() {
     <>
       <section className="bg-gradient-to-b from-brand-50 to-gray-50">
         <div className="container-page grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-2 lg:py-24">
-          <div>
+          <div className="text-center lg:text-left">
             <p className="mb-3 inline-block rounded-full bg-brand-100 px-3 py-1 text-sm font-medium text-brand-700">
               Mobile car care, delivered to you
             </p>
             <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
               A professional car wash, wherever you are.
             </h1>
-            <p className="mt-4 max-w-xl text-lg text-gray-600">
+            <p className="mx-auto mt-4 max-w-xl text-lg text-gray-600 lg:mx-0">
               Book exterior washes, interior cleaning and full detailing in minutes. Our
               professionals come to your location, so you never have to wait in line.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
               <Link href="/book" className="btn-primary px-6 py-3 text-base">
                 Book a Service
               </Link>
@@ -55,7 +55,7 @@ export default async function HomePage() {
                 Browse Services
               </Link>
             </div>
-            <div className="mt-8 flex flex-wrap gap-6 text-sm text-gray-600">
+            <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-gray-600 lg:justify-start">
               <span>✓ Mobile professionals</span>
               <span>✓ Transparent pricing</span>
               <span>✓ Flexible scheduling</span>
@@ -66,7 +66,7 @@ export default async function HomePage() {
               <Link
                 key={service._id}
                 href={`/services/${service.slug}`}
-                className="card group p-3 transition hover:shadow-md sm:p-4"
+                className="card group p-3 text-center transition hover:shadow-md sm:p-4"
               >
                 <Image
                   src={heroImages[index % heroImages.length]}
@@ -107,8 +107,8 @@ export default async function HomePage() {
               text: 'A professional arrives at your location and takes care of your car.',
             },
           ].map((item) => (
-            <div key={item.step} className="card">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-600 text-lg font-bold text-white">
+            <div key={item.step} className="card text-center md:text-left">
+              <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-brand-600 text-lg font-bold text-white md:mx-0">
                 {item.step}
               </span>
               <h3 className="mt-4 text-lg font-semibold text-gray-900">{item.title}</h3>
@@ -128,7 +128,7 @@ export default async function HomePage() {
               { title: 'Fair, upfront pricing', text: 'The price you see is the price you pay.' },
               { title: 'Easy online booking', text: 'Schedule in minutes, manage anytime.' },
             ].map((item) => (
-              <div key={item.title} className="card">
+              <div key={item.title} className="card text-center">
                 <h3 className="font-semibold text-gray-900">{item.title}</h3>
                 <p className="mt-2 text-sm text-gray-600">{item.text}</p>
               </div>
