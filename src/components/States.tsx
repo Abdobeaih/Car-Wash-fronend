@@ -1,11 +1,15 @@
+'use client';
+
 import type { ReactNode } from 'react';
+import { useTranslations } from 'next-intl';
 import { Spinner } from './Button';
 
-export function LoadingState({ label = 'Loading...' }: { label?: string }) {
+export function LoadingState({ label }: { label?: string }) {
+  const t = useTranslations('Common');
   return (
     <div className="flex flex-col items-center justify-center gap-3 py-16 text-gray-500">
       <Spinner />
-      <p className="text-sm">{label}</p>
+      <p className="text-sm">{label ?? t('loading')}</p>
     </div>
   );
 }
@@ -35,12 +39,13 @@ export function ErrorState({
   message: string;
   onRetry?: () => void;
 }) {
+  const t = useTranslations('Common');
   return (
     <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-red-200 bg-red-50 px-6 py-12 text-center">
       <p className="text-sm font-medium text-red-700">{message}</p>
       {onRetry && (
         <button className="btn-secondary" onClick={onRetry}>
-          Try again
+          {t('tryAgain')}
         </button>
       )}
     </div>

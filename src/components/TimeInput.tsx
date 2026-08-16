@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type FocusEvent, type InputHTMLAttributes } from 'react';
+import { useTranslations } from 'next-intl';
 
 const TIME_PATTERN = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
@@ -34,19 +35,18 @@ export default function TimeInput({
   onChange,
   error,
   useNow = true,
-  nowLabel = 'Use current time',
+  nowLabel,
   onNow,
   id,
   onBlur,
   ...rest
 }: TimeInputProps) {
+  const t = useTranslations('TimeInput');
   const inputId = id ?? rest.name ?? 'time';
   const [touched, setTouched] = useState(false);
 
   const formatError =
-    touched && value !== '' && !isValidTime(value)
-      ? 'Enter a valid time in HH:MM format (e.g. 09:30).'
-      : undefined;
+    touched && value !== '' && !isValidTime(value) ? t('invalid') : undefined;
 
   const resolvedError = error ?? formatError;
 
@@ -67,7 +67,7 @@ export default function TimeInput({
           inputMode="numeric"
           maxLength={5}
           autoComplete="off"
-          placeholder="HH:MM"
+          placeholder={t('placeholder')}
           className={`input ${resolvedError ? 'border-red-500' : ''}`}
           value={value}
           onChange={(e) => onChange(e.target.value)}
@@ -81,7 +81,7 @@ export default function TimeInput({
             className="btn-secondary shrink-0"
             onClick={() => (onNow ? onNow() : onChange(currentTime()))}
           >
-            {nowLabel}
+            {nowLabel ?? t('useNow')}
           </button>
         )}
       </div>

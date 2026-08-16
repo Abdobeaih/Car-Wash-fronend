@@ -1,6 +1,7 @@
 'use client';
 
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 import { useState, type FormEvent } from 'react';
 import { apiRequest } from '@/lib/api';
 import Button from '@/components/Button';
@@ -13,6 +14,7 @@ interface ForgotResponse {
 }
 
 export default function ForgotPasswordForm() {
+  const t = useTranslations('ForgotPassword');
   const [email, setEmail] = useState('');
   const [token, setToken] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -39,7 +41,7 @@ export default function ForgotPasswordForm() {
         setResetTokenIssued(true);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to request a reset code.');
+      setError(err instanceof Error ? err.message : t('requestError'));
     } finally {
       setSubmitting(false);
     }
@@ -50,7 +52,7 @@ export default function ForgotPasswordForm() {
     setError(null);
     setSuccess(null);
     if (newPassword !== confirmPassword) {
-      setError('New password and confirmation do not match.');
+      setError(t('mismatchError'));
       return;
     }
     setSubmitting(true);
@@ -59,10 +61,10 @@ export default function ForgotPasswordForm() {
         method: 'POST',
         body: { email, token, newPassword },
       });
-      setSuccess(res.message ?? 'Password reset successfully.');
+      setSuccess(res.message ?? t('success'));
       setResetTokenIssued(false);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to reset password.');
+      setError(err instanceof Error ? err.message : t('resetError'));
     } finally {
       setSubmitting(false);
     }
@@ -70,9 +72,9 @@ export default function ForgotPasswordForm() {
 
   return (
     <div className="card mx-auto w-full max-w-md">
-      <h1 className="text-2xl font-bold text-gray-900">Reset your password</h1>
+      <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
       <p className="mt-1 text-sm text-gray-500">
-        Enter your account email to receive a reset code, then choose a new password.
+        {t('subtitle')}
       </p>
 
       {success && (
@@ -80,7 +82,7 @@ export default function ForgotPasswordForm() {
           <Alert type="success">{success}</Alert>
           <p className="mt-4 text-center text-sm text-gray-600">
             <Link href="/login" className="font-medium text-brand-600 hover:text-brand-700">
-              Back to login
+              {t('backToLogin')}
             </Link>
           </p>
         </div>
@@ -92,17 +94,17 @@ export default function ForgotPasswordForm() {
             <form onSubmit={requestCode} className="mt-6" noValidate>
               {error && <Alert type="error">{error}</Alert>}
               <Input
-                label="Email"
+                label={t('email')}
                 name="email"
                 type="email"
                 autoComplete="email"
                 required
-                placeholder="you@example.com"
+                placeholder={t('emailPlaceholder')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
               <Button type="submit" className="w-full" loading={submitting} disabled={submitting}>
-                Send reset code
+                {t('sendCode')}
               </Button>
             </form>
           ) : (
@@ -110,7 +112,7 @@ export default function ForgotPasswordForm() {
               {info && <div className="mb-4"><Alert type="info">{info}</Alert></div>}
               {error && <Alert type="error">{error}</Alert>}
               <Input
-                label="Reset code"
+                label={t('resetCode')}
                 name="token"
                 required
                 autoComplete="off"
@@ -118,7 +120,7 @@ export default function ForgotPasswordForm() {
                 onChange={(e) => setToken(e.target.value)}
               />
               <Input
-                label="New password"
+                label={t('newPassword')}
                 name="newPassword"
                 type="password"
                 required
@@ -128,7 +130,7 @@ export default function ForgotPasswordForm() {
                 onChange={(e) => setNewPassword(e.target.value)}
               />
               <Input
-                label="Confirm new password"
+                label={t('confirmPassword')}
                 name="confirmPassword"
                 type="password"
                 required
@@ -138,7 +140,7 @@ export default function ForgotPasswordForm() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
               <Button type="submit" className="w-full" loading={submitting} disabled={submitting}>
-                Reset password
+                {t('reset')}
               </Button>
               <p className="mt-4 text-center text-sm">
                 <button
@@ -151,7 +153,7 @@ export default function ForgotPasswordForm() {
                     setInfo(null);
                   }}
                 >
-                  Resend code
+                  {t('resend')}
                 </button>
               </p>
             </form>
@@ -160,9 +162,9 @@ export default function ForgotPasswordForm() {
       )}
 
       <p className="mt-6 text-center text-sm text-gray-600">
-        Remembered it?{' '}
+        {t('remembered')}{' '}
         <Link href="/login" className="font-medium text-brand-600 hover:text-brand-700">
-          Back to login
+          {t('backToLogin')}
         </Link>
       </p>
     </div>

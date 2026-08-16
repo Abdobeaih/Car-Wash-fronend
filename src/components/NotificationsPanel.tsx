@@ -1,14 +1,19 @@
 'use client';
 
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { apiRequest } from '@/lib/api';
 import type { Notification } from '@/lib/types';
 import Button from '@/components/Button';
 import { LoadingState, EmptyState, ErrorState, Alert } from '@/components/States';
-import { StatusBadge, formatDateTime, formatMoney } from '@/components/Badges';
+import { StatusBadge } from '@/components/Badges';
+import { useDateTime, useMoney } from '@/lib/format';
 
 export default function NotificationsPanel({ basePath }: { basePath?: string }) {
+  const t = useTranslations('NotificationsPanel');
+  const formatDateTime = useDateTime();
+  const formatMoney = useMoney();
   const [notifications, setNotifications] = useState<Notification[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
@@ -19,9 +24,9 @@ export default function NotificationsPanel({ basePath }: { basePath?: string }) 
       const data = await apiRequest<Notification[]>('/notifications', { auth: true });
       setNotifications(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load notifications.');
+      setError(err instanceof Error ? err.message : t('loadFailed'));
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     void load();
@@ -44,14 +49,14 @@ export default function NotificationsPanel({ basePath }: { basePath?: string }) 
     try {
       await apiRequest('/notifications/read-all', { method: 'PATCH', auth: true });
       setNotifications((prev) => prev?.map((n) => ({ ...n, read: true })) ?? prev);
-      setMessage('All notifications marked as read.');
+      setMessage(t('markAllDone'));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update notifications.');
+      setError(err instanceof Error ? err.message : t('updateFailed'));
     }
   };
 
   if (error && !notifications) return <ErrorState message={error} onRetry={load} />;
-  if (!notifications) return <LoadingState label="Loading notifications…" />;
+  if (!notifications) return <LoadingState label={t('title')} />;
 
   const unread = notifications.filter((n) => !n.read).length;
 
@@ -59,16 +64,14 @@ export default function NotificationsPanel({ basePath }: { basePath?: string }) 
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Notifications</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
           <p className="mt-1 text-sm text-gray-500">
-            {unread === 0
-              ? 'You are all caught up.'
-              : `${unread} unread notification${unread === 1 ? '' : 's'}.`}
+            {unread === 0 ? t('allCaughtUp') : t('unread', { count: unread })}
           </p>
         </div>
         {unread > 0 && (
           <Button type="button" variant="secondary" onClick={markAllAsRead}>
-            Mark all as read
+            {t('markAll')}
           </Button>
         )}
       </div>
@@ -77,10 +80,7 @@ export default function NotificationsPanel({ basePath }: { basePath?: string }) 
       {message && <Alert type="success">{message}</Alert>}
 
       {notifications.length === 0 ? (
-        <EmptyState
-          title="No notifications yet"
-          description="Updates about your bookings will appear here."
-        />
+        <EmptyState title={t('emptyTitle')} description={t('emptyDescription')} />
       ) : (
         <ul className="space-y-3">
           {notifications.map((n) => (
@@ -112,12 +112,12 @@ export default function NotificationsPanel({ basePath }: { basePath?: string }) 
                         className="text-sm font-medium text-brand-600 hover:text-brand-700"
                         onClick={() => void markAsRead(n._id)}
                       >
-                        View booking
+                        {t('viewBooking')}
                       </Link>
                     )}
                     {!n.read && (
                       <Button type="button" variant="secondary" onClick={() => void markAsRead(n._id)}>
-                        Mark read
+                        {t('markRead')}
                       </Button>
                     )}
                   </div>

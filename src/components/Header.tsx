@@ -1,21 +1,16 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
-
-const navLinks = [
-  { href: '/services', label: 'Services' },
-  { href: '/how-it-works', label: 'How It Works' },
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
-];
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function Header() {
   const { user, loading, logout } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
+  const t = useTranslations('Header');
   const [open, setOpen] = useState(false);
 
   const close = () => setOpen(false);
@@ -27,6 +22,13 @@ export default function Header() {
   };
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+
+  const navLinks = [
+    { href: '/services', key: 'services' },
+    { href: '/how-it-works', key: 'howItWorks' },
+    { href: '/about', key: 'about' },
+    { href: '/contact', key: 'contact' },
+  ];
 
   return (
     <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/90 backdrop-blur">
@@ -48,7 +50,7 @@ export default function Header() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Main navigation">
+        <nav className="hidden items-center gap-1 md:flex" aria-label={t('mainNav')}>
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -57,28 +59,29 @@ export default function Header() {
                 isActive(link.href) ? 'bg-gray-100 text-brand-700' : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              {link.label}
+              {t(link.key)}
             </Link>
           ))}
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
+          <LanguageSwitcher />
           {loading ? (
-            <span className="px-3 py-2 text-sm text-gray-400">Loading…</span>
+            <span className="px-3 py-2 text-sm text-gray-400">{t('loading')}</span>
           ) : user ? (
             <>
               <Link
                 href={user.role === 'ADMIN' ? '/admin' : '/dashboard'}
                 className="rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900"
               >
-                Dashboard
+                {t('dashboard')}
               </Link>
               <button
                 type="button"
                 onClick={handleLogout}
                 className="rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900"
               >
-                Logout
+                {t('logout')}
               </button>
             </>
           ) : (
@@ -87,22 +90,22 @@ export default function Header() {
                 href="/login"
                 className="rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900"
               >
-                Login
+                {t('login')}
               </Link>
               <Link href="/register" className="btn-primary">
-                Register
+                {t('register')}
               </Link>
             </>
           )}
-          <Link href="/book" className="btn-primary ml-1">
-            Book a Service
+          <Link href="/book" className="btn-primary ms-1">
+            {t('book')}
           </Link>
         </div>
 
         <button
           type="button"
           className="rounded-lg p-2 text-gray-700 hover:bg-gray-100 md:hidden"
-          aria-label={open ? 'Close menu' : 'Open menu'}
+          aria-label={open ? t('closeMenu') : t('openMenu')}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
         >
@@ -117,7 +120,7 @@ export default function Header() {
       </div>
 
       {open && (
-        <nav className="border-t border-gray-200 bg-white px-4 pb-4 pt-2 md:hidden" aria-label="Mobile navigation">
+        <nav className="border-t border-gray-200 bg-white px-4 pb-4 pt-2 md:hidden" aria-label={t('mobileNav')}>
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -127,7 +130,7 @@ export default function Header() {
                 isActive(link.href) ? 'bg-gray-100 text-brand-700' : 'text-gray-700'
               }`}
             >
-              {link.label}
+              {t(link.key)}
             </Link>
           ))}
           <div className="mt-2 border-t border-gray-100 pt-2">
@@ -138,14 +141,14 @@ export default function Header() {
                   onClick={close}
                   className="block rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700"
                 >
-                  Dashboard
+                  {t('dashboard')}
                 </Link>
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="block w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-gray-700"
+                  className="block w-full rounded-lg px-3 py-2.5 text-start text-sm font-medium text-gray-700"
                 >
-                  Logout
+                  {t('logout')}
                 </button>
               </>
             ) : (
@@ -156,20 +159,21 @@ export default function Header() {
                     onClick={close}
                     className="block rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700"
                   >
-                    Login
+                    {t('login')}
                   </Link>
                   <Link
                     href="/register"
                     onClick={close}
                     className="mt-1 block rounded-lg px-3 py-2.5 text-center text-sm font-medium text-brand-700 hover:bg-gray-50"
                   >
-                    Register
+                    {t('register')}
                   </Link>
                 </>
               )
             )}
+            <LanguageSwitcher className="mt-1 block text-center" />
             <Link href="/book" onClick={close} className="btn-primary mt-2 w-full">
-              Book a Service
+              {t('book')}
             </Link>
           </div>
         </nav>
