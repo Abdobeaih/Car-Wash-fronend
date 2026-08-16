@@ -40,22 +40,20 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      <div className="text-center sm:text-left">
+      <div className="text-center">
         <h1 className="text-2xl font-bold text-gray-900">Welcome back, {user?.name?.split(' ')[0]}</h1>
         <p className="mt-1 text-sm text-gray-500">Manage your vehicles and bookings from here.</p>
       </div>
 
-      <section className="card flex flex-col items-center gap-4 text-center sm:flex-row sm:justify-between sm:text-left">
-        <div className="flex flex-col items-center gap-4 sm:flex-row">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-600 text-lg font-bold text-white">
-            {(user?.name?.[0] ?? 'U').toUpperCase()}
-          </div>
-          <div>
-            <p className="font-semibold text-gray-900">{user?.name}</p>
-            <p className="text-sm text-gray-500">{user?.email}</p>
-          </div>
+      <section className="card flex flex-col items-center gap-4 py-8 text-center">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-600 text-2xl font-bold text-white">
+          {(user?.name?.[0] ?? 'U').toUpperCase()}
         </div>
-        <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-end">
+        <div>
+          <p className="font-semibold text-gray-900">{user?.name}</p>
+          <p className="text-sm text-gray-500">{user?.email}</p>
+        </div>
+        <div className="flex flex-wrap items-center justify-center gap-3">
           <RoleBadge role={user?.role ?? 'CUSTOMER'} />
           <Link
             href="/dashboard/profile"
