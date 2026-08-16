@@ -23,7 +23,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
       <div className="min-h-[70vh] bg-gray-100">
         <div className="container-page grid gap-6 py-8 lg:grid-cols-[220px_1fr]">
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            <nav className="flex gap-2 overflow-x-auto lg:flex-col" aria-label="Admin navigation">
+            <nav className="no-scrollbar flex gap-2 overflow-x-auto lg:flex-col" aria-label="Admin navigation">
               {links.map((link) => {
                 const active =
                   link.href === '/admin' ? pathname === '/admin' : pathname.startsWith(link.href);
@@ -38,19 +38,19 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
                     }`}
                   >
                     {link.label}
-</Link>
-              );
-            })}
-            <NotificationsNavLink
-              href="/admin/notifications"
-              label="Notifications"
-              className={`shrink-0 rounded-lg px-4 py-2.5 text-sm font-medium ${
-                pathname.startsWith('/admin/notifications')
-                  ? 'bg-gray-900 text-white'
-                  : 'bg-white text-gray-600 hover:bg-gray-50'
-              }`}
-            />
-          </nav>
+                  </Link>
+                );
+              })}
+              <NotificationsNavLink
+                href="/admin/notifications"
+                label="Notifications"
+                className={`shrink-0 rounded-lg px-4 py-2.5 text-sm font-medium ${
+                  pathname.startsWith('/admin/notifications')
+                    ? 'bg-gray-900 text-white'
+                    : 'bg-white text-gray-600 hover:bg-gray-50'
+                }`}
+              />
+            </nav>
           </aside>
           <div className="min-w-0">{children}</div>
         </div>

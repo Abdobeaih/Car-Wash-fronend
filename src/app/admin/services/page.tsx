@@ -135,7 +135,7 @@ export default function AdminServicesPage() {
 
       <form onSubmit={handleSubmit} className="card" noValidate>
         <h2 className="font-semibold text-gray-900">{editingId ? 'Edit service' : 'Create service'}</h2>
-        <div className="mt-4 grid gap-0 sm:grid-cols-2">
+        <div className="mt-4 grid gap-x-4 sm:grid-cols-2">
           <Input label="Name" name="name" required minLength={2} placeholder="e.g. Exterior Car Wash" {...set('name')} />
           <Input label="Image URL" name="image" type="url" required placeholder="https://…/image.svg" {...set('image')} />
           <Input label="Base price" name="basePrice" type="number" required min={0} step="0.01" {...set('basePrice')} />

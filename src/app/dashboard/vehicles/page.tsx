@@ -140,7 +140,7 @@ export default function VehiclesPage() {
         <h2 className="font-semibold text-gray-900">
           {editingId ? 'Edit vehicle' : 'Add a vehicle'}
         </h2>
-        <div className="mt-4 grid gap-0 sm:grid-cols-2">
+        <div className="mt-4 grid gap-x-4 sm:grid-cols-2">
           <Input
             label="Brand"
             name="brand"

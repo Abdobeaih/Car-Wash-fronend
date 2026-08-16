@@ -35,7 +35,7 @@ export default async function HomePage() {
   return (
     <>
       <section className="bg-gradient-to-b from-brand-50 to-gray-50">
-        <div className="container-page grid items-center gap-10 py-16 lg:grid-cols-2 lg:py-24">
+        <div className="container-page grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-2 lg:py-24">
           <div>
             <p className="mb-3 inline-block rounded-full bg-brand-100 px-3 py-1 text-sm font-medium text-brand-700">
               Mobile car care, delivered to you
@@ -61,12 +61,12 @@ export default async function HomePage() {
               <span>✓ Flexible scheduling</span>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
             {services.slice(0, 4).map((service, index) => (
               <Link
                 key={service._id}
                 href={`/services/${service.slug}`}
-                className="card group p-4 transition hover:shadow-md"
+                className="card group p-3 transition hover:shadow-md sm:p-4"
               >
                 <Image
                   src={heroImages[index % heroImages.length]}
@@ -87,7 +87,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="container-page py-16">
+      <section className="container-page py-12 sm:py-16">
         <h2 className="text-center text-3xl font-bold text-gray-900">How It Works</h2>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {[
@@ -118,7 +118,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-white py-16">
+      <section className="bg-white py-12 sm:py-16">
         <div className="container-page">
           <h2 className="text-center text-3xl font-bold text-gray-900">Why Choose MobileCarCare</h2>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -137,7 +137,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-brand-700 py-16">
+      <section className="bg-brand-700 py-12 sm:py-16">
         <div className="container-page text-center">
           <h2 className="text-3xl font-bold text-white">Ready to get your car looking great?</h2>
           <p className="mx-auto mt-3 max-w-xl text-brand-100">

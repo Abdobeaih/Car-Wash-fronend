@@ -19,7 +19,7 @@ export default function DashboardShell({ children }: { children: React.ReactNode
     <RequireRole role="CUSTOMER">
       <div className="container-page grid gap-6 py-10 lg:grid-cols-[220px_1fr]">
         <aside className="lg:sticky lg:top-24 lg:self-start">
-          <nav className="flex gap-2 overflow-x-auto lg:flex-col" aria-label="Dashboard navigation">
+          <nav className="no-scrollbar flex gap-2 overflow-x-auto lg:flex-col" aria-label="Dashboard navigation">
             {links.map((link) => {
               const active =
                 link.href === '/dashboard'

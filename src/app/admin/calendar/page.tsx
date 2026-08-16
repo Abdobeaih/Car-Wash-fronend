@@ -143,13 +143,15 @@ export default function AdminCalendarPage() {
       </div>
 
       {view === 'month' && (
-        <div className="grid grid-cols-7 gap-1 overflow-hidden">
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
-            <div key={d} className="px-2 py-1 text-center text-xs font-semibold uppercase text-gray-500">
-              {d}
-            </div>
-          ))}
-          {daysInMonth.map((d) => renderDay(d))}
+        <div className="overflow-x-auto pb-2">
+          <div className="grid min-w-[672px] grid-cols-7 gap-1">
+            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
+              <div key={d} className="px-2 py-1 text-center text-xs font-semibold uppercase text-gray-500">
+                {d}
+              </div>
+            ))}
+            {daysInMonth.map((d) => renderDay(d))}
+          </div>
         </div>
       )}
 

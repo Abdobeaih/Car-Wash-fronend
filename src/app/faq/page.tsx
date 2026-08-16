@@ -45,7 +45,7 @@ export default function FaqPage() {
   };
 
   return (
-    <div className="container-page max-w-3xl py-14">
+    <div className="container-page max-w-3xl py-10 sm:py-14">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}

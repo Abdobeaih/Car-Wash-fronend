@@ -122,7 +122,7 @@ export default function AdminAddOnsPage() {
 
       <form onSubmit={handleSubmit} className="card" noValidate>
         <h2 className="font-semibold text-gray-900">{editingId ? 'Edit add-on' : 'Create add-on'}</h2>
-        <div className="mt-4 grid gap-0 sm:grid-cols-2">
+        <div className="mt-4 grid gap-x-4 sm:grid-cols-2">
           <Input label="Name" name="name" required minLength={2} placeholder="e.g. Tire Cleaning" {...set('name')} />
           <Input label="Price" name="price" type="number" required min={0} step="0.01" {...set('price')} />
         </div>

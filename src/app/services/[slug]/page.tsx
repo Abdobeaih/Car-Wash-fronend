@@ -93,13 +93,13 @@ export default async function ServiceDetailPage({ params }: PageProps) {
               {addOns.map((addon) => (
                 <li
                   key={addon._id}
-                  className="flex items-center justify-between rounded-lg border border-gray-200 px-4 py-3 text-sm"
+                  className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-gray-200 px-4 py-3 text-sm"
                 >
-                  <span>
+                  <span className="min-w-0">
                     <span className="font-medium text-gray-900">{addon.name}</span>
                     <span className="ml-2 text-gray-500">{addon.description}</span>
                   </span>
-                  <span className="font-semibold text-gray-900">+{formatMoney(addon.price)}</span>
+                  <span className="shrink-0 font-semibold text-gray-900">+{formatMoney(addon.price)}</span>
                 </li>
               ))}
             </ul>

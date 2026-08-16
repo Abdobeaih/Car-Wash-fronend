@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, type FormEvent } from 'react';
-import { useAuth } from '@/lib/auth-context';
-import Button from '@/components/Button';
-import Input from '@/components/Input';
-import { Alert } from '@/components/States';
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, type FormEvent } from "react";
+import { useAuth } from "@/lib/auth-context";
+import Button from "@/components/Button";
+import Input from "@/components/Input";
+import { Alert } from "@/components/States";
 
 export default function LoginForm() {
   const { login } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const next = searchParams.get('next');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const next = searchParams.get("next");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -24,13 +24,15 @@ export default function LoginForm() {
     setSubmitting(true);
     try {
       const user = await login(email, password);
-      if (next && next.startsWith('/')) {
+      if (next && next.startsWith("/")) {
         router.push(next);
       } else {
-        router.push(user.role === 'ADMIN' ? '/admin' : '/dashboard');
+        router.push(user.role === "ADMIN" ? "/admin" : "/dashboard");
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed. Please try again.');
+      setError(
+        err instanceof Error ? err.message : "Login failed. Please try again.",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -38,7 +40,9 @@ export default function LoginForm() {
 
   return (
     <div className="card mx-auto w-full max-w-md">
-      <h1 className="text-2xl font-bold text-gray-900">Log in to your account</h1>
+      <h1 className="text-2xl font-bold text-gray-900">
+        Log in to your account
+      </h1>
       <p className="mt-1 text-sm text-gray-500">
         Use your email address to sign in and manage your bookings.
       </p>
@@ -76,14 +80,22 @@ export default function LoginForm() {
           </Link>
         </div>
 
-        <Button type="submit" className="w-full" loading={submitting} disabled={submitting}>
+        <Button
+          type="submit"
+          className="w-full"
+          loading={submitting}
+          disabled={submitting}
+        >
           Log in
         </Button>
       </form>
 
       <p className="mt-6 text-center text-sm text-gray-600">
-        Don&apos;t have an account?{' '}
-        <Link href="/register" className="font-medium text-brand-600 hover:text-brand-700">
+        Don&apos;t have an account?{" "}
+        <Link
+          href="/register"
+          className="font-medium text-brand-600 hover:text-brand-700"
+        >
           Register now
         </Link>
       </p>

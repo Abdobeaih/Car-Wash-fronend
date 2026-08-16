@@ -68,8 +68,10 @@ export default function AdminBookingDetailPage() {
       <Link href="/admin/bookings" className="text-sm font-medium text-brand-600 hover:text-brand-700">
         ← Back to bookings
       </Link>
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Booking {booking._id}</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="min-w-0 break-all text-xl font-bold text-gray-900 sm:text-2xl">
+          Booking {booking._id}
+        </h1>
         <StatusBadge status={booking.status} />
       </div>
 

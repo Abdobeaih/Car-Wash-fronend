@@ -69,7 +69,7 @@ export default function BookingDetailPage() {
         <StatusBadge status={booking.status} />
       </div>
 
-      <h1 className="text-2xl font-bold text-gray-900">Booking {booking._id}</h1>
+      <h1 className="break-all text-2xl font-bold text-gray-900">Booking {booking._id}</h1>
 
       {message && <Alert type="success">{message}</Alert>}
       {error && <Alert type="error">{error}</Alert>}

@@ -253,8 +253,8 @@ export default function BookingFlow() {
 
   return (
     <div className="container-page max-w-3xl py-12">
-      <div className="flex items-center justify-between gap-4">
-        <h1 className="text-3xl font-bold text-gray-900">Book a Service</h1>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">Book a Service</h1>
         <Link href="/dashboard" className="btn-secondary whitespace-nowrap">
           Back to dashboard
         </Link>
@@ -442,7 +442,7 @@ export default function BookingFlow() {
         {step === 'location' && (
           <div>
             <h2 className="font-semibold text-gray-900">Where should we come?</h2>
-            <div className="mt-4 grid sm:grid-cols-2">
+            <div className="mt-4 grid gap-x-4 sm:grid-cols-2">
               <Input
                 label="Country"
                 name="country"
@@ -668,7 +668,7 @@ export default function BookingFlow() {
                   )}
                 </div>
               </div>
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center justify-between gap-3">
                 <dt className="text-gray-500">Vehicle</dt>
                 <dd className="flex items-center gap-3">
                   <span className="font-medium text-gray-900">
@@ -686,13 +686,13 @@ export default function BookingFlow() {
                   </button>
                 </dd>
               </div>
-              <div className="flex justify-between">
+              <div className="flex flex-wrap justify-between gap-3">
                 <dt className="text-gray-500">Location</dt>
                 <dd className="font-medium text-gray-900">
                   {location.address}, {location.city}, {location.country}
                 </dd>
               </div>
-              <div className="flex justify-between">
+              <div className="flex flex-wrap justify-between gap-3">
                 <dt className="text-gray-500">When</dt>
                 <dd className="font-medium text-gray-900">
                   {time ? (

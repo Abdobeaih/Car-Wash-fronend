@@ -43,7 +43,7 @@ export default function Header() {
               />
             </svg>
           </span>
-          <span className="text-lg font-bold text-gray-900">
+          <span className="whitespace-nowrap text-base font-bold text-gray-900 sm:text-lg">
             Mobile<span className="text-brand-600">CarCare</span>
           </span>
         </Link>

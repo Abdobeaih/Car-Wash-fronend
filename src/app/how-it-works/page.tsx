@@ -36,7 +36,7 @@ const steps = [
 
 export default function HowItWorksPage() {
   return (
-    <div className="container-page max-w-4xl py-14">
+    <div className="container-page max-w-4xl py-10 sm:py-14">
       <h1 className="text-3xl font-bold text-gray-900">How It Works</h1>
       <p className="mt-3 text-gray-600">
         Booking a mobile car care service takes less than two minutes.
