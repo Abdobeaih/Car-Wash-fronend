@@ -65,9 +65,9 @@ export default function AdminMessagesPage() {
           {messages.map((m) => (
             <div key={m._id} className={`card ${m.read ? '' : 'border-s-4 border-blue-500'}`}>
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="flex items-center gap-3">
+                <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1">
                   <h2 className="font-semibold text-gray-900">{m.name}</h2>
-                  <a href={`mailto:${m.email}`} className="text-sm text-blue-600 hover:underline">
+                  <a href={`mailto:${m.email}`} className="min-w-0 break-all text-sm text-blue-600 hover:underline">
                     {m.email}
                   </a>
                 </div>

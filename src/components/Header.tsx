@@ -50,7 +50,7 @@ export default function Header() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex" aria-label={t('mainNav')}>
+        <nav className="hidden items-center gap-1 lg:flex" aria-label={t('mainNav')}>
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -64,7 +64,7 @@ export default function Header() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden items-center gap-2 lg:flex">
           <LanguageSwitcher />
           {loading ? (
             <span className="px-3 py-2 text-sm text-gray-400">{t('loading')}</span>
@@ -104,7 +104,7 @@ export default function Header() {
 
         <button
           type="button"
-          className="rounded-lg p-2 text-gray-700 hover:bg-gray-100 md:hidden"
+          className="rounded-lg p-2 text-gray-700 hover:bg-gray-100 lg:hidden"
           aria-label={open ? t('closeMenu') : t('openMenu')}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
@@ -120,7 +120,7 @@ export default function Header() {
       </div>
 
       {open && (
-        <nav className="border-t border-gray-200 bg-white px-4 pb-4 pt-2 md:hidden" aria-label={t('mobileNav')}>
+        <nav className="border-t border-gray-200 bg-white px-4 pb-4 pt-2 lg:hidden" aria-label={t('mobileNav')}>
           {navLinks.map((link) => (
             <Link
               key={link.href}

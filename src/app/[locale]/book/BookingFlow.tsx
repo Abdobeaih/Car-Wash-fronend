@@ -597,14 +597,14 @@ export default function BookingFlow() {
                 <div className="mt-1 space-y-2">
                   {cartSummary.map((line, i) => (
                     <div key={i} className="flex items-start justify-between gap-3 rounded-lg bg-gray-50 p-3">
-                      <div>
+                      <div className="min-w-0">
                         <p className="font-medium text-gray-900">{line.name}</p>
                         <p className="text-sm text-gray-500">
                           {line.addOns.length > 0 ? line.addOns.join(', ') : tc('noExtras')} ·{' '}
                           {tc('minutes', { value: line.duration })}
                         </p>
                       </div>
-                      <span className="font-medium text-gray-900">{formatMoney(line.total)}</span>
+                      <span className="shrink-0 font-medium text-gray-900">{formatMoney(line.total)}</span>
                     </div>
                   ))}
                   {addingService ? (

@@ -221,14 +221,16 @@ export default function VehiclesPage() {
                   {t('edit')}
                 </Button>
                 {confirmingDelete === v._id ? (
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <span className="text-sm text-gray-600">{t('deletePrompt')}</span>
-                    <Button variant="danger" onClick={confirmDelete}>
-                      {t('yes')}
-                    </Button>
-                    <Button variant="secondary" onClick={() => setConfirmingDelete(null)}>
-                      {t('no')}
-                    </Button>
+                    <div className="flex items-center gap-2">
+                      <Button variant="danger" onClick={confirmDelete}>
+                        {t('yes')}
+                      </Button>
+                      <Button variant="secondary" onClick={() => setConfirmingDelete(null)}>
+                        {t('no')}
+                      </Button>
+                    </div>
                   </div>
                 ) : (
                   <Button variant="danger" onClick={() => setConfirmingDelete(v._id)}>

@@ -148,13 +148,13 @@ export default function AdminBookingDetailPage() {
             <span className="font-bold text-brand-600">{formatMoney(booking.total)}</span>
           </div>
           <div className="grid grid-cols-2 gap-3 border-t border-gray-100 pt-3">
-            <div>
+            <div className="min-w-0">
               <p className="text-gray-500">{t('payment')}</p>
-              <p className="font-medium text-gray-900">{booking.paymentStatus}</p>
+              <p className="break-words font-medium text-gray-900">{booking.paymentStatus}</p>
             </div>
-            <div>
+            <div className="min-w-0">
               <p className="text-gray-500">{t('created')}</p>
-              <p className="font-medium text-gray-900">{formatDateTime(booking.createdAt)}</p>
+              <p className="break-words font-medium text-gray-900">{formatDateTime(booking.createdAt)}</p>
             </div>
           </div>
         </section>
