@@ -42,6 +42,7 @@
     "CUSTOMER": "Customer"
   },
   "Header": {
+    "home": "Home",
     "services": "Services",
     "howItWorks": "How It Works",
     "about": "About",

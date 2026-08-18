@@ -21,9 +21,11 @@ export default function Header() {
     router.push('/');
   };
 
-  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+  const isActive = (href: string) =>
+    href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
 
   const navLinks = [
+    { href: '/', key: 'home' },
     { href: '/services', key: 'services' },
     { href: '/how-it-works', key: 'howItWorks' },
     { href: '/about', key: 'about' },

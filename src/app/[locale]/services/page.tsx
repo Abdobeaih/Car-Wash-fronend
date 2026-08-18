@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { getFormatter, getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { API_URL } from '@/lib/api';
+import { serviceImagePath } from '@/lib/service-images';
 import type { CarService } from '@/lib/types';
 import { EmptyState } from '@/components/States';
 import BackToDashboard from '@/components/BackToDashboard';
@@ -62,7 +63,7 @@ export default async function ServicesPage() {
             >
               <div className="relative overflow-hidden">
                 <Image
-                  src={service.image}
+                  src={serviceImagePath(service.image)}
                   alt={service.name}
                   width={400}
                   height={260}

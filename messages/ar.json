@@ -42,6 +42,7 @@
     "CUSTOMER": "عميل"
   },
   "Header": {
+    "home": "الرئيسية",
     "services": "الخدمات",
     "howItWorks": "كيف يعمل",
     "about": "من نحن",

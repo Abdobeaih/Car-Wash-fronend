@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { getFormatter, getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { API_URL } from '@/lib/api';
+import { serviceImagePath, serviceImageUrl } from '@/lib/service-images';
 import type { AddOn, CarService } from '@/lib/types';
 import BackToDashboard from '@/components/BackToDashboard';
 
@@ -46,7 +47,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     openGraph: {
       title: service.name,
       description: service.description,
-      images: [service.image],
+      images: [serviceImageUrl(service.image)],
     },
     alternates: { canonical: `/services/${service.slug}` },
   };
@@ -76,7 +77,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       <div className="grid gap-8 lg:grid-cols-2">
         <div className="relative overflow-hidden rounded-2xl shadow-sm ring-1 ring-gray-200">
           <Image
-            src={service.image}
+            src={serviceImagePath(service.image)}
             alt={service.name}
             width={600}
             height={390}
@@ -139,7 +140,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
             '@type': 'Service',
             name: service.name,
             description: service.description,
-            image: service.image,
+            image: serviceImageUrl(service.image),
             provider: { '@type': 'LocalBusiness', name: 'MobileCarCare' },
             offers: {
               '@type': 'Offer',

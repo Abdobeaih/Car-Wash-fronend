@@ -3,13 +3,8 @@ import Image from 'next/image';
 import { getFormatter, getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { API_URL } from '@/lib/api';
+import { serviceImagePath } from '@/lib/service-images';
 import type { CarService } from '@/lib/types';
-import heroCarWash from '../../../public/images/services/pngtree-car-wash-fast-delicate-png-image_15497309.png';
-import heroCartoon from '../../../public/images/services/pngtree-cartoon-illustration-of-car-wash-service-png-image_15194039.png';
-import heroLogo from '../../../public/images/services/تصميم-شعار-لوجو-مغسلة-سيارات.jpg.webp';
-import heroWindows from '../../../public/images/services/ما-أهمية-غسيل-السيارات-وهل-هو-ضروري؟-ماذا-عن-النوافذ؟-6.jpg';
-
-const heroImages = [heroCarWash, heroCartoon, heroLogo, heroWindows];
 
 export const dynamic = 'force-dynamic';
 
@@ -105,7 +100,7 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3 sm:gap-4">
-            {services.slice(0, 4).map((service, index) => (
+            {services.slice(0, 4).map((service) => (
               <Link
                 key={service._id}
                 href={`/services/${service.slug}`}
@@ -113,7 +108,7 @@ export default async function HomePage() {
               >
                 <div className="relative overflow-hidden">
                   <Image
-                    src={heroImages[index % heroImages.length]}
+                    src={serviceImagePath(service.image)}
                     alt={service.name}
                     width={200}
                     height={130}
