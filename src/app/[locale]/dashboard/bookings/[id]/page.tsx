@@ -68,7 +68,7 @@ export default function BookingDetailPage() {
   const cancellable = booking.status === 'PENDING' || booking.status === 'CONFIRMED';
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <button
           type="button"

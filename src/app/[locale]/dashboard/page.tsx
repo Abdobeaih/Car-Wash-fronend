@@ -46,7 +46,7 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      <div className="text-center">
+      <div>
         <h1 className="break-words text-2xl font-bold text-gray-900">
           {t('welcome', { name: user?.name?.split(' ')[0] ?? '' })}
         </h1>

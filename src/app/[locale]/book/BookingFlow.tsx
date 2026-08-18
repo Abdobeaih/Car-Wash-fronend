@@ -198,7 +198,7 @@ export default function BookingFlow() {
       .join(' & ');
     return (
       <div className="container-page max-w-2xl py-16">
-        <div className="card overflow-hidden text-center">
+        <div className="card overflow-hidden p-0 text-center">
           <div className="bg-gradient-to-b from-green-50 to-white px-6 pt-10">
             <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-green-600 ring-8 ring-green-50">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true">

@@ -35,7 +35,7 @@ export default function BookingsPage() {
   if (!bookings) return <LoadingState />;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
         <Link href="/book" className="btn-primary whitespace-nowrap">

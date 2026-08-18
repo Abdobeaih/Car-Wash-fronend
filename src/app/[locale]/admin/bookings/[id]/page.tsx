@@ -72,7 +72,7 @@ export default function AdminBookingDetailPage() {
   const canCancel = booking.status === 'PENDING' || booking.status === 'CONFIRMED';
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <Link href="/admin/bookings" className="text-sm font-medium text-brand-600 hover:text-brand-700">
         {t('back')}
       </Link>

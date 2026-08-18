@@ -61,7 +61,7 @@ export default function NotificationsPanel({ basePath }: { basePath?: string }) 
   const unread = notifications.filter((n) => !n.read).length;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
