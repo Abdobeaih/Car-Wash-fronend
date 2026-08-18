@@ -48,7 +48,7 @@ export default async function AboutPage() {
               </svg>
             </span>
             <p className="mt-3 text-xl font-bold text-gray-900">{item.value}</p>
-            <p className="mt-1 text-sm text-gray-500">{item.label}</p>
+            <p className="mt-1.5 text-sm text-gray-500">{item.label}</p>
           </div>
         ))}
       </div>

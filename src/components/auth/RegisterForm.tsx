@@ -59,7 +59,7 @@ export default function RegisterForm() {
         </svg>
       </div>
       <h1 className="mt-4 text-center text-2xl font-bold text-gray-900">{t('title')}</h1>
-      <p className="mt-1 text-center text-sm text-gray-500">
+      <p className="mt-2 text-center text-sm text-gray-500">
         {t('subtitle')}
       </p>
 

@@ -65,7 +65,7 @@ export default function NotificationsPanel({ basePath }: { basePath?: string }) 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-2 text-sm text-gray-500">
             {unread === 0 ? t('allCaughtUp') : t('unread', { count: unread })}
           </p>
         </div>
@@ -99,7 +99,7 @@ export default function NotificationsPanel({ basePath }: { basePath?: string }) 
                       <h2 className="font-semibold text-gray-900">{n.title}</h2>
                       {n.data?.status && <StatusBadge status={n.data.status} />}
                     </div>
-                    <p className="mt-1 text-sm text-gray-600">{n.message}</p>
+                    <p className="mt-1.5 text-sm text-gray-600">{n.message}</p>
                     {n.data?.date && n.data.startTime && (
                       <p className="mt-1 text-xs text-gray-500">
                         {n.data.serviceName ?? 'Service'} · {n.data.date} ·{' '}

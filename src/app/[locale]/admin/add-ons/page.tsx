@@ -116,7 +116,7 @@ export default function AdminAddOnsPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-2 text-sm text-gray-500">
           {t('subtitle')}
         </p>
       </div>

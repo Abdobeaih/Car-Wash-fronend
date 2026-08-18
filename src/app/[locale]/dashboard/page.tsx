@@ -50,7 +50,7 @@ export default function DashboardPage() {
         <h1 className="break-words text-2xl font-bold text-gray-900">
           {t('welcome', { name: user?.name?.split(' ')[0] ?? '' })}
         </h1>
-        <p className="break-words mt-1 text-sm text-gray-500">{t('subtitle')}</p>
+        <p className="break-words mt-2 text-sm text-gray-500">{t('subtitle')}</p>
       </div>
 
       <section className="card flex flex-col items-center gap-4 py-8 text-center sm:flex-row sm:justify-between sm:px-8 sm:text-start">
@@ -97,10 +97,10 @@ export default function DashboardPage() {
                 <h3 className="mt-1.5 font-medium text-gray-900">
                   {(upcoming.serviceId as { name?: string })?.name ?? tc('service')}
                 </h3>
-                <p className="mt-1 text-sm text-gray-600">
+                <p className="mt-1.5 text-sm text-gray-600">
                   {formatDate(upcoming.date)} · {upcoming.startTime} – {upcoming.endTime}
                 </p>
-                <p className="mt-0.5 text-sm text-gray-600">
+                <p className="mt-1 text-sm text-gray-600">
                   {formatMoney(upcoming.total)} · {upcoming.location.city}
                 </p>
                 <Link

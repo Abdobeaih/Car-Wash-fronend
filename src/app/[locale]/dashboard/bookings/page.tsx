@@ -79,7 +79,7 @@ export default function BookingsPage() {
                           : lines[0].service.name;
                       })()}
                     </p>
-                    <p className="mt-1 text-sm text-gray-500">
+                    <p className="mt-1.5 text-sm text-gray-500">
                       {formatDate(b.date)} · {b.startTime} – {b.endTime} ·{' '}
                       {b.location.city}, {b.location.country}
                     </p>

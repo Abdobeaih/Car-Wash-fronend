@@ -44,7 +44,7 @@ export default function AdminDashboardPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
-        <p className="mt-1 text-sm text-gray-500">{t('subtitle')}</p>
+        <p className="mt-2 text-sm text-gray-500">{t('subtitle')}</p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -77,7 +77,7 @@ export default function AdminDashboardPage() {
             </span>
             <div className="min-w-0">
               <p className="text-sm text-gray-500">{m.label}</p>
-              <p className="mt-1 truncate text-2xl font-bold text-gray-900">{m.value}</p>
+              <p className="mt-1.5 truncate text-2xl font-bold text-gray-900">{m.value}</p>
             </div>
           </div>
         ))}

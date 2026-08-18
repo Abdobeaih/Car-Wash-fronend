@@ -89,7 +89,7 @@ export default function BookingDetailPage() {
         <section className="card space-y-4">
           <div>
             <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">{t('services')}</h2>
-            <ul className="mt-1 space-y-2">
+            <ul className="mt-1.5 space-y-2">
               {lines.map((l, i) => (
                 <li key={i}>
                   <p className="font-semibold text-gray-900">{l.service.name}</p>
@@ -103,28 +103,28 @@ export default function BookingDetailPage() {
           </div>
           <div>
             <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">{t('vehicle')}</h2>
-            <p className="mt-1 font-semibold text-gray-900">
+            <p className="mt-1.5 font-semibold text-gray-900">
               {vehicle.brand} {vehicle.model}
             </p>
             <p className="text-sm text-gray-500">{vehicle.plateNumber}</p>
           </div>
           <div>
             <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">{t('schedule')}</h2>
-            <p className="mt-1 font-semibold text-gray-900">{formatDate(booking.date)}</p>
+            <p className="mt-1.5 font-semibold text-gray-900">{formatDate(booking.date)}</p>
             <p className="text-sm text-gray-500">
               {booking.startTime} – {booking.endTime}
             </p>
           </div>
           <div>
             <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">{t('location')}</h2>
-            <p className="mt-1 font-semibold text-gray-900">
+            <p className="mt-1.5 font-semibold text-gray-900">
               {booking.location.address}
             </p>
             <p className="text-sm text-gray-500">
               {booking.location.city}, {booking.location.country}
             </p>
             {booking.location.notes && (
-              <p className="mt-1 text-sm text-gray-500">{t('notes', { notes: booking.location.notes })}</p>
+              <p className="mt-1.5 text-sm text-gray-500">{t('notes', { notes: booking.location.notes })}</p>
             )}
           </div>
         </section>

@@ -37,7 +37,7 @@ export default function AdminCustomersPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
-        <p className="mt-1 text-sm text-gray-500">{t('subtitle')}</p>
+        <p className="mt-2 text-sm text-gray-500">{t('subtitle')}</p>
       </div>
 
       {error && <ErrorState message={error} onRetry={load} />}
@@ -78,7 +78,7 @@ export default function AdminCustomersPage() {
                   <span className="text-gray-500">{t('bookings')}</span>
                   <span className="font-semibold text-gray-900">{c.bookingCount}</span>
                 </div>
-                <div className="mt-1 flex items-center justify-between gap-3 text-sm">
+                <div className="mt-1.5 flex items-center justify-between gap-3 text-sm">
                   <span className="text-gray-500">{t('registered')}</span>
                   <span className="text-gray-600">{formatDateTime(c.createdAt)}</span>
                 </div>

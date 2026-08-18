@@ -90,15 +90,15 @@ export default function AdminBookingDetailPage() {
         <section className="card space-y-4 text-sm">
           <div>
             <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-500">{t('customer')}</h2>
-            <p className="mt-1 font-semibold text-gray-900">{customer.name}</p>
+            <p className="mt-1.5 font-semibold text-gray-900">{customer.name}</p>
             <p className="text-gray-500">{customer.email}</p>
           </div>
           <div>
             <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-500">{t('services')}</h2>
-            <ul className="mt-1 space-y-2">
+            <ul className="mt-1.5 space-y-2">
               {lines.map((l, i) => (
                 <li key={i}>
-                  <p className="mt-1 font-semibold text-gray-900">{l.service.name}</p>
+                  <p className="mt-1.5 font-semibold text-gray-900">{l.service.name}</p>
                   <p className="text-gray-500">
                     {l.addOns.length > 0 ? l.addOns.map((a) => a.name).join(', ') : tc('noExtras')} ·{' '}
                     {tc('minutes', { value: l.duration ?? booking.duration })}
@@ -109,12 +109,12 @@ export default function AdminBookingDetailPage() {
           </div>
           <div>
             <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-500">{t('vehicle')}</h2>
-            <p className="mt-1 font-semibold text-gray-900">{vehicle.brand} {vehicle.model}</p>
+            <p className="mt-1.5 font-semibold text-gray-900">{vehicle.brand} {vehicle.model}</p>
             <p className="text-gray-500">{vehicle.plateNumber}</p>
           </div>
           <div>
             <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-500">{t('schedule')}</h2>
-            <p className="mt-1 font-semibold text-gray-900">{formatDate(booking.date)}</p>
+            <p className="mt-1.5 font-semibold text-gray-900">{formatDate(booking.date)}</p>
             <p className="text-gray-500">{booking.startTime} – {booking.endTime}</p>
           </div>
         </section>
@@ -122,16 +122,16 @@ export default function AdminBookingDetailPage() {
         <section className="card space-y-4 text-sm">
           <div>
             <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-500">{t('location')}</h2>
-            <p className="mt-1 font-semibold text-gray-900">{booking.location.address}</p>
+            <p className="mt-1.5 font-semibold text-gray-900">{booking.location.address}</p>
             <p className="text-gray-500">{booking.location.city}, {booking.location.country}</p>
-            {booking.location.notes && <p className="mt-1 text-gray-500">{t('notes', { notes: booking.location.notes })}</p>}
+            {booking.location.notes && <p className="mt-1.5 text-gray-500">{t('notes', { notes: booking.location.notes })}</p>}
           </div>
           <div>
             <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-500">{t('addOns')}</h2>
             {lines.every((l) => l.addOns.length === 0) ? (
-              <p className="mt-1 text-gray-500">{t('none')}</p>
+              <p className="mt-1.5 text-gray-500">{t('none')}</p>
             ) : (
-              <ul className="mt-1 space-y-1">
+              <ul className="mt-1.5 space-y-1">
                 {lines.flatMap((l) =>
                   l.addOns.map((a, i) => (
                     <li key={`${l.service.name}-${i}`} className="flex justify-between">
@@ -162,7 +162,7 @@ export default function AdminBookingDetailPage() {
 
       <section className="card">
         <h2 className="font-semibold text-gray-900">{t('updateStatus')}</h2>
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-2 text-sm text-gray-500">
           {t('updateSubtitle')}
         </p>
         <div className="mt-4 flex flex-wrap items-center gap-3">

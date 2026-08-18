@@ -84,7 +84,7 @@ export default function ProfilePage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-2 text-sm text-gray-500">
           {t('subtitle')}
         </p>
       </div>
@@ -102,19 +102,19 @@ export default function ProfilePage() {
         <dl className="mt-4 grid min-w-0 gap-4 text-sm sm:grid-cols-2">
           <div className="min-w-0">
             <dt className="text-gray-500">{t('name')}</dt>
-            <dd className="mt-1 break-words font-medium text-gray-900">{user.name}</dd>
+            <dd className="mt-1.5 break-words font-medium text-gray-900">{user.name}</dd>
           </div>
           <div className="min-w-0">
             <dt className="text-gray-500">{t('email')}</dt>
-            <dd className="mt-1 break-words font-medium text-gray-900">{user.email}</dd>
+            <dd className="mt-1.5 break-words font-medium text-gray-900">{user.email}</dd>
           </div>
           <div className="min-w-0">
             <dt className="text-gray-500">{t('role')}</dt>
-            <dd className="mt-1"><RoleBadge role={user.role} /></dd>
+            <dd className="mt-1.5"><RoleBadge role={user.role} /></dd>
           </div>
           <div className="min-w-0">
             <dt className="text-gray-500">{t('memberSince')}</dt>
-            <dd className="mt-1 break-words font-medium text-gray-900">{formatDateTime(user.createdAt)}</dd>
+            <dd className="mt-1.5 break-words font-medium text-gray-900">{formatDateTime(user.createdAt)}</dd>
           </div>
         </dl>
       </section>

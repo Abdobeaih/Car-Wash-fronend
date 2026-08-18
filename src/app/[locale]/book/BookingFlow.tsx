@@ -560,7 +560,7 @@ export default function BookingFlow() {
         {step === 'date' && (
           <div>
             <h2 className="font-semibold text-gray-900">{t('pickDate')}</h2>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-2 text-sm text-gray-500">
               {t('workingHours')}
             </p>
             <Input
@@ -586,7 +586,7 @@ export default function BookingFlow() {
         {step === 'time' && (
           <div>
             <h2 className="font-semibold text-gray-900">{t('pickTime')}</h2>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-2 text-sm text-gray-500">
               {t('timeSubtitle', {
                 date: formatDate(date),
                 services: cartSummary.map((c) => c.name).join(' + '),

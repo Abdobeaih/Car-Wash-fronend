@@ -54,7 +54,7 @@ export default async function ContactPage() {
               </svg>
             </span>
             <p className="mt-3 font-semibold text-gray-900">{item.title}</p>
-            <p className="mt-1 text-sm text-gray-500">{item.value}</p>
+            <p className="mt-1.5 text-sm text-gray-500">{item.value}</p>
           </div>
         ))}
       </div>

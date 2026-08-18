@@ -39,7 +39,7 @@ export default async function HowItWorksPage() {
             </span>
             <div className="card mb-1 flex-1 p-5">
               <h2 className="font-semibold text-gray-900">{step.title}</h2>
-              <p className="mt-1 text-sm leading-relaxed text-gray-600">{step.text}</p>
+              <p className="mt-1.5 text-sm leading-relaxed text-gray-600">{step.text}</p>
             </div>
           </li>
         ))}

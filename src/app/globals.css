@@ -64,7 +64,7 @@ body {
   }
 
   .label {
-    @apply mb-1.5 block text-sm font-medium text-gray-700;
+    @apply mb-2 block text-sm font-medium text-gray-700;
   }
 
   .card {
