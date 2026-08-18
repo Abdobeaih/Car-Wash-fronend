@@ -57,15 +57,6 @@ export default async function HomePage() {
       <section className="bg-gradient-to-b from-brand-50 via-brand-50/50 to-gray-50">
         <div className="container-page grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-2 lg:py-24">
           <div className="text-center lg:text-start">
-            <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white/70 px-3.5 py-1.5 text-sm font-medium text-brand-700 shadow-sm">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M12 3l1.9 5.2L19 10l-5.1 1.8L12 17l-1.9-5.2L5 10l5.1-1.8L12 3z"
-                  fill="currentColor"
-                />
-              </svg>
-              {t('badge')}
-            </p>
             <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
               {t('title')}
             </h1>
