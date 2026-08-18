@@ -92,7 +92,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           <p className="mt-3 leading-relaxed text-gray-600">{service.description}</p>
           <div className="mt-6 flex flex-wrap items-center gap-4">
             <span className="text-3xl font-bold text-brand-600">
-              {formatMoney(locale, service.basePrice)}
+              {formatMoney(locale, service.basePrice, tc('currencyLabel'))}
             </span>
             <span className="badge bg-gray-100 text-gray-700 ring-1 ring-inset ring-gray-500/20">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -116,7 +116,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
                     <span className="ms-2 text-gray-500">{addon.description}</span>
                   </span>
                   <span className="shrink-0 font-semibold text-brand-600">
-                    +{formatMoney(locale, addon.price)}
+                    +{formatMoney(locale, addon.price, tc('currencyLabel'))}
                   </span>
                 </li>
               ))}

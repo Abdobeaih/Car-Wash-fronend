@@ -80,7 +80,7 @@ export default async function ServicesPage() {
                 <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-gray-600">{service.description}</p>
                 <div className="mt-4 flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
                   <span className="text-lg font-bold text-brand-600">
-                    {formatMoney(locale, service.basePrice)}
+                    {formatMoney(locale, service.basePrice, tc('currencyLabel'))}
                   </span>
                   <span className="inline-flex items-center gap-1.5 text-sm text-gray-500">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">

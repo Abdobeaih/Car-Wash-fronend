@@ -19,6 +19,7 @@
     "yes": "Yes",
     "no": "No",
     "price": "Price",
+    "currencyLabel": "$",
     "duration": "Duration",
     "status": "Status",
     "total": "Total",

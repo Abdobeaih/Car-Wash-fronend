@@ -114,7 +114,7 @@ export default async function HomePage() {
                     {service.name}
                   </h3>
                   <p className="mt-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs font-medium text-gray-500">
-                    <span>{formatMoney(locale, service.basePrice)}</span>
+                    <span>{formatMoney(locale, service.basePrice, tc('currencyLabel'))}</span>
                     <span className="text-gray-300" aria-hidden="true">·</span>
                     <span>{formatDuration(tc, service.duration)}</span>
                   </p>

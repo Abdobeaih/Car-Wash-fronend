@@ -1,12 +1,13 @@
 'use client';
 
-import { useFormatter, useLocale } from 'next-intl';
+import { useFormatter, useLocale, useTranslations } from 'next-intl';
 import type { AppLocale } from '@/i18n/routing';
 import { formatMoney } from '@/lib/money';
 
 export function useMoney() {
   const locale = useLocale() as AppLocale;
-  return (value: number) => formatMoney(locale, value);
+  const t = useTranslations('Common');
+  return (value: number) => formatMoney(locale, value, t('currencyLabel'));
 }
 
 export function useDate() {

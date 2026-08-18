@@ -2,22 +2,24 @@ import type { AppLocale } from '@/i18n/routing';
 
 export const DEFAULT_CURRENCY = 'USD';
 
-const MONEY_CONFIG: Record<AppLocale, { currency: string; numberingSystem?: string }> = {
-  en: { currency: DEFAULT_CURRENCY },
-  ar: { currency: DEFAULT_CURRENCY, numberingSystem: 'arab' },
+const MONEY_CONFIG: Record<AppLocale, { numberingSystem?: string; labelPosition: 'before' | 'after' }> = {
+  en: { labelPosition: 'before' },
+  ar: { numberingSystem: 'arab', labelPosition: 'after' },
 };
 
-export function moneyOptions(locale: AppLocale) {
-  const { currency, numberingSystem } = MONEY_CONFIG[locale];
+function numberOptions(locale: AppLocale) {
+  const { numberingSystem } = MONEY_CONFIG[locale];
   return {
-    style: 'currency' as const,
-    currency,
+    style: 'decimal' as const,
     numberingSystem,
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   };
 }
 
-export function formatMoney(locale: AppLocale, value: number): string {
-  return new Intl.NumberFormat(locale, moneyOptions(locale)).format(value);
+export function formatMoney(locale: AppLocale, value: number, currencyLabel: string): string {
+  const amount = new Intl.NumberFormat(locale, numberOptions(locale)).format(value);
+  return MONEY_CONFIG[locale].labelPosition === 'before'
+    ? `${currencyLabel}${amount}`
+    : `${amount} ${currencyLabel}`;
 }
