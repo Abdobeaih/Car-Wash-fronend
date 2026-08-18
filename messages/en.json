@@ -29,7 +29,11 @@
     "created": "Created",
     "payment": "Payment",
     "tryAgain": "Try again",
-    "minutes": "{value} minutes"
+    "hour": "{value} hour",
+    "hours": "{value} hours",
+    "minute": "{value} minute",
+    "minutes": "{value} minutes",
+    "and": "and"
   },
   "Status": {
     "PENDING": "Pending",

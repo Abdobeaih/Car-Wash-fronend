@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { API_URL } from '@/lib/api';
+import { formatDuration } from '@/lib/duration';
 import { formatMoney } from '@/lib/money';
 import { serviceImagePath } from '@/lib/service-images';
 import type { AppLocale } from '@/i18n/routing';
@@ -115,7 +116,7 @@ export default async function HomePage() {
                   <p className="mt-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs font-medium text-gray-500">
                     <span>{formatMoney(locale, service.basePrice)}</span>
                     <span className="text-gray-300" aria-hidden="true">·</span>
-                    <span>{tc('minutes', { value: service.duration })}</span>
+                    <span>{formatDuration(tc, service.duration)}</span>
                   </p>
                 </div>
               </Link>

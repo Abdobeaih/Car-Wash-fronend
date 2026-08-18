@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { API_URL } from '@/lib/api';
+import { formatDuration } from '@/lib/duration';
 import { formatMoney } from '@/lib/money';
 import { serviceImagePath, serviceImageUrl } from '@/lib/service-images';
 import type { AppLocale } from '@/i18n/routing';
@@ -98,7 +99,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
                 <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
                 <path d="M12 7v5l3 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
               </svg>
-              {tc('minutes', { value: service.duration })}
+              {formatDuration(tc, service.duration)}
             </span>
           </div>
 

@@ -29,7 +29,11 @@
     "created": "تاريخ الإنشاء",
     "payment": "الدفع",
     "tryAgain": "إعادة المحاولة",
-    "minutes": "{value} دقيقة"
+    "hour": "{value} ساعة",
+    "hours": "{value} ساعات",
+    "minute": "{value} دقيقة",
+    "minutes": "{value} دقيقة",
+    "and": "و"
   },
   "Status": {
     "PENDING": "قيد الانتظار",
