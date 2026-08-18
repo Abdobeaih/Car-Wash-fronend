@@ -112,9 +112,10 @@ export default async function HomePage() {
                   <h3 className="text-sm font-semibold text-gray-900 group-hover:text-brand-700">
                     {service.name}
                   </h3>
-                  <p className="mt-1 text-xs font-medium text-gray-500">
-                    {formatMoney(locale, service.basePrice)} ·{' '}
-                    {tc('minutes', { value: service.duration })}
+                  <p className="mt-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs font-medium text-gray-500">
+                    <span>{formatMoney(locale, service.basePrice)}</span>
+                    <span className="text-gray-300" aria-hidden="true">·</span>
+                    <span>{tc('minutes', { value: service.duration })}</span>
                   </p>
                 </div>
               </Link>
