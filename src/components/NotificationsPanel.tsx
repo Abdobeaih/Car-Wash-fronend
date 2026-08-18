@@ -86,7 +86,11 @@ export default function NotificationsPanel({ basePath }: { basePath?: string }) 
           {notifications.map((n) => (
             <li key={n._id}>
               <div
-                className={`card transition ${n.read ? 'opacity-70' : 'border-brand-300'}`}
+                className={`card p-5 transition ${
+                  n.read
+                    ? 'opacity-75'
+                    : 'border-s-4 border-s-brand-500 shadow-md shadow-brand-600/5'
+                }`}
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">

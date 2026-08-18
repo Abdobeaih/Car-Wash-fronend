@@ -1,0 +1,49 @@
+warning: in the working copy of 'src/app/[locale]/dashboard/DashboardShell.tsx', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/src/app/[locale]/dashboard/DashboardShell.tsx b/src/app/[locale]/dashboard/DashboardShell.tsx[m
+[1mindex 43271ef..9f198be 100644[m
+[1m--- a/src/app/[locale]/dashboard/DashboardShell.tsx[m
+[1m+++ b/src/app/[locale]/dashboard/DashboardShell.tsx[m
+[36m@@ -18,9 +18,12 @@[m [mexport default function DashboardShell({ children }: { children: React.ReactNode[m
+ [m
+   return ([m
+     <RequireRole role="CUSTOMER">[m
+[31m-      <div className="container-page grid gap-6 py-10 lg:grid-cols-[220px_1fr]">[m
+[31m-        <aside className="lg:sticky lg:top-24 lg:self-start">[m
+[31m-          <nav className="no-scrollbar flex gap-2 overflow-x-auto lg:flex-col" aria-label={t('nav')}>[m
+[32m+[m[32m      <div className="container-page flex flex-col gap-6 py-10 lg:grid lg:grid-cols-[220px_1fr]">[m
+[32m+[m[32m        <aside className="min-w-0 lg:sticky lg:top-24 lg:self-start">[m
+[32m+[m[32m          <nav[m
+[32m+[m[32m            className="flex flex-wrap gap-2 pb-1 lg:flex-col lg:pb-0"[m
+[32m+[m[32m            aria-label={t('nav')}[m
+[32m+[m[32m          >[m
+             {links.map((link) => {[m
+               const active =[m
+                 link.href === '/dashboard'[m
+[36m@@ -30,10 +33,10 @@[m [mexport default function DashboardShell({ children }: { children: React.ReactNode[m
+                 <Link[m
+                   key={link.href}[m
+                   href={link.href}[m
+[31m-                  className={`shrink-0 rounded-lg px-4 py-2.5 text-sm font-medium ${[m
+[32m+[m[32m                  className={`shrink-0 rounded-xl px-4 py-2.5 text-sm font-medium transition ${[m
+                     active[m
+[31m-                      ? 'bg-brand-600 text-white'[m
+[31m-                      : 'bg-white text-gray-600 hover:bg-gray-100'[m
+[32m+[m[32m                      ? 'bg-brand-600 text-white shadow-md shadow-brand-600/25'[m
+[32m+[m[32m                      : 'border border-gray-200 bg-white text-gray-600 shadow-sm hover:border-brand-200 hover:text-gray-900'[m
+                   }`}[m
+                 >[m
+                   {link.label}[m
+[36m@@ -43,10 +46,10 @@[m [mexport default function DashboardShell({ children }: { children: React.ReactNode[m
+             <NotificationsNavLink[m
+               href="/dashboard/notifications"[m
+               label={t('notifications')}[m
+[31m-              className={`shrink-0 rounded-lg px-4 py-2.5 text-sm font-medium ${[m
+[32m+[m[32m              className={`shrink-0 rounded-xl px-4 py-2.5 text-sm font-medium transition ${[m
+                 pathname.startsWith('/dashboard/notifications')[m
+[31m-                  ? 'bg-brand-600 text-white'[m
+[31m-                  : 'bg-white text-gray-600 hover:bg-gray-100'[m
+[32m+[m[32m                  ? 'bg-brand-600 text-white shadow-md shadow-brand-600/25'[m
+[32m+[m[32m                  : 'border border-gray-200 bg-white text-gray-600 shadow-sm hover:border-brand-200 hover:text-gray-900'[m
+               }`}[m
+             />[m
+           </nav>[m

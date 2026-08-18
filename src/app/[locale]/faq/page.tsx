@@ -35,10 +35,10 @@ export default async function FaqPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
       <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
-      <div className="mt-8 space-y-4">
+      <div className="mt-8 space-y-3">
         {faqs.map((item) => (
-          <details key={item.q} className="card group">
-            <summary className="cursor-pointer list-none font-semibold text-gray-900 marker:hidden">
+          <details key={item.q} className="card group p-0 transition hover:border-gray-300">
+            <summary className="cursor-pointer list-none rounded-2xl px-5 py-4 font-semibold text-gray-900 marker:hidden">
               <span className="flex items-center justify-between gap-4">
                 {item.q}
                 <svg
@@ -46,14 +46,16 @@ export default async function FaqPage() {
                   height="20"
                   viewBox="0 0 24 24"
                   fill="none"
-                  className="shrink-0 text-gray-400 transition group-open:rotate-180"
+                  className="shrink-0 text-gray-400 transition group-open:rotate-180 group-open:text-brand-600"
                   aria-hidden="true"
                 >
                   <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                 </svg>
               </span>
             </summary>
-            <p className="mt-3 text-sm text-gray-600">{item.a}</p>
+            <p className="border-t border-gray-100 px-5 pb-5 pt-4 text-sm leading-relaxed text-gray-600">
+              {item.a}
+            </p>
           </details>
         ))}
       </div>

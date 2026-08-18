@@ -21,40 +21,41 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
 
   return (
     <RequireRole role="ADMIN">
-      <div className="min-h-[70vh] bg-gray-100">
-        <div className="container-page grid gap-6 py-8 lg:grid-cols-[220px_1fr]">
-          <aside className="lg:sticky lg:top-24 lg:self-start">
-            <nav className="no-scrollbar flex gap-2 overflow-x-auto lg:flex-col" aria-label="Admin navigation">
-              {links.map((link) => {
-                const active =
-                  link.href === '/admin' ? pathname === '/admin' : pathname.startsWith(link.href);
-                return (
-                  <Link
-                    key={link.key}
-                    href={link.href}
-                    className={`shrink-0 rounded-lg px-4 py-2.5 text-sm font-medium ${
-                      active
-                        ? 'bg-gray-900 text-white'
-                        : 'bg-white text-gray-600 hover:bg-gray-50'
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                );
-              })}
-              <NotificationsNavLink
-                href="/admin/notifications"
-                label={t('notifications')}
-                className={`shrink-0 rounded-lg px-4 py-2.5 text-sm font-medium ${
-                  pathname.startsWith('/admin/notifications')
-                    ? 'bg-gray-900 text-white'
-                    : 'bg-white text-gray-600 hover:bg-gray-50'
-                }`}
-              />
-            </nav>
-          </aside>
-          <div className="min-w-0">{children}</div>
-        </div>
+      <div className="container-page grid gap-6 py-8 lg:grid-cols-[220px_1fr]">
+        <aside className="lg:sticky lg:top-24 lg:self-start">
+          <nav
+            className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 lg:mx-0 lg:flex-col lg:px-0 lg:pb-0"
+            aria-label="Admin navigation"
+          >
+            {links.map((link) => {
+              const active =
+                link.href === '/admin' ? pathname === '/admin' : pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.key}
+                  href={link.href}
+                  className={`shrink-0 rounded-xl px-4 py-2.5 text-sm font-medium transition ${
+                    active
+                      ? 'bg-brand-600 text-white shadow-md shadow-brand-600/25'
+                      : 'border border-gray-200 bg-white text-gray-600 shadow-sm hover:border-brand-200 hover:text-gray-900'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+            <NotificationsNavLink
+              href="/admin/notifications"
+              label={t('notifications')}
+              className={`shrink-0 rounded-xl px-4 py-2.5 text-sm font-medium transition ${
+                pathname.startsWith('/admin/notifications')
+                  ? 'bg-brand-600 text-white shadow-md shadow-brand-600/25'
+                  : 'border border-gray-200 bg-white text-gray-600 shadow-sm hover:border-brand-200 hover:text-gray-900'
+              }`}
+            />
+          </nav>
+        </aside>
+        <div className="min-w-0">{children}</div>
       </div>
     </RequireRole>
   );

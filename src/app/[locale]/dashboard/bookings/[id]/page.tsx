@@ -146,9 +146,9 @@ export default function BookingDetailPage() {
                 ))}
               </div>
             ))}
-            <div className="flex justify-between border-t border-gray-100 pt-3">
+            <div className="flex items-center justify-between rounded-xl bg-brand-50 px-4 py-3">
               <span className="font-semibold text-gray-900">{t('total')}</span>
-              <span className="font-bold text-brand-600">{formatMoney(booking.total)}</span>
+              <span className="text-lg font-bold text-brand-700">{formatMoney(booking.total)}</span>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3 border-t border-gray-100 pt-4 text-sm">
@@ -165,14 +165,16 @@ export default function BookingDetailPage() {
           {cancellable && (
             <div className="border-t border-gray-100 pt-4">
               {confirming ? (
-                <div className="flex items-center gap-3">
-                  <span className="text-sm text-gray-600">{t('cancelPrompt')}</span>
-                  <Button variant="danger" onClick={handleCancel} loading={cancelling}>
-                    {t('confirm')}
-                  </Button>
-                  <Button variant="secondary" onClick={() => setConfirming(false)}>
-                    {t('keepIt')}
-                  </Button>
+                <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-red-200 bg-red-50 p-4">
+                  <span className="text-sm font-medium text-red-700">{t('cancelPrompt')}</span>
+                  <div className="flex items-center gap-2">
+                    <Button variant="danger" onClick={handleCancel} loading={cancelling}>
+                      {t('confirm')}
+                    </Button>
+                    <Button variant="secondary" onClick={() => setConfirming(false)}>
+                      {t('keepIt')}
+                    </Button>
+                  </div>
                 </div>
               ) : (
                 <Button variant="danger" onClick={() => setConfirming(true)}>

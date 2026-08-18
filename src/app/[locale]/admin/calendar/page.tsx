@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useFormatter, useTranslations } from 'next-intl';
 import { apiRequest } from '@/lib/api';
+import { Link } from '@/i18n/navigation';
 import type { Booking } from '@/lib/types';
 import Button from '@/components/Button';
 import { LoadingState, ErrorState } from '@/components/States';
@@ -105,19 +106,37 @@ export default function AdminCalendarPage() {
   const renderDay = (date: Date) => {
     const iso = toISODate(date);
     const list = byDate.get(iso) ?? [];
+    const today = iso === toISODate(new Date());
     return (
-      <div key={iso} className="border border-gray-200 bg-white p-2">
-        <p className="text-xs font-semibold text-gray-500">{date.getDate()}</p>
-        {list.map((b) => (
-          <div key={b._id} className="mt-1 rounded bg-brand-50 px-1.5 py-1 text-xs">
-            <p className="truncate font-medium text-brand-700">
-              {b.startTime} {(b.serviceId as { name?: string })?.name}
-            </p>
-            <p className="truncate text-gray-500">
-              {(b.customerId as { name?: string })?.name} · {formatMoney(b.total)}
-            </p>
-          </div>
-        ))}
+      <div
+        key={iso}
+        className={`min-h-[92px] rounded-lg border bg-white p-1.5 transition hover:border-brand-300 ${
+          today ? 'border-brand-500 ring-1 ring-brand-500/30' : 'border-gray-200'
+        }`}
+      >
+        <p
+          className={`px-1 pt-0.5 text-xs font-semibold ${
+            today ? 'text-brand-600' : 'text-gray-500'
+          }`}
+        >
+          {date.getDate()}
+        </p>
+        <div className="mt-1 space-y-1">
+          {list.map((b) => (
+            <Link
+              key={b._id}
+              href={`/admin/bookings/${b._id}`}
+              className="block rounded-md bg-brand-50 px-1.5 py-1 text-[11px] leading-tight transition hover:bg-brand-100"
+            >
+              <p className="truncate font-medium text-brand-700">
+                {b.startTime} {(b.serviceId as { name?: string })?.name}
+              </p>
+              <p className="truncate text-gray-500">
+                {(b.customerId as { name?: string })?.name} · {formatMoney(b.total)}
+              </p>
+            </Link>
+          ))}
+        </div>
       </div>
     );
   };
@@ -131,11 +150,15 @@ export default function AdminCalendarPage() {
         <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
         <div className="flex items-center gap-2">
           <Button variant="secondary" onClick={() => navigate(-1)} aria-label={t('previous')}>
-            ←
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </Button>
           <span className="min-w-40 text-center text-sm font-medium text-gray-700">{periodLabel}</span>
           <Button variant="secondary" onClick={() => navigate(1)} aria-label={t('next')}>
-            →
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </Button>
         </div>
       </div>
@@ -148,8 +171,10 @@ export default function AdminCalendarPage() {
             role="tab"
             aria-selected={view === v}
             onClick={() => setView(v)}
-            className={`rounded-lg px-4 py-2 text-sm font-medium ${
-              view === v ? 'bg-gray-900 text-white' : 'bg-white text-gray-600 hover:bg-gray-100'
+            className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
+              view === v
+                ? 'bg-brand-600 text-white shadow-md shadow-brand-600/25'
+                : 'border border-gray-200 bg-white text-gray-600 shadow-sm hover:border-brand-200 hover:text-gray-900'
             }`}
           >
             {t(v)}
@@ -159,9 +184,9 @@ export default function AdminCalendarPage() {
 
       {view === 'month' && (
         <div className="overflow-x-auto pb-2">
-          <div className="grid min-w-[672px] grid-cols-7 gap-1">
+          <div className="grid min-w-[560px] grid-cols-7 gap-1">
             {weekdayLabels.map((d) => (
-              <div key={d} className="px-2 py-1 text-center text-xs font-semibold uppercase text-gray-500">
+              <div key={d} className="px-2 py-2 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">
                 {d}
               </div>
             ))}
@@ -176,7 +201,7 @@ export default function AdminCalendarPage() {
             const day = addDays(start, i);
             const list = byDate.get(toISODate(day)) ?? [];
             return (
-              <div key={toISODate(day)} className="card">
+              <div key={toISODate(day)} className="card p-5">
                 <h3 className="font-semibold text-gray-900">
                   {format.dateTime(day, { weekday: 'long', month: 'short', day: 'numeric' })}
                 </h3>
@@ -185,14 +210,19 @@ export default function AdminCalendarPage() {
                 ) : (
                   <ul className="mt-2 space-y-2">
                     {list.map((b) => (
-                      <li key={b._id} className="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-gray-50 px-3 py-2 text-sm">
-                        <span className="font-medium text-gray-900">
-                          {b.startTime} – {b.endTime} · {(b.serviceId as { name?: string })?.name}
-                        </span>
-                        <span className="text-gray-500">
-                          {(b.customerId as { name?: string })?.name} · {formatMoney(b.total)}
-                        </span>
-                        <StatusBadge status={b.status} />
+                      <li key={b._id}>
+                        <Link
+                          href={`/admin/bookings/${b._id}`}
+                          className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-gray-100 bg-gray-50 px-3 py-2.5 text-sm transition hover:border-brand-200 hover:bg-brand-50/40"
+                        >
+                          <span className="font-medium text-gray-900">
+                            {b.startTime} – {b.endTime} · {(b.serviceId as { name?: string })?.name}
+                          </span>
+                          <span className="text-gray-500">
+                            {(b.customerId as { name?: string })?.name} · {formatMoney(b.total)}
+                          </span>
+                          <StatusBadge status={b.status} />
+                        </Link>
                       </li>
                     ))}
                   </ul>

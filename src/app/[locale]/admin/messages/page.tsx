@@ -63,7 +63,7 @@ export default function AdminMessagesPage() {
       ) : (
         <div className="space-y-4">
           {messages.map((m) => (
-            <div key={m._id} className={`card ${m.read ? '' : 'border-s-4 border-blue-500'}`}>
+            <div key={m._id} className={`card transition ${m.read ? '' : 'border-s-4 border-s-brand-500 shadow-md shadow-brand-600/5'}`}>
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1">
                   <h2 className="font-semibold text-gray-900">{m.name}</h2>

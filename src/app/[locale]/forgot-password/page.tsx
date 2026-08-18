@@ -18,7 +18,7 @@ export async function generateMetadata({
 
 export default async function ForgotPasswordPage() {
   return (
-    <div className="container-page flex justify-center py-10 sm:py-16">
+    <div className="container-page flex justify-center px-4 py-10 sm:py-16">
       <ForgotPasswordForm />
     </div>
   );

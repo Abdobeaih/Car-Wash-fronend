@@ -1,0 +1,21 @@
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+[browser] Image with src "/images/services/exterior-wash.svg" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Image with src "/images/services/exterior-wash.svg" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Image with src "/images/services/full-detailing.svg" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Image with src "/images/services/interior-cleaning.svg" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Image with src "/images/services/exterior-wash.svg" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+Persisting failed: Unable to write SST file 00000608.sst
+
+Caused by:
+    failed to create file `\\?\C:\Users\mohey\OneDrive\Desktop\Car-Wash\apps\web\.next\dev\cache\turbopack\v16.3.1-3d32eb87\00000608.sst`: The requested operation cannot be performed on a file with a user-mapped section open. (os error 1224)
+Persisting is disabled for this session due to an unrecoverable error. Stopping the background persisting process.

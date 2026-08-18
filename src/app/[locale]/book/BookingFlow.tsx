@@ -198,30 +198,34 @@ export default function BookingFlow() {
       .join(' & ');
     return (
       <div className="container-page max-w-2xl py-16">
-        <div className="card text-center">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-100 text-green-700">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+        <div className="card overflow-hidden text-center">
+          <div className="bg-gradient-to-b from-green-50 to-white px-6 pt-10">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-green-600 ring-8 ring-green-50">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <h1 className="mt-5 text-2xl font-bold text-gray-900">{t('confirmedTitle')}</h1>
+            <p className="mt-2 leading-relaxed text-gray-600">
+              {t('confirmedText', {
+                services: lineNames,
+                date: formatDate(createdBooking.date),
+                time: createdBooking.startTime,
+              })}
+            </p>
           </div>
-          <h1 className="mt-4 text-2xl font-bold text-gray-900">{t('confirmedTitle')}</h1>
-          <p className="mt-2 text-gray-600">
-            {t('confirmedText', {
-              services: lineNames,
-              date: formatDate(createdBooking.date),
-              time: createdBooking.startTime,
-            })}
-          </p>
-          <p className="mt-1 text-sm text-gray-500">
-            {t('bookingId', { id: createdBooking._id, total: formatMoney(createdBooking.total) })}
-          </p>
-          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <Link href={`/dashboard/bookings/${createdBooking._id}`} className="btn-primary">
-              {t('viewDetails')}
-            </Link>
-            <Link href="/dashboard" className="btn-secondary">
-              {t('goToDashboard')}
-            </Link>
+          <div className="mx-auto max-w-md px-6 pb-8">
+            <p className="mt-4 inline-flex items-center gap-2 rounded-full bg-gray-100 px-4 py-1.5 text-sm font-medium text-gray-700">
+              <span className="text-gray-400">{t('bookingId', { id: createdBooking._id, total: formatMoney(createdBooking.total) })}</span>
+            </p>
+            <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
+              <Link href={`/dashboard/bookings/${createdBooking._id}`} className="btn-primary">
+                {t('viewDetails')}
+              </Link>
+              <Link href="/dashboard" className="btn-secondary">
+                {t('goToDashboard')}
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -266,23 +270,50 @@ export default function BookingFlow() {
         </Link>
       </div>
 
-      <ol className="mt-6 flex flex-wrap items-center gap-2 text-sm" aria-label={t('title')}>
-        {steps.map((s, i) => (
-          <li key={s.key} className="flex items-center gap-2">
-            {i > 0 && <span className="text-gray-300">{t('stepArrow')}</span>}
-            <span
-              className={`rounded-full px-3 py-1 font-medium ${
-                i < currentIndex
-                  ? 'bg-green-100 text-green-700'
-                  : i === currentIndex
-                    ? 'bg-brand-600 text-white'
-                    : 'bg-gray-100 text-gray-400'
-              }`}
-            >
-              {s.label}
-            </span>
-          </li>
-        ))}
+      <ol className="mt-6 flex flex-wrap items-center gap-y-3" aria-label={t('title')}>
+        {steps.map((s, i) => {
+          const done = i < currentIndex;
+          const active = i === currentIndex;
+          return (
+            <li key={s.key} className="flex items-center">
+              {i > 0 && (
+                <span
+                  aria-hidden="true"
+                  className={`mx-1.5 h-0.5 w-5 rounded-full sm:mx-2 sm:w-8 ${done ? 'bg-brand-500' : 'bg-gray-200'}`}
+                />
+              )}
+              <span
+                aria-current={active ? 'step' : undefined}
+                className={`flex items-center gap-2 rounded-full px-2 py-1 text-xs font-medium transition sm:px-2.5 sm:text-sm ${
+                  active
+                    ? 'bg-brand-600 text-white shadow-md shadow-brand-600/25'
+                    : done
+                      ? 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20'
+                      : 'bg-gray-100 text-gray-500'
+                }`}
+              >
+                <span
+                  className={`flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-bold ${
+                    active
+                      ? 'bg-white/20 text-white'
+                      : done
+                        ? 'bg-green-600 text-white'
+                        : 'bg-white text-gray-500 ring-1 ring-inset ring-gray-300'
+                  }`}
+                >
+                  {done ? (
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  ) : (
+                    i + 1
+                  )}
+                </span>
+                <span className="hidden sm:inline">{s.label}</span>
+              </span>
+            </li>
+          );
+        })}
       </ol>
 
       {error && <div className="mt-6"><Alert type="error">{error}</Alert></div>}
@@ -295,9 +326,9 @@ export default function BookingFlow() {
               {services.map((s) => (
                 <li key={s._id}>
                   <label
-                    className={`flex cursor-pointer items-center justify-between gap-4 rounded-xl border-2 p-4 transition ${
+                    className={`flex cursor-pointer items-center justify-between gap-4 rounded-xl border-2 p-4 transition focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-500/20 ${
                       serviceId === s._id
-                        ? 'border-brand-600 bg-brand-50'
+                        ? 'border-brand-600 bg-brand-50/60'
                         : 'border-gray-200 hover:border-brand-300'
                     }`}
                   >
@@ -308,7 +339,7 @@ export default function BookingFlow() {
                         value={s._id}
                         checked={serviceId === s._id}
                         onChange={() => setServiceId(s._id)}
-                        className="h-4 w-4 text-brand-600"
+                        className="h-4 w-4 accent-brand-600"
                       />
                       <span>
                         <span className="block font-medium text-gray-900">{s.name}</span>
@@ -317,7 +348,16 @@ export default function BookingFlow() {
                         </span>
                       </span>
                     </span>
-                    <span className="font-semibold text-gray-900">{formatMoney(s.basePrice)}</span>
+                    <span className="flex shrink-0 items-center gap-3">
+                      <span className="font-semibold text-gray-900">{formatMoney(s.basePrice)}</span>
+                      {serviceId === s._id && (
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand-600 text-white">
+                          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </span>
+                      )}
+                    </span>
                   </label>
                 </li>
               ))}
@@ -350,9 +390,9 @@ export default function BookingFlow() {
                   {vehicles.map((v) => (
                     <li key={v._id}>
                       <label
-                        className={`flex cursor-pointer items-center justify-between gap-4 rounded-xl border-2 p-4 transition ${
+                        className={`flex cursor-pointer items-center justify-between gap-4 rounded-xl border-2 p-4 transition focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-500/20 ${
                           vehicleId === v._id
-                            ? 'border-brand-600 bg-brand-50'
+                            ? 'border-brand-600 bg-brand-50/60'
                             : 'border-gray-200 hover:border-brand-300'
                         }`}
                       >
@@ -363,7 +403,7 @@ export default function BookingFlow() {
                             value={v._id}
                             checked={vehicleId === v._id}
                             onChange={() => setVehicleId(v._id)}
-                            className="h-4 w-4 text-brand-600"
+                            className="h-4 w-4 accent-brand-600"
                           />
                           <span>
                             <span className="block font-medium text-gray-900">
@@ -374,6 +414,13 @@ export default function BookingFlow() {
                             </span>
                           </span>
                         </span>
+                        {vehicleId === v._id && (
+                          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-600 text-white">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                          </span>
+                        )}
                       </label>
                     </li>
                   ))}
@@ -407,9 +454,9 @@ export default function BookingFlow() {
               {addOns.map((a) => (
                 <li key={a._id}>
                   <label
-                    className={`flex cursor-pointer items-center justify-between gap-4 rounded-xl border-2 p-4 transition ${
+                    className={`flex cursor-pointer items-center justify-between gap-4 rounded-xl border-2 p-4 transition focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-500/20 ${
                       selectedAddOns.includes(a._id)
-                        ? 'border-brand-600 bg-brand-50'
+                        ? 'border-brand-600 bg-brand-50/60'
                         : 'border-gray-200 hover:border-brand-300'
                     }`}
                   >
@@ -424,14 +471,23 @@ export default function BookingFlow() {
                               : [...prev, a._id],
                           )
                         }
-                        className="h-4 w-4 rounded text-brand-600"
+                        className="h-4 w-4 rounded accent-brand-600"
                       />
                       <span>
                         <span className="block font-medium text-gray-900">{a.name}</span>
                         <span className="block text-sm text-gray-500">{a.description}</span>
                       </span>
                     </span>
-                    <span className="font-semibold text-gray-900">+{formatMoney(a.price)}</span>
+                    <span className="flex shrink-0 items-center gap-3">
+                      <span className="font-semibold text-gray-900">+{formatMoney(a.price)}</span>
+                      {selectedAddOns.includes(a._id) && (
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand-600 text-white">
+                          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </span>
+                      )}
+                    </span>
                   </label>
                 </li>
               ))}
@@ -546,7 +602,7 @@ export default function BookingFlow() {
                 {t('noSlots')}
               </div>
             ) : (
-              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
                 {slots.map((slot) => (
                   <button
                     key={slot.start}
@@ -556,9 +612,10 @@ export default function BookingFlow() {
                       setTime(slot.start);
                       setTimeInput(slot.start);
                     }}
-                    className={`rounded-xl border-2 px-3 py-3 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-40 ${
+                    aria-pressed={time === slot.start}
+                    className={`min-h-[52px] rounded-xl border-2 px-3 py-2.5 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-40 ${
                       time === slot.start
-                        ? 'border-brand-600 bg-brand-600 text-white'
+                        ? 'border-brand-600 bg-brand-600 text-white shadow-md shadow-brand-600/25'
                         : 'border-gray-200 bg-white text-gray-700 hover:border-brand-300'
                     }`}
                   >
@@ -591,10 +648,10 @@ export default function BookingFlow() {
         {step === 'review' && (
           <div>
             <h2 className="font-semibold text-gray-900">{t('reviewBooking')}</h2>
-            <dl className="mt-4 space-y-3 text-sm">
-              <div>
-                <dt className="text-gray-500">{t('services')}</dt>
-                <div className="mt-1 space-y-2">
+            <dl className="mt-4 divide-y divide-gray-100 rounded-xl border border-gray-100">
+              <div className="p-4">
+                <dt className="text-xs font-semibold uppercase tracking-wide text-gray-500">{t('services')}</dt>
+                <div className="mt-2 space-y-2">
                   {cartSummary.map((line, i) => (
                     <div key={i} className="flex items-start justify-between gap-3 rounded-lg bg-gray-50 p-3">
                       <div className="min-w-0">
@@ -650,7 +707,7 @@ export default function BookingFlow() {
                                         : [...prev, a._id],
                                     )
                                   }
-                                  className="h-3.5 w-3.5 rounded text-brand-600"
+                                  className="h-3.5 w-3.5 rounded accent-brand-600"
                                 />
                                 <span>
                                   {a.name}{' '}
@@ -681,8 +738,8 @@ export default function BookingFlow() {
                   )}
                 </div>
               </div>
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <dt className="text-gray-500">{t('vehicle')}</dt>
+              <div className="flex flex-wrap items-center justify-between gap-3 p-4">
+                <dt className="text-xs font-semibold uppercase tracking-wide text-gray-500">{t('vehicle')}</dt>
                 <dd className="flex items-center gap-3">
                   <span className="font-medium text-gray-900">
                     {(() => {
@@ -699,14 +756,14 @@ export default function BookingFlow() {
                   </button>
                 </dd>
               </div>
-              <div className="flex flex-wrap justify-between gap-3">
-                <dt className="text-gray-500">{t('location')}</dt>
+              <div className="flex flex-wrap justify-between gap-3 p-4">
+                <dt className="text-xs font-semibold uppercase tracking-wide text-gray-500">{t('location')}</dt>
                 <dd className="font-medium text-gray-900">
                   {location.address}, {location.city}, {location.country}
                 </dd>
               </div>
-              <div className="flex flex-wrap justify-between gap-3">
-                <dt className="text-gray-500">{t('when')}</dt>
+              <div className="flex flex-wrap justify-between gap-3 p-4">
+                <dt className="text-xs font-semibold uppercase tracking-wide text-gray-500">{t('when')}</dt>
                 <dd className="font-medium text-gray-900">
                   {time ? (
                     <>
@@ -723,7 +780,7 @@ export default function BookingFlow() {
                   )}
                 </dd>
               </div>
-              <div className="flex justify-between border-t border-gray-100 pt-3 text-base">
+              <div className="flex justify-between bg-gray-50/70 p-4 text-base">
                 <dt className="font-semibold text-gray-900">{t('total')}</dt>
                 <dd className="font-bold text-brand-600">{formatMoney(cartTotal)}</dd>
               </div>

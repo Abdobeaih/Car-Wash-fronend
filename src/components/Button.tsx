@@ -1,9 +1,11 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
 type Variant = 'primary' | 'secondary' | 'danger';
+type Size = 'sm' | 'md' | 'lg';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
+  size?: Size;
   loading?: boolean;
   children: ReactNode;
 }
@@ -14,8 +16,15 @@ const variantClasses: Record<Variant, string> = {
   danger: 'btn-danger',
 };
 
+const sizeClasses: Record<Size, string> = {
+  sm: 'btn-sm',
+  md: '',
+  lg: 'btn-lg',
+};
+
 export default function Button({
   variant = 'primary',
+  size = 'md',
   loading = false,
   disabled,
   children,
@@ -24,8 +33,9 @@ export default function Button({
 }: ButtonProps) {
   return (
     <button
-      className={`${variantClasses[variant]} ${className}`}
+      className={`${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
       disabled={disabled || loading}
+      aria-busy={loading || undefined}
       {...rest}
     >
       {loading && <Spinner className="h-4 w-4" />}

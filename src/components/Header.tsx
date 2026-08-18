@@ -56,7 +56,9 @@ export default function Header() {
               key={link.href}
               href={link.href}
               className={`rounded-lg px-3 py-2 text-sm font-medium transition ${
-                isActive(link.href) ? 'bg-gray-100 text-brand-700' : 'text-gray-600 hover:text-gray-900'
+                isActive(link.href)
+                  ? 'bg-brand-50 text-brand-700'
+                  : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
               }`}
             >
               {t(link.key)}
@@ -67,19 +69,28 @@ export default function Header() {
         <div className="hidden items-center gap-2 lg:flex">
           <LanguageSwitcher />
           {loading ? (
-            <span className="px-3 py-2 text-sm text-gray-400">{t('loading')}</span>
+            <>
+              <span
+                aria-hidden="true"
+                className="h-9 w-16 animate-pulse rounded-lg border border-gray-200 bg-gray-100"
+              />
+              <span
+                aria-hidden="true"
+                className="h-9 w-20 animate-pulse rounded-lg border border-gray-200 bg-gray-100"
+              />
+            </>
           ) : user ? (
             <>
               <Link
                 href={user.role === 'ADMIN' ? '/admin' : '/dashboard'}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900"
+                className="rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900"
               >
                 {t('dashboard')}
               </Link>
               <button
                 type="button"
                 onClick={handleLogout}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900"
+                className="rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900"
               >
                 {t('logout')}
               </button>
@@ -88,11 +99,11 @@ export default function Header() {
             <>
               <Link
                 href="/login"
-                className="rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900"
+                className="rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900"
               >
                 {t('login')}
               </Link>
-              <Link href="/register" className="btn-primary">
+              <Link href="/register" className="btn-primary btn-sm">
                 {t('register')}
               </Link>
             </>
@@ -120,33 +131,38 @@ export default function Header() {
       </div>
 
       {open && (
-        <nav className="border-t border-gray-200 bg-white px-4 pb-4 pt-2 lg:hidden" aria-label={t('mobileNav')}>
+        <nav
+          className="border-t border-gray-200 bg-white px-4 pb-6 pt-3 shadow-lg shadow-gray-200/60 lg:hidden"
+          aria-label={t('mobileNav')}
+        >
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               onClick={close}
-              className={`block rounded-lg px-3 py-2.5 text-sm font-medium ${
-                isActive(link.href) ? 'bg-gray-100 text-brand-700' : 'text-gray-700'
+              className={`block rounded-lg px-3 py-3 text-sm font-medium ${
+                isActive(link.href)
+                  ? 'bg-brand-50 text-brand-700'
+                  : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
               }`}
             >
               {t(link.key)}
             </Link>
           ))}
-          <div className="mt-2 border-t border-gray-100 pt-2">
+          <div className="mt-2 border-t border-gray-100 pt-3">
             {!loading && user ? (
               <>
                 <Link
                   href={user.role === 'ADMIN' ? '/admin' : '/dashboard'}
                   onClick={close}
-                  className="block rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700"
+                  className="block rounded-lg px-3 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
                 >
                   {t('dashboard')}
                 </Link>
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="block w-full rounded-lg px-3 py-2.5 text-start text-sm font-medium text-gray-700"
+                  className="block w-full rounded-lg px-3 py-3 text-start text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
                 >
                   {t('logout')}
                 </button>
@@ -157,22 +173,22 @@ export default function Header() {
                   <Link
                     href="/login"
                     onClick={close}
-                    className="block rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700"
+                    className="block rounded-lg px-3 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
                   >
                     {t('login')}
                   </Link>
                   <Link
                     href="/register"
                     onClick={close}
-                    className="mt-1 block rounded-lg px-3 py-2.5 text-center text-sm font-medium text-brand-700 hover:bg-gray-50"
+                    className="btn-secondary mt-1 block w-full"
                   >
                     {t('register')}
                   </Link>
                 </>
               )
             )}
-            <LanguageSwitcher className="mt-1 block text-center" />
-            <Link href="/book" onClick={close} className="btn-primary mt-2 w-full">
+            <LanguageSwitcher className="mt-2 block w-full" />
+            <Link href="/book" onClick={close} className="btn-primary mt-3 w-full">
               {t('book')}
             </Link>
           </div>

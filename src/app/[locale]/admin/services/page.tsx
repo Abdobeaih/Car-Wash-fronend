@@ -162,7 +162,7 @@ export default function AdminServicesPage() {
           <input
             id="isActive"
             type="checkbox"
-            className="h-4 w-4 rounded text-brand-600"
+            className="h-4 w-4 rounded accent-brand-600"
             checked={form.isActive}
             onChange={(e) => setForm((f) => ({ ...f, isActive: e.target.checked }))}
           />
@@ -185,59 +185,105 @@ export default function AdminServicesPage() {
       {services.length === 0 ? (
         <EmptyState title={t('emptyTitle')} description={t('emptyDescription')} />
       ) : (
-        <div className="card overflow-x-auto p-0">
-          <table className="w-full min-w-[640px] text-start text-sm">
-            <thead className="border-b border-gray-200 bg-gray-50 text-xs uppercase text-gray-500">
-              <tr>
-                <th className="px-4 py-3">{t('name')}</th>
-                <th className="px-4 py-3">{t('price')}</th>
-                <th className="px-4 py-3">{t('durationLabel')}</th>
-                <th className="px-4 py-3">{t('status')}</th>
-                <th className="px-4 py-3">{t('actions')}</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {services.map((s) => (
-                <tr key={s._id}>
-                  <td className="px-4 py-3 font-medium text-gray-900">{s.name}</td>
-                  <td className="px-4 py-3">{formatMoney(s.basePrice)}</td>
-                  <td className="px-4 py-3">{tc('minutes', { value: s.duration })}</td>
-                  <td className="px-4 py-3"><ActiveBadge active={s.isActive} /></td>
-                  <td className="px-4 py-3">
-                    <div className="flex flex-wrap gap-2">
-                      <Button variant="secondary" onClick={() => {
-                        setEditingId(s._id);
-                        setForm({
-                          name: s.name,
-                          description: s.description,
-                          image: s.image,
-                          basePrice: String(s.basePrice),
-                          duration: String(s.duration),
-                          isActive: s.isActive,
-                        });
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                      }}>
-                        {t('edit')}
-                      </Button>
-                      <Button variant="secondary" onClick={() => toggleActive(s)}>
-                        {s.isActive ? t('deactivate') : t('activate')}
-                      </Button>
-                      {confirmingDelete === s._id ? (
-                        <Button variant="danger" onClick={confirmDelete}>
-                          {t('confirmDelete')}
-                        </Button>
-                      ) : (
-                        <Button variant="danger" onClick={() => setConfirmingDelete(s._id)}>
-                          {t('delete')}
-                        </Button>
-                      )}
-                    </div>
-                  </td>
+        <>
+          <ul className="space-y-3 md:hidden">
+            {services.map((s) => (
+              <li key={s._id} className="card p-5">
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="font-semibold text-gray-900">{s.name}</p>
+                    <p className="text-xs text-gray-500">{tc('minutes', { value: s.duration })}</p>
+                  </div>
+                  <div className="flex shrink-0 flex-col items-end gap-1.5">
+                    <span className="font-semibold text-gray-900">{formatMoney(s.basePrice)}</span>
+                    <ActiveBadge active={s.isActive} />
+                  </div>
+                </div>
+                <div className="mt-4 flex flex-wrap items-center gap-2">
+                  <Button size="sm" variant="secondary" onClick={() => {
+                    setEditingId(s._id);
+                    setForm({
+                      name: s.name,
+                      description: s.description,
+                      image: s.image,
+                      basePrice: String(s.basePrice),
+                      duration: String(s.duration),
+                      isActive: s.isActive,
+                    });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}>
+                    {t('edit')}
+                  </Button>
+                  <Button size="sm" variant="secondary" onClick={() => toggleActive(s)}>
+                    {s.isActive ? t('deactivate') : t('activate')}
+                  </Button>
+                  {confirmingDelete === s._id ? (
+                    <Button size="sm" variant="danger" onClick={confirmDelete}>
+                      {t('confirmDelete')}
+                    </Button>
+                  ) : (
+                    <Button size="sm" variant="danger" onClick={() => setConfirmingDelete(s._id)}>
+                      {t('delete')}
+                    </Button>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+          <div className="card hidden overflow-x-auto p-0 md:block">
+            <table className="w-full min-w-[640px] text-start text-sm">
+              <thead className="sticky top-0 z-10 border-b border-gray-200 bg-gray-50 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                <tr>
+                  <th scope="col" className="px-4 py-3">{t('name')}</th>
+                  <th scope="col" className="px-4 py-3">{t('price')}</th>
+                  <th scope="col" className="px-4 py-3">{t('durationLabel')}</th>
+                  <th scope="col" className="px-4 py-3">{t('status')}</th>
+                  <th scope="col" className="px-4 py-3">{t('actions')}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {services.map((s) => (
+                  <tr key={s._id} className="transition hover:bg-gray-50/70">
+                    <td className="px-4 py-3 font-medium text-gray-900">{s.name}</td>
+                    <td className="px-4 py-3">{formatMoney(s.basePrice)}</td>
+                    <td className="px-4 py-3">{tc('minutes', { value: s.duration })}</td>
+                    <td className="px-4 py-3"><ActiveBadge active={s.isActive} /></td>
+                    <td className="px-4 py-3">
+                      <div className="flex flex-wrap gap-2">
+                        <Button variant="secondary" onClick={() => {
+                          setEditingId(s._id);
+                          setForm({
+                            name: s.name,
+                            description: s.description,
+                            image: s.image,
+                            basePrice: String(s.basePrice),
+                            duration: String(s.duration),
+                            isActive: s.isActive,
+                          });
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}>
+                          {t('edit')}
+                        </Button>
+                        <Button variant="secondary" onClick={() => toggleActive(s)}>
+                          {s.isActive ? t('deactivate') : t('activate')}
+                        </Button>
+                        {confirmingDelete === s._id ? (
+                          <Button variant="danger" onClick={confirmDelete}>
+                            {t('confirmDelete')}
+                          </Button>
+                        ) : (
+                          <Button variant="danger" onClick={() => setConfirmingDelete(s._id)}>
+                            {t('delete')}
+                          </Button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
     </div>
   );

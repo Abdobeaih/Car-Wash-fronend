@@ -59,10 +59,18 @@ export default function BookingsPage() {
             <li key={b._id}>
               <Link
                 href={`/dashboard/bookings/${b._id}`}
-                className="card block transition hover:shadow-md"
+                className={`card block p-5 transition duration-200 hover:-translate-y-0.5 hover:shadow-md ${
+                  b.status === 'CANCELLED'
+                    ? 'border-s-4 border-s-gray-400'
+                    : b.status === 'COMPLETED'
+                      ? 'border-s-4 border-s-green-500'
+                      : b.status === 'CONFIRMED'
+                        ? 'border-s-4 border-s-brand-500'
+                        : 'border-s-4 border-s-amber-500'
+                }`}
               >
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div>
+                  <div className="min-w-0">
                     <p className="font-semibold text-gray-900">
                       {(() => {
                         const lines = bookingLines(b);
@@ -76,7 +84,7 @@ export default function BookingsPage() {
                       {b.location.city}, {b.location.country}
                     </p>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex shrink-0 items-center gap-3">
                     <span className="font-semibold text-gray-900">{formatMoney(b.total)}</span>
                     <StatusBadge status={b.status} />
                   </div>

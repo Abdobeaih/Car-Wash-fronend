@@ -74,21 +74,27 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       </nav>
 
       <div className="grid gap-8 lg:grid-cols-2">
-        <Image
-          src={service.image}
-          alt={service.name}
-          width={600}
-          height={390}
-          className="w-full rounded-2xl object-cover shadow-sm"
-        />
+        <div className="relative overflow-hidden rounded-2xl shadow-sm ring-1 ring-gray-200">
+          <Image
+            src={service.image}
+            alt={service.name}
+            width={600}
+            height={390}
+            className="h-full w-full object-cover"
+          />
+        </div>
         <div>
           <h1 className="text-3xl font-bold text-gray-900">{service.name}</h1>
-          <p className="mt-3 text-gray-600">{service.description}</p>
+          <p className="mt-3 leading-relaxed text-gray-600">{service.description}</p>
           <div className="mt-6 flex flex-wrap items-center gap-4">
             <span className="text-3xl font-bold text-brand-600">
               {format.number(service.basePrice, { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 2 })}
             </span>
-            <span className="badge bg-gray-100 text-gray-700">
+            <span className="badge bg-gray-100 text-gray-700 ring-1 ring-inset ring-gray-500/20">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+                <path d="M12 7v5l3 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
               {tc('minutes', { value: service.duration })}
             </span>
           </div>
@@ -99,13 +105,13 @@ export default async function ServiceDetailPage({ params }: PageProps) {
               {addOns.map((addon) => (
                 <li
                   key={addon._id}
-                  className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-gray-200 px-4 py-3 text-sm"
+                  className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm shadow-sm transition hover:border-brand-200"
                 >
                   <span className="min-w-0">
                     <span className="font-medium text-gray-900">{addon.name}</span>
                     <span className="ms-2 text-gray-500">{addon.description}</span>
                   </span>
-                  <span className="shrink-0 font-semibold text-gray-900">
+                  <span className="shrink-0 font-semibold text-brand-600">
                     +{format.number(addon.price, { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 2 })}
                   </span>
                 </li>
@@ -114,13 +120,13 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           </div>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Link href={`/book?service=${service._id}`} className="btn-primary px-6 py-3 text-base">
+            <Link href={`/book?service=${service._id}`} className="btn-primary btn-lg">
               {t('bookThis')}
             </Link>
-            <Link href="/services" className="btn-secondary px-6 py-3 text-base">
+            <Link href="/services" className="btn-secondary btn-lg">
               {t('viewAll')}
             </Link>
-            <BackToDashboard className="px-6 py-3 text-base" />
+            <BackToDashboard className="btn-lg" />
           </div>
         </div>
       </div>

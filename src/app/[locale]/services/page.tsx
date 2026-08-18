@@ -58,25 +58,33 @@ export default async function ServicesPage() {
             <Link
               key={service._id}
               href={`/services/${service.slug}`}
-              className="card group overflow-hidden p-0 text-center transition hover:shadow-md sm:text-start"
+              className="card group overflow-hidden p-0 text-center transition duration-200 hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-lg hover:shadow-brand-600/5 sm:text-start"
             >
-              <Image
-                src={service.image}
-                alt={service.name}
-                width={400}
-                height={260}
-                className="h-40 w-full object-cover"
-              />
+              <div className="relative overflow-hidden">
+                <Image
+                  src={service.image}
+                  alt={service.name}
+                  width={400}
+                  height={260}
+                  className="h-44 w-full object-cover transition duration-300 group-hover:scale-105"
+                />
+              </div>
               <div className="p-5">
                 <h2 className="text-lg font-semibold text-gray-900 group-hover:text-brand-700">
                   {service.name}
                 </h2>
-                <p className="mt-2 line-clamp-2 text-sm text-gray-600">{service.description}</p>
-                <div className="mt-4 flex flex-col items-center gap-1 sm:flex-row sm:justify-between">
+                <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-gray-600">{service.description}</p>
+                <div className="mt-4 flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
                   <span className="text-lg font-bold text-brand-600">
                     {format.number(service.basePrice, { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 2 })}
                   </span>
-                  <span className="text-sm text-gray-500">{tc('minutes', { value: service.duration })}</span>
+                  <span className="inline-flex items-center gap-1.5 text-sm text-gray-500">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
+                      <path d="M12 7v5l3 2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                    </svg>
+                    {tc('minutes', { value: service.duration })}
+                  </span>
                 </div>
               </div>
             </Link>

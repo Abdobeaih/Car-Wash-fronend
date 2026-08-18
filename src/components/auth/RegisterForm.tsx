@@ -46,9 +46,20 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="card mx-auto w-full max-w-md">
-      <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
-      <p className="mt-1 text-sm text-gray-500">
+    <div className="card w-full max-w-md p-8">
+      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M16 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 20a6 6 0 0 1 12 0"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+          <path d="M13 5l6 6M16 4l2 2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+        </svg>
+      </div>
+      <h1 className="mt-4 text-center text-2xl font-bold text-gray-900">{t('title')}</h1>
+      <p className="mt-1 text-center text-sm text-gray-500">
         {t('subtitle')}
       </p>
 

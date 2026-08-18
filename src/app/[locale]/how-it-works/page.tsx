@@ -25,15 +25,21 @@ export default async function HowItWorksPage() {
       <p className="mt-3 text-gray-600">
         {t('subtitle')}
       </p>
-      <ol className="mt-10 space-y-6">
+      <ol className="mt-10 space-y-3">
         {steps.map((step, index) => (
-          <li key={step.title} className="card flex gap-4">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-600 font-bold text-white">
+          <li key={step.title} className="relative flex gap-4">
+            {index < steps.length - 1 && (
+              <span
+                aria-hidden="true"
+                className="absolute start-[19px] top-12 bottom-0 w-px bg-gray-200"
+              />
+            )}
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white shadow-md shadow-brand-600/25">
               {index + 1}
             </span>
-            <div>
+            <div className="card mb-1 flex-1 p-5">
               <h2 className="font-semibold text-gray-900">{step.title}</h2>
-              <p className="mt-1 text-sm text-gray-600">{step.text}</p>
+              <p className="mt-1 text-sm leading-relaxed text-gray-600">{step.text}</p>
             </div>
           </li>
         ))}

@@ -207,16 +207,29 @@ export default function VehiclesPage() {
       ) : (
         <ul className="space-y-3">
           {vehicles.map((v) => (
-            <li key={v._id} className="card flex flex-wrap items-center justify-between gap-4">
-              <div>
-                <p className="font-semibold text-gray-900">
-                  {v.brand} {v.model}
-                </p>
-                <p className="mt-1 text-sm text-gray-500">
-                  {v.year} · {v.color} · {v.plateNumber} · {tv(v.vehicleType)}
-                </p>
+            <li key={v._id} className="card flex flex-wrap items-center justify-between gap-4 p-5">
+              <div className="flex items-center gap-3">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                      d="M5 13l1.5-4.5A2 2 0 0 1 8.4 7h7.2a2 2 0 0 1 1.9 1.5L19 13m-14 0h14m-14 0v3m14-3v3"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </span>
+                <div>
+                  <p className="font-semibold text-gray-900">
+                    {v.brand} {v.model}
+                  </p>
+                  <p className="mt-0.5 text-sm text-gray-500">
+                    {v.year} · {v.color} · {v.plateNumber} · {tv(v.vehicleType)}
+                  </p>
+                </div>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Button variant="secondary" onClick={() => startEdit(v)}>
                   {t('edit')}
                 </Button>
