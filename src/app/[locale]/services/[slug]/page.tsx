@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { getFormatter, getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { API_URL } from '@/lib/api';
+import { formatMoney } from '@/lib/money';
 import { serviceImagePath, serviceImageUrl } from '@/lib/service-images';
+import type { AppLocale } from '@/i18n/routing';
 import type { AddOn, CarService } from '@/lib/types';
 import BackToDashboard from '@/components/BackToDashboard';
 
@@ -56,9 +58,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function ServiceDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const [service, addOns] = await Promise.all([getService(slug), getAddOns()]);
+  const locale = (await getLocale()) as AppLocale;
   const t = await getTranslations('ServiceDetail');
   const tc = await getTranslations('Common');
-  const format = await getFormatter();
 
   if (!service) {
     notFound();
@@ -89,7 +91,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           <p className="mt-3 leading-relaxed text-gray-600">{service.description}</p>
           <div className="mt-6 flex flex-wrap items-center gap-4">
             <span className="text-3xl font-bold text-brand-600">
-              {format.number(service.basePrice, { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 2 })}
+              {formatMoney(locale, service.basePrice)}
             </span>
             <span className="badge bg-gray-100 text-gray-700 ring-1 ring-inset ring-gray-500/20">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -113,7 +115,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
                     <span className="ms-2 text-gray-500">{addon.description}</span>
                   </span>
                   <span className="shrink-0 font-semibold text-brand-600">
-                    +{format.number(addon.price, { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 2 })}
+                    +{formatMoney(locale, addon.price)}
                   </span>
                 </li>
               ))}

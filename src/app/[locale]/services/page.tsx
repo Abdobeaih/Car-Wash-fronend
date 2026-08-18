@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import { getFormatter, getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { API_URL } from '@/lib/api';
+import { formatMoney } from '@/lib/money';
 import { serviceImagePath } from '@/lib/service-images';
+import type { AppLocale } from '@/i18n/routing';
 import type { CarService } from '@/lib/types';
 import { EmptyState } from '@/components/States';
 import BackToDashboard from '@/components/BackToDashboard';
@@ -35,9 +37,9 @@ export async function generateMetadata({
 
 export default async function ServicesPage() {
   const services = await getServices();
+  const locale = (await getLocale()) as AppLocale;
   const t = await getTranslations('Services');
   const tc = await getTranslations('Common');
-  const format = await getFormatter();
 
   return (
     <div className="container-page py-12">
@@ -77,7 +79,7 @@ export default async function ServicesPage() {
                 <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-gray-600">{service.description}</p>
                 <div className="mt-4 flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
                   <span className="text-lg font-bold text-brand-600">
-                    {format.number(service.basePrice, { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 2 })}
+                    {formatMoney(locale, service.basePrice)}
                   </span>
                   <span className="inline-flex items-center gap-1.5 text-sm text-gray-500">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">

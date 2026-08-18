@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import { getFormatter, getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { API_URL } from '@/lib/api';
+import { formatMoney } from '@/lib/money';
 import { serviceImagePath } from '@/lib/service-images';
+import type { AppLocale } from '@/i18n/routing';
 import type { CarService } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
@@ -33,9 +35,9 @@ export async function generateMetadata({
 
 export default async function HomePage() {
   const services = await getServices();
+  const locale = (await getLocale()) as AppLocale;
   const t = await getTranslations('Home');
   const tc = await getTranslations('Common');
-  const format = await getFormatter();
 
   const features = [t('feature1'), t('feature2'), t('feature3')];
 
@@ -111,7 +113,7 @@ export default async function HomePage() {
                     {service.name}
                   </h3>
                   <p className="mt-1 text-xs font-medium text-gray-500">
-                    {format.number(service.basePrice, { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 2 })} ·{' '}
+                    {formatMoney(locale, service.basePrice)} ·{' '}
                     {tc('minutes', { value: service.duration })}
                   </p>
                 </div>

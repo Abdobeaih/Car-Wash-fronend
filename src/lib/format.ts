@@ -1,16 +1,12 @@
 'use client';
 
-import { useFormatter } from 'next-intl';
+import { useFormatter, useLocale } from 'next-intl';
+import type { AppLocale } from '@/i18n/routing';
+import { formatMoney } from '@/lib/money';
 
 export function useMoney() {
-  const format = useFormatter();
-  return (value: number) =>
-    format.number(value, {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2,
-    });
+  const locale = useLocale() as AppLocale;
+  return (value: number) => formatMoney(locale, value);
 }
 
 export function useDate() {
