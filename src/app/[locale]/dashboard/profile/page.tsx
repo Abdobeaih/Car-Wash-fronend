@@ -17,6 +17,7 @@ export default function ProfilePage() {
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [profileError, setProfileError] = useState<string | null>(null);
   const [profileMessage, setProfileMessage] = useState<string | null>(null);
   const [savingProfile, setSavingProfile] = useState(false);
@@ -32,6 +33,7 @@ export default function ProfilePage() {
     if (user) {
       setName(user.name);
       setEmail(user.email);
+      setPhone(user.phone ?? '');
     }
   }, [user]);
 
@@ -42,9 +44,18 @@ export default function ProfilePage() {
     e.preventDefault();
     setProfileError(null);
     setProfileMessage(null);
+    const trimmedPhone = phone.trim();
+    if (trimmedPhone && !/^\+?\d{6,15}$/.test(trimmedPhone)) {
+      setProfileError(t('phoneError'));
+      return;
+    }
     setSavingProfile(true);
     try {
-      await apiRequest('/auth/me', { method: 'PATCH', body: { name, email }, auth: true });
+      await apiRequest('/auth/me', {
+        method: 'PATCH',
+        body: { name, email, phone: trimmedPhone || undefined },
+        auth: true,
+      });
       await refresh();
       setProfileMessage(t('updated'));
     } catch (err) {
@@ -109,6 +120,12 @@ export default function ProfilePage() {
             <dd className="mt-1.5 break-words font-medium text-gray-900">{user.email}</dd>
           </div>
           <div className="min-w-0">
+            <dt className="text-gray-500">{t('phone')}</dt>
+            <dd className="mt-1.5 break-words font-medium text-gray-900" dir="ltr">
+              {user.phone || '—'}
+            </dd>
+          </div>
+          <div className="min-w-0">
             <dt className="text-gray-500">{t('role')}</dt>
             <dd className="mt-1.5"><RoleBadge role={user.role} /></dd>
           </div>
@@ -150,6 +167,15 @@ export default function ProfilePage() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+          />
+          <Input
+            label={t('phone')}
+            name="phone"
+            type="tel"
+            dir="ltr"
+            placeholder={t('phonePlaceholder')}
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
           />
           <Button type="submit" loading={savingProfile} disabled={savingProfile}>
             {t('saveChanges')}
