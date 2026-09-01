@@ -54,6 +54,9 @@ export default function VerifyEmailForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const email = searchParams.get('email') ?? '';
+  const channel = searchParams.get('channel') === 'SMS' ? 'SMS' : 'EMAIL';
+  const phone = searchParams.get('phone') ?? '';
+  const contact = channel === 'SMS' && phone ? phone : email;
 
   const [otp, setOtp] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -152,7 +155,12 @@ export default function VerifyEmailForm() {
       <p className="mt-2 text-center text-sm text-gray-500">
         {t('subtitle')}
       </p>
-      <p className="mt-1 text-center text-sm font-medium text-gray-700">{email}</p>
+      <p
+        className="mt-1 text-center text-sm font-medium text-gray-700"
+        dir={channel === 'SMS' ? 'ltr' : undefined}
+      >
+        {contact}
+      </p>
 
       {success ? (
         <div className="mt-6">

@@ -4,6 +4,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { Link, useRouter } from '@/i18n/navigation';
 import { useEffect, useState, type FormEvent } from 'react';
 import { useAuth } from '@/lib/auth-context';
+import type { OtpChannel } from '@/lib/types';
 import Button from '@/components/Button';
 import Input, { Select } from '@/components/Input';
 import { Alert } from '@/components/States';
@@ -56,6 +57,7 @@ export default function RegisterForm() {
   const [countries, setCountries] = useState<CountryOption[]>([]);
   const [countryCode, setCountryCode] = useState(() => (locale === 'ar' ? 'SA' : 'US'));
   const [phone, setPhone] = useState('');
+  const [channel, setChannel] = useState<OtpChannel>('EMAIL');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -115,8 +117,17 @@ export default function RegisterForm() {
     if (!validate()) return;
     setSubmitting(true);
     try {
-      await register(name, email, `${dial}${phone}`, password);
-      router.push(`/verify-email?email=${encodeURIComponent(email)}`);
+      await register({
+        name,
+        email,
+        phone: `${dial}${phone}`,
+        password,
+        verificationChannel: channel,
+        countryCode,
+      });
+      router.push(
+        `/verify-email?email=${encodeURIComponent(email)}&channel=${channel}&phone=${encodeURIComponent(`${dial}${phone}`)}`,
+      );
     } catch (err) {
       setError(err instanceof Error ? err.message : t('error'));
     } finally {
@@ -222,6 +233,40 @@ export default function RegisterForm() {
           error={fieldErrors.confirm}
           onChange={(e) => setConfirm(e.target.value)}
         />
+
+        <fieldset className="mb-5">
+          <legend className="mb-2 block text-sm font-medium text-gray-700">{t('channelLabel')}</legend>
+          <div className="grid grid-cols-2 gap-3">
+            {(
+              [
+                { value: 'EMAIL', label: t('channelEmail') },
+                { value: 'SMS', label: t('channelSms') },
+              ] as const
+            ).map((option) => (
+              <label
+                key={option.value}
+                className={`flex cursor-pointer items-center justify-center rounded-lg border px-3 py-2 text-sm font-medium transition ${
+                  channel === option.value
+                    ? 'border-brand-600 bg-brand-50 text-brand-700'
+                    : 'border-gray-300 text-gray-600 hover:border-gray-400'
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="verificationChannel"
+                  value={option.value}
+                  checked={channel === option.value}
+                  onChange={() => setChannel(option.value)}
+                  className="sr-only"
+                />
+                {option.label}
+              </label>
+            ))}
+          </div>
+          <p className="mt-2 text-sm text-gray-500">
+            {channel === 'SMS' ? t('channelHintSms') : t('channelHintEmail')}
+          </p>
+        </fieldset>
 
         <Button type="submit" className="w-full" loading={submitting} disabled={submitting}>
           {t('submit')}

@@ -221,7 +221,12 @@
     "nameError": "Name must be at least 2 characters.",
     "emailError": "Enter a valid email address.",
     "passwordError": "Password must be at least 8 characters.",
-    "confirmError": "Passwords do not match."
+    "confirmError": "Passwords do not match.",
+    "channelLabel": "How do you want to receive your verification code?",
+    "channelEmail": "Email",
+    "channelSms": "SMS to my phone",
+    "channelHintEmail": "A verification code will be sent to your email address.",
+    "channelHintSms": "A verification code will be sent by text message to your phone number."
   },
   "ForgotPassword": {
     "title": "Reset your password",
@@ -245,7 +250,7 @@
     "title": "Verify your email",
     "subtitle": "We sent a verification code to:",
     "verify": "Verify",
-    "success": "Email verified successfully. You can now log in.",
+    "success": "Account verified successfully. You can now log in.",
     "verifyError": "Verification failed. Please check the code and try again.",
     "errorWrongOtp": "The code you entered is incorrect. Please check and try again.",
     "errorExpiredOtp": "This code has expired. Please request a new one.",

@@ -1,5 +1,7 @@
 export type UserRole = 'CUSTOMER' | 'ADMIN';
 
+export type OtpChannel = 'EMAIL' | 'SMS';
+
 export interface User {
   _id: string;
   name: string;
