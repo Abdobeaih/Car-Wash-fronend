@@ -1,29 +1,108 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { Link, useRouter } from '@/i18n/navigation';
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import Button from '@/components/Button';
-import Input from '@/components/Input';
+import Input, { Select } from '@/components/Input';
 import { Alert } from '@/components/States';
+
+interface CountryOption {
+  code: string;
+  label: string;
+  dial: string;
+}
+
+const FALLBACK_COUNTRIES: CountryOption[] = [
+  { code: 'US', label: '🇺🇸 United States (+1)', dial: '+1' },
+  { code: 'GB', label: '🇬🇧 United Kingdom (+44)', dial: '+44' },
+  { code: 'SA', label: '🇸🇦 Saudi Arabia (+966)', dial: '+966' },
+  { code: 'AE', label: '🇦🇪 United Arab Emirates (+971)', dial: '+971' },
+  { code: 'EG', label: '🇪🇬 Egypt (+20)', dial: '+20' },
+  { code: 'JO', label: '🇯🇴 Jordan (+962)', dial: '+962' },
+  { code: 'KW', label: '🇰🇼 Kuwait (+965)', dial: '+965' },
+  { code: 'QA', label: '🇶🇦 Qatar (+974)', dial: '+974' },
+  { code: 'BH', label: '🇧🇭 Bahrain (+973)', dial: '+973' },
+  { code: 'OM', label: '🇴🇲 Oman (+968)', dial: '+968' },
+  { code: 'IN', label: '🇮🇳 India (+91)', dial: '+91' },
+  { code: 'PK', label: '🇵🇰 Pakistan (+92)', dial: '+92' },
+];
+
+interface RestCountry {
+  cca2: string;
+  flag: string;
+  name: { common: string };
+  idd?: { root?: string; suffixes?: string[] };
+}
+
+function toCountryOption(c: RestCountry): CountryOption | null {
+  if (!c.idd?.root || !c.idd.suffixes?.length) return null;
+  const dial = `${c.idd.root}${c.idd.suffixes[0]}`;
+  return {
+    code: c.cca2,
+    dial,
+    label: `${c.flag} ${c.name.common} (${dial})`,
+  };
+}
 
 export default function RegisterForm() {
   const { register } = useAuth();
   const router = useRouter();
+  const locale = useLocale();
   const t = useTranslations('Register');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [countries, setCountries] = useState<CountryOption[]>([]);
+  const [countryCode, setCountryCode] = useState(() => (locale === 'ar' ? 'SA' : 'US'));
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string; password?: string; confirm?: string }>({});
+  const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string; phone?: string; password?: string; confirm?: string }>({});
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+
+    const applyCountries = (options: CountryOption[]) => {
+      if (!active) return;
+      setCountries(options);
+      setCountryCode((cur) => {
+        if (cur && options.some((o) => o.code === cur)) return cur;
+        const preferred = options.find((o) => o.code === (locale === 'ar' ? 'SA' : 'US'));
+        return (preferred ?? options[0])?.code;
+      });
+    };
+
+    const load = async () => {
+      try {
+        const res = await fetch('https://restcountries.com/v3.1/all?fields=name,cca2,idd,flag');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data: RestCountry[] = await res.json();
+        const options = data
+          .map(toCountryOption)
+          .filter((o): o is CountryOption => o !== null)
+          .sort((a, b) => a.label.localeCompare(b.label));
+        applyCountries(options.length ? options : FALLBACK_COUNTRIES);
+      } catch {
+        applyCountries(FALLBACK_COUNTRIES);
+      }
+    };
+
+    void load();
+    return () => {
+      active = false;
+    };
+  }, [locale]);
+
+  const dial = countries.find((c) => c.code === countryCode)?.dial ?? '';
 
   const validate = () => {
     const errors: typeof fieldErrors = {};
     if (name.trim().length < 2) errors.name = t('nameError');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = t('emailError');
+    if (!/^\d{6,15}$/.test(phone)) errors.phone = t('phoneError');
     if (password.length < 8) errors.password = t('passwordError');
     if (confirm !== password) errors.confirm = t('confirmError');
     setFieldErrors(errors);
@@ -36,7 +115,7 @@ export default function RegisterForm() {
     if (!validate()) return;
     setSubmitting(true);
     try {
-      const res = await register(name, email, password);
+      const res = await register(name, email, `${dial}${phone}`, password);
       if (res.requiresVerification) {
         router.push(`/verify-email?email=${encodeURIComponent(email)}`);
       } else {
@@ -90,6 +169,40 @@ export default function RegisterForm() {
           value={email}
           error={fieldErrors.email}
           onChange={(e) => setEmail(e.target.value)}
+        />
+        <Select
+          label={t('country')}
+          name="country"
+          required
+          value={countryCode}
+          onChange={(e) => setCountryCode(e.target.value)}
+        >
+          {countries.length === 0 ? (
+            <option value="">{t('countryLoading')}</option>
+          ) : (
+            countries.map((c) => (
+              <option key={c.code} value={c.code}>
+                {c.label}
+              </option>
+            ))
+          )}
+        </Select>
+        {dial && !fieldErrors.phone && (
+          <p className="-mt-2 mb-4 text-sm text-gray-500">
+            {t('dialCode')}: <span dir="ltr">{dial}</span>
+          </p>
+        )}
+        <Input
+          label={t('phone')}
+          name="phone"
+          type="tel"
+          inputMode="numeric"
+          autoComplete="tel-national"
+          required
+          placeholder={t('phonePlaceholder')}
+          value={phone}
+          error={fieldErrors.phone}
+          onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
         />
         <Input
           label={t('password')}

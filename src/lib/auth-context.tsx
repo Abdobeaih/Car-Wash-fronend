@@ -16,7 +16,7 @@ interface AuthContextValue {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<User>;
-  register: (name: string, email: string, password: string) => Promise<{ user: User; requiresVerification?: boolean }>;
+  register: (name: string, email: string, phone: string, password: string) => Promise<{ user: User; requiresVerification?: boolean }>;
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
 }
@@ -59,10 +59,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return res.user;
   }, []);
 
-  const register = useCallback(async (name: string, email: string, password: string) => {
+  const register = useCallback(async (name: string, email: string, phone: string, password: string) => {
     const res = await apiRequest<AuthResponse>('/auth/register', {
       method: 'POST',
-      body: { name, email, password },
+      body: { name, email, phone, password },
     });
     if (!res.requiresVerification) {
       setToken(res.token);
