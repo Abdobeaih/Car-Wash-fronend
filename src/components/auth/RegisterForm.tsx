@@ -115,12 +115,8 @@ export default function RegisterForm() {
     if (!validate()) return;
     setSubmitting(true);
     try {
-      const res = await register(name, email, `${dial}${phone}`, password);
-      if (res.requiresVerification) {
-        router.push(`/verify-email?email=${encodeURIComponent(email)}`);
-      } else {
-        router.push('/dashboard');
-      }
+      await register(name, email, `${dial}${phone}`, password);
+      router.push(`/verify-email?email=${encodeURIComponent(email)}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : t('error'));
     } finally {

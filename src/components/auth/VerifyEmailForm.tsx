@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { apiRequest } from '@/lib/api';
-import { useAuth } from '@/lib/auth-context';
 import { useRouter } from '@/i18n/navigation';
 import Button from '@/components/Button';
 import OtpInput from './OtpInput';
@@ -12,8 +11,6 @@ import { Alert } from '@/components/States';
 
 interface VerifyOtpResponse {
   message?: string;
-  token?: string;
-  user?: { _id: string; name: string; email: string; role: string };
 }
 
 interface SendOtpResponse {
@@ -56,8 +53,6 @@ export default function VerifyEmailForm() {
   const t = useTranslations('VerifyEmail');
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { refresh } = useAuth();
-
   const email = searchParams.get('email') ?? '';
 
   const [otp, setOtp] = useState('');
@@ -89,30 +84,21 @@ export default function VerifyEmailForm() {
   }, []);
 
   useEffect(() => {
-    if (email) {
-      apiRequest<SendOtpResponse>('/auth/send-otp', {
-        method: 'POST',
-        body: { email },
-      }).catch(() => {}).finally(() => startCooldown());
-    }
-  }, [email, startCooldown]);
+    startCooldown();
+  }, [startCooldown]);
 
   const handleVerify = async () => {
     if (otp.length !== 6) return;
     setError(null);
     setSubmitting(true);
     try {
-      const res = await apiRequest<VerifyOtpResponse>('/auth/verify-otp', {
+      const res = await apiRequest<VerifyOtpResponse>('/auth/verify-email', {
         method: 'POST',
         body: { email, otp },
       });
-      if (res.token) {
-        const { setToken } = await import('@/lib/api');
-        setToken(res.token);
-      }
-      await refresh();
       setSuccess(res.message ?? t('success'));
-      setTimeout(() => router.push('/dashboard'), 1500);
+      setOtp('');
+      setTimeout(() => router.push('/login'), 1500);
     } catch (err) {
       setError(getOtpErrorMessage(err, t('verifyError'), t));
     } finally {
@@ -125,7 +111,7 @@ export default function VerifyEmailForm() {
     setError(null);
     setResending(true);
     try {
-      await apiRequest<SendOtpResponse>('/auth/resend-otp', {
+      await apiRequest<SendOtpResponse>('/auth/resend-verification', {
         method: 'POST',
         body: { email },
       });

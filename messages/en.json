@@ -245,7 +245,7 @@
     "title": "Verify your email",
     "subtitle": "We sent a verification code to:",
     "verify": "Verify",
-    "success": "Email verified successfully. Redirecting…",
+    "success": "Email verified successfully. You can now log in.",
     "verifyError": "Verification failed. Please check the code and try again.",
     "errorWrongOtp": "The code you entered is incorrect. Please check and try again.",
     "errorExpiredOtp": "This code has expired. Please request a new one.",
