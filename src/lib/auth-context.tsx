@@ -16,7 +16,7 @@ interface AuthContextValue {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<User>;
-  register: (name: string, email: string, password: string) => Promise<User>;
+  register: (name: string, email: string, password: string) => Promise<{ user: User; requiresVerification?: boolean }>;
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
 }
@@ -64,9 +64,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       method: 'POST',
       body: { name, email, password },
     });
-    setToken(res.token);
-    setUser(res.user);
-    return res.user;
+    if (!res.requiresVerification) {
+      setToken(res.token);
+      setUser(res.user);
+    }
+    return { user: res.user, requiresVerification: res.requiresVerification };
   }, []);
 
   const logout = useCallback(async () => {

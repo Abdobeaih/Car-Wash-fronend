@@ -5,6 +5,7 @@ export interface User {
   name: string;
   email: string;
   role: UserRole;
+  emailVerified?: boolean;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -12,6 +13,7 @@ export interface User {
 export interface AuthResponse {
   user: User;
   token: string;
+  requiresVerification?: boolean;
 }
 
 export interface MeResponse {

@@ -36,8 +36,12 @@ export default function RegisterForm() {
     if (!validate()) return;
     setSubmitting(true);
     try {
-      await register(name, email, password);
-      router.push('/dashboard');
+      const res = await register(name, email, password);
+      if (res.requiresVerification) {
+        router.push(`/verify-email?email=${encodeURIComponent(email)}`);
+      } else {
+        router.push('/dashboard');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : t('error'));
     } finally {

@@ -235,6 +235,19 @@
     "requestError": "Failed to request a reset code.",
     "resetError": "Failed to reset password."
   },
+  "VerifyEmail": {
+    "title": "Verify your email",
+    "subtitle": "We sent a verification code to:",
+    "verify": "Verify",
+    "success": "Email verified successfully. Redirecting…",
+    "verifyError": "Verification failed. Please check the code and try again.",
+    "resend": "Resend code",
+    "resendCountdown": "Resend code in {seconds}s",
+    "resendError": "Failed to resend the code.",
+    "noEmail": "No email provided. Please register or log in first.",
+    "goToRegister": "Create an account",
+    "backToLogin": "Back to login"
+  },
   "NotFound": {
     "code": "404",
     "title": "Page not found",
@@ -634,6 +647,8 @@
     "registerDescription": "Create your free Mobile CarCare account to book mobile car care services.",
     "forgotPasswordTitle": "Forgot Password",
     "forgotPasswordDescription": "Reset your Mobile CarCare account password.",
+    "verifyEmailTitle": "Verify Email",
+    "verifyEmailDescription": "Verify your Mobile CarCare account email address.",
     "bookTitle": "Book a Service",
     "bookDescription": "Book a professional mobile car care service — choose your service, vehicle, add-ons, location and an available time.",
     "dashboardTitle": "Dashboard",
