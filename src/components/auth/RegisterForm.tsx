@@ -14,18 +14,16 @@ export default function RegisterForm() {
   const t = useTranslations('Register');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [number, setNumber] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string; number?: string; password?: string; confirm?: string }>({});
+  const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string; password?: string; confirm?: string }>({});
   const [submitting, setSubmitting] = useState(false);
 
   const validate = () => {
     const errors: typeof fieldErrors = {};
     if (name.trim().length < 2) errors.name = t('nameError');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = t('emailError');
-    if (!/^\d{6,15}$/.test(number)) errors.number = t('numberError');
     if (password.length < 8) errors.password = t('passwordError');
     if (confirm !== password) errors.confirm = t('confirmError');
     setFieldErrors(errors);
@@ -38,9 +36,9 @@ export default function RegisterForm() {
     if (!validate()) return;
     setSubmitting(true);
     try {
-      const res = await register(name, email, number, password);
+      const res = await register(name, email, password);
       if (res.requiresVerification) {
-        router.push(`/verify-email?number=${encodeURIComponent(number)}`);
+        router.push(`/verify-email?email=${encodeURIComponent(email)}`);
       } else {
         router.push('/dashboard');
       }
@@ -92,17 +90,6 @@ export default function RegisterForm() {
           value={email}
           error={fieldErrors.email}
           onChange={(e) => setEmail(e.target.value)}
-        />
-        <Input
-          label={t('number')}
-          name="number"
-          type="tel"
-          autoComplete="tel"
-          required
-          placeholder={t('numberPlaceholder')}
-          value={number}
-          error={fieldErrors.number}
-          onChange={(e) => setNumber(e.target.value)}
         />
         <Input
           label={t('password')}

@@ -204,9 +204,6 @@
     "namePlaceholder": "اسمك",
     "email": "البريد الإلكتروني",
     "emailPlaceholder": "you@example.com",
-    "number": "رقم الهاتف",
-    "numberPlaceholder": "مثال: 5xxxxxxxx",
-    "numberError": "أدخل رقم هاتف صحيحًا (من 6 إلى 15 رقمًا).",
     "password": "كلمة المرور",
     "passwordPlaceholder": "8 أحرف على الأقل",
     "confirm": "تأكيد كلمة المرور",
@@ -239,7 +236,7 @@
     "resetError": "تعذرت إعادة تعيين كلمة المرور."
   },
   "VerifyEmail": {
-    "title": "تحقق من رقم هاتفك",
+    "title": "تحقق من بريدك الإلكتروني",
     "subtitle": "أرسلنا رمز التحقق إلى:",
     "verify": "تحقق",
     "success": "تم التحقق من البريد الإلكتروني بنجاح. جارٍ التحويل…",

@@ -58,16 +58,7 @@ export default function VerifyEmailForm() {
   const router = useRouter();
   const { refresh } = useAuth();
 
-  const numberParam = searchParams.get('number');
-  const contact = numberParam ?? searchParams.get('email') ?? '';
-  const contactKey: 'number' | 'email' = numberParam ? 'number' : 'email';
-  const contactBody = useCallback(
-    (extra: Record<string, unknown> = {}) => ({
-      [contactKey]: contact,
-      ...extra,
-    }),
-    [contact, contactKey],
-  );
+  const email = searchParams.get('email') ?? '';
 
   const [otp, setOtp] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -98,13 +89,13 @@ export default function VerifyEmailForm() {
   }, []);
 
   useEffect(() => {
-    if (contact) {
+    if (email) {
       apiRequest<SendOtpResponse>('/auth/send-otp', {
         method: 'POST',
-        body: contactBody(),
+        body: { email },
       }).catch(() => {}).finally(() => startCooldown());
     }
-  }, [contact, contactBody, startCooldown]);
+  }, [email, startCooldown]);
 
   const handleVerify = async () => {
     if (otp.length !== 6) return;
@@ -113,7 +104,7 @@ export default function VerifyEmailForm() {
     try {
       const res = await apiRequest<VerifyOtpResponse>('/auth/verify-otp', {
         method: 'POST',
-        body: contactBody({ otp }),
+        body: { email, otp },
       });
       if (res.token) {
         const { setToken } = await import('@/lib/api');
@@ -136,7 +127,7 @@ export default function VerifyEmailForm() {
     try {
       await apiRequest<SendOtpResponse>('/auth/resend-otp', {
         method: 'POST',
-        body: contactBody(),
+        body: { email },
       });
       startCooldown();
     } catch (err) {
@@ -146,7 +137,7 @@ export default function VerifyEmailForm() {
     }
   };
 
-  if (!contact) {
+  if (!email) {
     return (
       <div className="card w-full max-w-md p-8">
         <Alert type="error">{t('noEmail')}</Alert>
@@ -175,7 +166,7 @@ export default function VerifyEmailForm() {
       <p className="mt-2 text-center text-sm text-gray-500">
         {t('subtitle')}
       </p>
-      <p className="mt-1 text-center text-sm font-medium text-gray-700">{contact}</p>
+      <p className="mt-1 text-center text-sm font-medium text-gray-700">{email}</p>
 
       {success ? (
         <div className="mt-6">
