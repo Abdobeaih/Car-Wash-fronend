@@ -22,13 +22,52 @@ interface SendOtpResponse {
 
 const RESEND_COOLDOWN = 60;
 
+function getOtpErrorMessage(
+  err: unknown,
+  fallback: string,
+  t: (key: string) => string,
+): string {
+  if (!(err instanceof Error)) return fallback;
+  const status = (err as { status?: number }).status;
+  const msg = err.message.toLowerCase();
+
+  if (status === 429 || /rate\s*limit|too many requests?/.test(msg)) {
+    return t('errorRateLimited');
+  }
+  if (/too many (failed )?attempts|max(imum)? attempts?/.test(msg)) {
+    return t('errorMaxAttempts');
+  }
+  if (/expired|no longer valid/.test(msg)) {
+    return t('errorExpiredOtp');
+  }
+  if (/resend.*(soon|wait|cooldown)|too soon/.test(msg)) {
+    return t('errorResendTooSoon');
+  }
+  if (/invalid (otp|code)|incorrect (otp|code)|wrong (otp|code)/.test(msg)) {
+    return t('errorWrongOtp');
+  }
+  if (status === 502 || status === 503 || /unreachable|network|gateway/.test(msg)) {
+    return t('errorNetwork');
+  }
+  return fallback;
+}
+
 export default function VerifyEmailForm() {
   const t = useTranslations('VerifyEmail');
   const searchParams = useSearchParams();
   const router = useRouter();
   const { refresh } = useAuth();
 
-  const email = searchParams.get('email') ?? '';
+  const numberParam = searchParams.get('number');
+  const contact = numberParam ?? searchParams.get('email') ?? '';
+  const contactKey: 'number' | 'email' = numberParam ? 'number' : 'email';
+  const contactBody = useCallback(
+    (extra: Record<string, unknown> = {}) => ({
+      [contactKey]: contact,
+      ...extra,
+    }),
+    [contact, contactKey],
+  );
 
   const [otp, setOtp] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -59,13 +98,13 @@ export default function VerifyEmailForm() {
   }, []);
 
   useEffect(() => {
-    if (email) {
+    if (contact) {
       apiRequest<SendOtpResponse>('/auth/send-otp', {
         method: 'POST',
-        body: { email },
+        body: contactBody(),
       }).catch(() => {}).finally(() => startCooldown());
     }
-  }, [email, startCooldown]);
+  }, [contact, contactBody, startCooldown]);
 
   const handleVerify = async () => {
     if (otp.length !== 6) return;
@@ -74,7 +113,7 @@ export default function VerifyEmailForm() {
     try {
       const res = await apiRequest<VerifyOtpResponse>('/auth/verify-otp', {
         method: 'POST',
-        body: { email, otp },
+        body: contactBody({ otp }),
       });
       if (res.token) {
         const { setToken } = await import('@/lib/api');
@@ -84,7 +123,7 @@ export default function VerifyEmailForm() {
       setSuccess(res.message ?? t('success'));
       setTimeout(() => router.push('/dashboard'), 1500);
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('verifyError'));
+      setError(getOtpErrorMessage(err, t('verifyError'), t));
     } finally {
       setSubmitting(false);
     }
@@ -97,17 +136,17 @@ export default function VerifyEmailForm() {
     try {
       await apiRequest<SendOtpResponse>('/auth/resend-otp', {
         method: 'POST',
-        body: { email },
+        body: contactBody(),
       });
       startCooldown();
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('resendError'));
+      setError(getOtpErrorMessage(err, t('resendError'), t));
     } finally {
       setResending(false);
     }
   };
 
-  if (!email) {
+  if (!contact) {
     return (
       <div className="card w-full max-w-md p-8">
         <Alert type="error">{t('noEmail')}</Alert>
@@ -136,7 +175,7 @@ export default function VerifyEmailForm() {
       <p className="mt-2 text-center text-sm text-gray-500">
         {t('subtitle')}
       </p>
-      <p className="mt-1 text-center text-sm font-medium text-gray-700">{email}</p>
+      <p className="mt-1 text-center text-sm font-medium text-gray-700">{contact}</p>
 
       {success ? (
         <div className="mt-6">
