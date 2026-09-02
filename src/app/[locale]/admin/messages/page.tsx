@@ -49,7 +49,7 @@ export default function AdminMessagesPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+        <h1 className="display-title text-2xl text-gray-900 sm:text-3xl">{t('title')}</h1>
         <p className="mt-2 text-sm text-gray-500">
           {t('subtitle')}
           {unread > 0 && ` · ${t('unread', { count: unread })}`}
@@ -63,17 +63,17 @@ export default function AdminMessagesPage() {
       ) : (
         <div className="space-y-4">
           {messages.map((m) => (
-            <div key={m._id} className={`card transition ${m.read ? '' : 'border-s-4 border-s-brand-500 shadow-md shadow-brand-600/5'}`}>
+            <div key={m._id} className={`card transition ${m.read ? '' : 'border-s-4 border-s-brand-600'}`}>
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1">
                   <h2 className="font-semibold text-gray-900">{m.name}</h2>
-                  <a href={`mailto:${m.email}`} className="min-w-0 break-all text-sm text-blue-600 hover:underline">
+                  <a href={`mailto:${m.email}`} className="min-w-0 break-all text-sm text-brand-600 hover:underline">
                     {m.email}
                   </a>
                 </div>
                 <div className="flex items-center gap-3">
                   {!m.read ? (
-                    <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">
+                    <span className="rounded-full bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-600">
                       {t('unreadBadge')}
                     </span>
                   ) : (

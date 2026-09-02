@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import RegisterForm from '@/components/auth/RegisterForm';
+import AuthShell from '@/components/auth/AuthShell';
 
 export async function generateMetadata({
   params,
@@ -18,8 +19,8 @@ export async function generateMetadata({
 
 export default async function RegisterPage() {
   return (
-    <div className="container-page flex justify-center px-4 py-10 sm:py-16">
+    <AuthShell>
       <RegisterForm />
-    </div>
+    </AuthShell>
   );
 }

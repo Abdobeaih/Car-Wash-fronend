@@ -20,32 +20,27 @@ export default async function HowItWorksPage() {
   const steps = t.raw('steps') as { title: string; text: string }[];
 
   return (
-    <div className="container-page max-w-4xl py-10 sm:py-14">
-      <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
-      <p className="mt-3 text-gray-600">
-        {t('subtitle')}
-      </p>
-      <ol className="mt-10 space-y-3">
+    <div className="container-page max-w-3xl py-12 sm:py-16">
+      <p className="eyebrow">Mobile Car Care</p>
+      <h1 className="display-title mt-4 text-3xl text-gray-900 sm:text-4xl">{t('title')}</h1>
+      <p className="mt-4 max-w-xl leading-relaxed text-gray-600">{t('subtitle')}</p>
+      <ol className="mt-10 divide-y divide-gray-200 border-y border-gray-200">
         {steps.map((step, index) => (
-          <li key={step.title} className="relative flex gap-4">
-            {index < steps.length - 1 && (
-              <span
-                aria-hidden="true"
-                className="absolute start-[19px] top-12 bottom-0 w-px bg-gray-200"
-              />
-            )}
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white shadow-md shadow-brand-600/25">
-              {index + 1}
+          <li key={step.title} className="flex gap-6 py-8">
+            <span className="font-display text-4xl font-semibold text-brand-600 sm:text-5xl">
+              {String(index + 1).padStart(2, '0')}
             </span>
-            <div className="card mb-1 flex-1 p-5">
-              <h2 className="font-semibold text-gray-900">{step.title}</h2>
-              <p className="mt-1.5 text-sm leading-relaxed text-gray-600">{step.text}</p>
+            <div className="min-w-0">
+              <h2 className="font-display text-lg font-semibold uppercase tracking-wide text-gray-900">
+                {step.title}
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-gray-600 sm:text-base">{step.text}</p>
             </div>
           </li>
         ))}
       </ol>
-      <div className="mt-10 text-center">
-        <Link href="/book" className="btn-primary px-6 py-3 text-base">
+      <div className="mt-10">
+        <Link href="/book" className="btn-primary btn-lg">
           {t('book')}
         </Link>
       </div>

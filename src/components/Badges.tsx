@@ -4,16 +4,16 @@ import { useTranslations } from 'next-intl';
 import type { BookingStatus, UserRole } from '@/lib/types';
 
 const statusStyles: Record<BookingStatus, string> = {
-  PENDING: 'bg-amber-50 text-amber-700 ring-amber-600/20',
-  CONFIRMED: 'bg-blue-50 text-blue-700 ring-blue-600/20',
-  COMPLETED: 'bg-green-50 text-green-700 ring-green-600/20',
-  CANCELLED: 'bg-gray-100 text-gray-600 ring-gray-500/20',
+  PENDING: 'bg-amber-50 text-amber-700 ring-amber-600/25',
+  CONFIRMED: 'bg-gray-900 text-gray-50 ring-gray-900/20',
+  COMPLETED: 'bg-green-50 text-green-700 ring-green-600/25',
+  CANCELLED: 'bg-gray-200 text-gray-600 ring-gray-500/25',
 };
 
 const statusDot: Record<BookingStatus, string> = {
-  PENDING: 'bg-amber-500',
-  CONFIRMED: 'bg-blue-500',
-  COMPLETED: 'bg-green-500',
+  PENDING: 'bg-amber-600',
+  CONFIRMED: 'bg-gray-900',
+  COMPLETED: 'bg-green-600',
   CANCELLED: 'bg-gray-400',
 };
 

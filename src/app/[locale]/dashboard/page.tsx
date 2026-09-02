@@ -47,7 +47,7 @@ export default function DashboardPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="break-words text-2xl font-bold text-gray-900">
+        <h1 className="display-title break-words text-2xl text-gray-900 sm:text-3xl">
           {t('welcome', { name: user?.name?.split(' ')[0] ?? '' })}
         </h1>
         <p className="break-words mt-2 text-sm text-gray-500">{t('subtitle')}</p>
@@ -55,7 +55,7 @@ export default function DashboardPage() {
 
       <section className="card flex flex-col items-center gap-4 py-8 text-center sm:flex-row sm:justify-between sm:px-8 sm:text-start">
         <div className="flex min-w-0 flex-col items-center gap-4 sm:flex-row">
-          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 text-2xl font-bold text-white shadow-md shadow-brand-600/25">
+          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-black font-display text-2xl font-semibold text-brand-500">
             {(user?.name?.[0] ?? 'U').toUpperCase()}
           </div>
           <div className="min-w-0">
@@ -66,29 +66,26 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
-        <Link
-          href="/dashboard/profile"
-          className="btn-secondary shrink-0"
-        >
+        <Link href="/dashboard/profile" className="btn-secondary shrink-0">
           {t('editProfile')}
         </Link>
       </section>
 
       <div className="grid gap-6 md:grid-cols-2">
         <section className="card p-6">
-          <div className="flex items-center justify-between">
-            <h2 className="font-semibold text-gray-900">{t('upcoming')}</h2>
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="display-title text-lg text-gray-900">{t('upcoming')}</h2>
             <Link href="/book" className="text-sm font-medium text-brand-600 hover:text-brand-700">
               {t('bookService')}
             </Link>
           </div>
           {upcoming ? (
             <div className="mt-4 flex flex-col items-center gap-4 sm:flex-row sm:text-start">
-              <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-2xl bg-brand-50 text-brand-700">
-                <span className="text-[11px] font-semibold uppercase">
+              <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-lg border border-gray-800 bg-black text-white">
+                <span className="text-[11px] font-semibold uppercase text-brand-400">
                   {new Date(`${upcoming.date}T00:00:00`).toLocaleDateString('en-US', { month: 'short' })}
                 </span>
-                <span className="text-xl font-bold leading-none">
+                <span className="mt-0.5 font-display text-xl font-semibold leading-none">
                   {new Date(`${upcoming.date}T00:00:00`).getDate()}
                 </span>
               </div>
@@ -112,8 +109,8 @@ export default function DashboardPage() {
               </div>
             </div>
           ) : (
-            <div className="mt-4 rounded-xl bg-gray-50 p-5 text-center">
-              <p className="text-sm text-gray-500">{t('noUpcoming')}</p>
+            <div className="mt-4 rounded-lg bg-gray-100 p-5 text-center">
+              <p className="text-sm text-gray-600">{t('noUpcoming')}</p>
               <Link href="/book" className="btn-primary mt-3">
                 {t('bookFirst')}
               </Link>
@@ -122,24 +119,24 @@ export default function DashboardPage() {
         </section>
 
         <section className="card p-6">
-          <div className="flex items-center justify-between">
-            <h2 className="font-semibold text-gray-900">{t('myVehicles')}</h2>
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="display-title text-lg text-gray-900">{t('myVehicles')}</h2>
             <Link href="/dashboard/vehicles" className="text-sm font-medium text-brand-600 hover:text-brand-700">
               {t('manage')}
             </Link>
           </div>
           {vehicles.length === 0 ? (
-            <div className="mt-4 rounded-xl bg-gray-50 p-5 text-center">
-              <p className="text-sm text-gray-500">{t('noVehicles')}</p>
+            <div className="mt-4 rounded-lg bg-gray-100 p-5 text-center">
+              <p className="text-sm text-gray-600">{t('noVehicles')}</p>
               <Link href="/dashboard/vehicles" className="btn-secondary mt-3">
                 {t('addVehicle')}
               </Link>
             </div>
           ) : (
-            <ul className="mt-4 divide-y divide-gray-100">
+            <ul className="mt-4 divide-y divide-gray-200">
               {vehicles.slice(0, 3).map((v) => (
                 <li key={v._id} className="flex items-center gap-3 py-3">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-500">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-gray-300 text-gray-600">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                       <path
                         d="M5 13l1.5-4.5A2 2 0 0 1 8.4 7h7.2a2 2 0 0 1 1.9 1.5L19 13m-14 0h14m-14 0v3m14-3v3"
@@ -158,7 +155,7 @@ export default function DashboardPage() {
                       {v.year} · {v.color} · {v.plateNumber}
                     </p>
                   </div>
-                  <span className="badge shrink-0 bg-gray-100 text-gray-600 ring-1 ring-inset ring-gray-500/20">{v.vehicleType}</span>
+                  <span className="badge shrink-0 border border-gray-200 bg-gray-50 text-gray-600">{v.vehicleType}</span>
                 </li>
               ))}
             </ul>
@@ -167,8 +164,8 @@ export default function DashboardPage() {
       </div>
 
       <section className="card p-6">
-        <div className="flex items-center justify-between">
-          <h2 className="font-semibold text-gray-900">{t('recentBookings')}</h2>
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="display-title text-lg text-gray-900">{t('recentBookings')}</h2>
           <Link href="/dashboard/bookings" className="text-sm font-medium text-brand-600 hover:text-brand-700">
             {t('viewAll')}
           </Link>
@@ -176,12 +173,12 @@ export default function DashboardPage() {
         {recent.length === 0 ? (
           <EmptyState title={t('noBookings')} description={t('noBookingsDesc')} />
         ) : (
-          <ul className="mt-4 divide-y divide-gray-100">
+          <ul className="mt-4 divide-y divide-gray-200">
             {recent.map((b) => (
               <li key={b._id}>
                 <Link
                   href={`/dashboard/bookings/${b._id}`}
-                  className="flex flex-wrap items-center justify-between gap-3 rounded-lg py-3 transition hover:bg-gray-50"
+                  className="flex flex-wrap items-center justify-between gap-3 rounded-lg py-3 transition hover:bg-gray-100"
                 >
                   <div className="min-w-0">
                     <p className="truncate font-medium text-gray-900">

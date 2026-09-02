@@ -147,7 +147,7 @@ export default function AdminCalendarPage() {
   return (
     <div className="space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+        <h1 className="display-title text-2xl text-gray-900 sm:text-3xl">{t('title')}</h1>
         <div className="flex items-center gap-2">
           <Button variant="secondary" onClick={() => navigate(-1)} aria-label={t('previous')}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -173,8 +173,8 @@ export default function AdminCalendarPage() {
             onClick={() => setView(v)}
             className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
               view === v
-                ? 'bg-brand-600 text-white shadow-md shadow-brand-600/25'
-                : 'border border-gray-200 bg-white text-gray-600 shadow-sm hover:border-brand-200 hover:text-gray-900'
+                ? 'bg-black text-brand-500'
+                : 'border border-gray-200 bg-white text-gray-500 hover:border-gray-300 hover:text-gray-700'
             }`}
           >
             {t(v)}

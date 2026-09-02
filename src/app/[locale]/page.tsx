@@ -34,18 +34,40 @@ export async function generateMetadata({
   };
 }
 
+function ArrowIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      className="rtl:-scale-x-100"
+      aria-hidden="true"
+    >
+      <path
+        d="M4 12h16m-6-6 6 6-6 6"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export default async function HomePage() {
   const services = await getServices();
   const locale = (await getLocale()) as AppLocale;
   const t = await getTranslations('Home');
+  const ts = await getTranslations('Services');
   const tc = await getTranslations('Common');
 
   const features = [t('feature1'), t('feature2'), t('feature3')];
 
   const howSteps = [
-    { step: '1', title: t('howStep1Title'), text: t('howStep1Text') },
-    { step: '2', title: t('howStep2Title'), text: t('howStep2Text') },
-    { step: '3', title: t('howStep3Title'), text: t('howStep3Text') },
+    { step: '01', title: t('howStep1Title'), text: t('howStep1Text') },
+    { step: '02', title: t('howStep2Title'), text: t('howStep2Text') },
+    { step: '03', title: t('howStep3Title'), text: t('howStep3Text') },
   ];
 
   const why = [
@@ -55,30 +77,32 @@ export default async function HomePage() {
     { title: t('why4Title'), text: t('why4Text') },
   ];
 
+  const featured = services[0];
+
   return (
     <>
-      <section className="bg-gradient-to-b from-brand-50 via-brand-50/50 to-gray-50">
-        <div className="container-page grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-2 lg:py-24">
-          <div className="text-center lg:text-start">
-            <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
+      {/* ── Hero ─────────────────────────────────────────────── */}
+      <section className="border-b border-gray-200">
+        <div className="container-page grid items-center gap-12 py-16 sm:py-20 lg:grid-cols-2 lg:gap-16 lg:py-28">
+          <div>
+            <p className="eyebrow">Mobile Car Care</p>
+            <h1 className="display-title mt-5 text-4xl leading-[1.05] text-gray-900 sm:text-5xl xl:text-6xl">
               {t('title')}
             </h1>
-            <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-gray-600 lg:mx-0">
-              {t('subtitle')}
-            </p>
-            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
-              <Link href="/book" className="btn-primary btn-lg">
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-gray-600">{t('subtitle')}</p>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <Link href="/book" className="btn btn-lg bg-brand-600 text-white shadow-sm shadow-brand-600/30 hover:bg-brand-700">
                 {t('book')}
               </Link>
               <Link href="/services" className="btn-secondary btn-lg">
                 {t('browse')}
               </Link>
             </div>
-            <div className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm text-gray-600 lg:justify-start">
+            <ul className="mt-10 flex flex-col gap-3 border-t border-gray-200 pt-6 text-xs font-semibold uppercase tracking-[0.15em] text-gray-700 sm:flex-row sm:gap-8">
               {features.map((f) => (
-                <span key={f} className="inline-flex items-center gap-2">
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100 text-green-600">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <li key={f} className="flex items-center gap-2">
+                  <span className="flex h-4 w-4 items-center justify-center rounded-full bg-brand-600 text-white">
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                       <path
                         d="M5 13l4 4L19 7"
                         stroke="currentColor"
@@ -89,75 +113,167 @@ export default async function HomePage() {
                     </svg>
                   </span>
                   {f}
-                </span>
+                </li>
               ))}
+            </ul>
+          </div>
+
+          {featured ? (
+            <div className="relative lg:ms-6">
+              <span
+                aria-hidden="true"
+                className="absolute -start-4 -top-4 h-28 w-28 rounded-none border border-gray-300"
+              />
+              <span
+                aria-hidden="true"
+                className="absolute -bottom-4 -end-4 h-16 w-16 bg-brand-600"
+              />
+              <Link
+                href={`/services/${featured.slug}`}
+                className="group relative block overflow-hidden rounded-none border border-gray-300 bg-gray-100"
+              >
+                <Image
+                  src={serviceImagePath(featured.image)}
+                  alt={featured.name}
+                  width={640}
+                  height={800}
+                  className="aspect-[4/5] w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                />
+                <span className="absolute start-4 top-4 bg-black/90 px-2.5 py-1 font-display text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-400">
+                  01
+                </span>
+              </Link>
+              <div className="relative z-10 -mt-12 ms-4 me-4 sm:ms-8 sm:me-8">
+                <div className="flex items-center justify-between gap-4 border border-gray-800 bg-black px-5 py-4 text-white">
+                  <div className="min-w-0">
+                    <p className="truncate font-display text-base font-semibold uppercase tracking-wide">
+                      {featured.name}
+                    </p>
+                    <p className="mt-0.5 text-xs text-gray-400">
+                      {formatMoney(locale, featured.basePrice, tc('currencyLabel'))}
+                      <span className="mx-1.5 text-gray-500">·</span>
+                      {formatDuration(tc, featured.duration)}
+                    </p>
+                  </div>
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-brand-600 text-white">
+                    <ArrowIcon />
+                  </span>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="relative flex aspect-[4/5] items-center justify-center rounded-none border border-gray-300 bg-black text-brand-500">
+              <svg width="72" height="72" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M5 13l1.5-4.5A2 2 0 0 1 8.4 7h7.2a2 2 0 0 1 1.9 1.5L19 13m-14 0h14m-14 0v3m14-3v3"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ── Services index ───────────────────────────────────── */}
+      <section className="border-b border-gray-200 bg-white py-16 sm:py-20">
+        <div className="container-page">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="eyebrow">Mobile Car Care</p>
+              <h2 className="display-title mt-4 text-3xl text-gray-900 sm:text-4xl">
+                {ts('title')}
+              </h2>
+              <p className="mt-4 max-w-xl leading-relaxed text-gray-600">{ts('subtitle')}</p>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-3 sm:gap-4">
-            {services.slice(0, 4).map((service) => (
+
+          <div className="mt-12 divide-y divide-gray-200 border-y border-gray-200">
+            {services.slice(0, 4).map((service, i) => (
               <Link
                 key={service._id}
                 href={`/services/${service.slug}`}
-                className="card group overflow-hidden p-0 text-center transition duration-200 hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-lg hover:shadow-brand-600/5"
+                className="group flex items-center gap-4 py-5 transition sm:gap-6"
               >
-                <div className="relative overflow-hidden">
-                  <Image
-                    src={serviceImagePath(service.image)}
-                    alt={service.name}
-                    width={200}
-                    height={130}
-                    className="h-24 w-full object-cover transition duration-300 group-hover:scale-105 sm:h-28"
-                  />
-                </div>
-                <div className="p-3">
-                  <h3 className="text-sm font-semibold text-gray-900 group-hover:text-brand-700">
+                <span className="w-9 shrink-0 font-display text-lg font-semibold text-gray-300 transition group-hover:text-brand-500">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <h3 className="truncate font-display text-base font-semibold uppercase tracking-wide text-gray-900 transition group-hover:text-brand-700 sm:text-lg">
                     {service.name}
                   </h3>
-                  <p className="mt-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs font-medium text-gray-500">
-                    <span>{formatMoney(locale, service.basePrice, tc('currencyLabel'))}</span>
-                    <span className="text-gray-300" aria-hidden="true">·</span>
-                    <span>{formatDuration(tc, service.duration)}</span>
+                  <p className="mt-0.5 text-sm text-gray-500">
+                    {formatDuration(tc, service.duration)}
                   </p>
+                </div>
+                <div className="flex shrink-0 items-center gap-2 sm:gap-4">
+                  <p className="font-display text-base font-semibold sm:text-lg">
+                    {formatMoney(locale, service.basePrice, tc('currencyLabel'))}
+                  </p>
+                  <span className="flex h-9 w-9 items-center justify-center rounded-md border border-gray-300 text-gray-500 transition group-hover:border-brand-600 group-hover:bg-brand-600 group-hover:text-white">
+                    <ArrowIcon />
+                  </span>
                 </div>
               </Link>
             ))}
           </div>
+
+          <div className="mt-8 flex justify-end">
+            <Link href="/services" className="btn-secondary">
+              <ArrowIcon />
+              {t('browse')}
+            </Link>
+          </div>
         </div>
       </section>
 
-      <section className="container-page py-12 sm:py-16">
-        <h2 className="text-center text-3xl font-bold text-gray-900">{t('howTitle')}</h2>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {howSteps.map((item) => (
-            <div key={item.step} className="card relative overflow-hidden p-6 text-center md:text-start">
-              <span className="absolute end-3 top-3 text-5xl font-extrabold text-brand-50">
-                {item.step}
-              </span>
-              <span className="relative mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-brand-600 text-lg font-bold text-white shadow-md shadow-brand-600/25 md:mx-0">
-                {item.step}
-              </span>
-              <h3 className="relative mt-4 text-lg font-semibold text-gray-900">{item.title}</h3>
-              <p className="relative mt-2 text-sm leading-relaxed text-gray-600">{item.text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="bg-white py-12 sm:py-16">
+      {/* ── How it works ─────────────────────────────────────── */}
+      <section className="border-b border-gray-200 bg-gray-50 py-16 sm:py-20">
         <div className="container-page">
-          <h2 className="text-center text-3xl font-bold text-gray-900">{t('whyTitle')}</h2>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <p className="eyebrow">01 — 03</p>
+          <h2 className="display-title mt-4 text-3xl text-gray-900 sm:text-4xl">{t('howTitle')}</h2>
+          <ol className="mt-14 grid gap-10 sm:grid-cols-3 sm:gap-10">
+            {howSteps.map((item) => (
+              <li key={item.step}>
+                <div className="flex items-center gap-5">
+                  <span className="font-display text-5xl font-semibold text-brand-600">
+                    {item.step}
+                  </span>
+                  <span className="h-px flex-1 bg-gray-300" aria-hidden="true" />
+                </div>
+                <h3 className="mt-6 font-display text-lg font-semibold uppercase tracking-wide text-gray-900">
+                  {item.title}
+                </h3>
+                <p className="mt-2 max-w-xs text-sm leading-relaxed text-gray-600">{item.text}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* ── Why ──────────────────────────────────────────────── */}
+      <section className="bg-white py-16 sm:py-20">
+        <div className="container-page">
+          <p className="eyebrow">Mobile Car Care</p>
+          <h2 className="display-title mt-4 max-w-2xl text-3xl text-gray-900 sm:text-4xl">
+            {t('whyTitle')}
+          </h2>
+          <div className="mt-12 grid gap-px overflow-hidden rounded-none border border-gray-200 bg-gray-200 sm:grid-cols-2 lg:grid-cols-4">
             {why.map((item, i) => (
-              <div
-                key={item.title}
-                className="card p-6 text-center transition duration-200 hover:-translate-y-0.5 hover:shadow-lg"
-              >
-                <span className={`mx-auto flex h-11 w-11 items-center justify-center rounded-xl text-white shadow-sm ${
-                  i % 4 === 0 ? 'bg-brand-600' : i % 4 === 1 ? 'bg-green-600' : i % 4 === 2 ? 'bg-amber-500' : 'bg-purple-600'
-                }`}>
-                  <WhyIcon index={i} />
-                </span>
-                <h3 className="mt-4 font-semibold text-gray-900">{item.title}</h3>
+              <div key={item.title} className="bg-white p-7">
+                <div className="flex items-center justify-between">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 text-gray-900">
+                    <WhyIcon index={i} />
+                  </span>
+                  <span className="font-display text-xl font-semibold text-gray-300">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                </div>
+                <h3 className="mt-6 font-display text-lg font-semibold uppercase tracking-wide text-gray-900">
+                  {item.title}
+                </h3>
                 <p className="mt-2 text-sm leading-relaxed text-gray-600">{item.text}</p>
               </div>
             ))}
@@ -165,22 +281,38 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-gradient-to-br from-brand-700 via-brand-700 to-brand-900 py-14 sm:py-16">
-        <div className="container-page text-center">
-          <h2 className="text-3xl font-bold text-white">{t('ctaTitle')}</h2>
-          <p className="mx-auto mt-3 max-w-xl leading-relaxed text-brand-100">
-            {t('ctaText')}
-          </p>
-          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <Link href="/book" className="btn bg-white px-6 py-3 text-base font-semibold text-brand-700 shadow-lg shadow-black/10 transition hover:bg-brand-50">
-              {t('ctaBook')}
-            </Link>
-            <Link
-              href="/register"
-              className="btn border border-white/40 bg-white/10 px-6 py-3 text-base font-semibold text-white backdrop-blur-sm transition hover:bg-white/20"
+      {/* ── CTA ──────────────────────────────────────────────── */}
+      <section className="border-t border-gray-200 bg-black py-16 sm:py-24">
+        <div className="container-page">
+          <div className="grid items-center gap-10 lg:grid-cols-2">
+            <div>
+              <p className="eyebrow text-brand-400">Mobile Car Care</p>
+              <h2 className="display-title mt-4 max-w-xl text-3xl text-white sm:text-4xl">
+                {t('ctaTitle')}
+              </h2>
+              <p className="mt-4 max-w-lg leading-relaxed text-gray-400">{t('ctaText')}</p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/book"
+                  className="btn btn-lg bg-brand-600 text-white shadow-sm shadow-black/40 hover:bg-brand-700"
+                >
+                  {t('ctaBook')}
+                </Link>
+                <Link
+                  href="/register"
+                  className="btn btn-lg border border-gray-700 bg-transparent text-gray-100 transition hover:border-gray-500 hover:bg-white/5"
+                >
+                  {t('ctaRegister')}
+                </Link>
+              </div>
+            </div>
+            <div
+              className="hidden select-none justify-self-center text-center font-display text-[9rem] font-semibold leading-none uppercase text-gray-900 lg:block"
+              aria-hidden="true"
             >
-              {t('ctaRegister')}
-            </Link>
+              <span className="block text-brand-600/80">Car</span>
+              <span className="block">Care</span>
+            </div>
           </div>
         </div>
       </section>

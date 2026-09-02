@@ -29,16 +29,17 @@ export default async function FaqPage() {
   };
 
   return (
-    <div className="container-page max-w-3xl py-10 sm:py-14">
+    <div className="container-page max-w-3xl py-12 sm:py-16">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
-      <div className="mt-8 space-y-3">
+      <p className="eyebrow">Mobile Car Care</p>
+      <h1 className="display-title mt-4 text-3xl text-gray-900 sm:text-4xl">{t('title')}</h1>
+      <div className="mt-8 divide-y divide-gray-200 border-y border-gray-200">
         {faqs.map((item) => (
-          <details key={item.q} className="card group p-0 transition hover:border-gray-300">
-            <summary className="cursor-pointer list-none rounded-2xl px-5 py-4 font-semibold text-gray-900 marker:hidden">
+          <details key={item.q} className="group">
+            <summary className="cursor-pointer list-none px-1 py-5 font-display text-base font-semibold uppercase tracking-wide text-gray-900 marker:hidden sm:text-lg">
               <span className="flex items-center justify-between gap-4">
                 {item.q}
                 <svg
@@ -53,7 +54,7 @@ export default async function FaqPage() {
                 </svg>
               </span>
             </summary>
-            <p className="border-t border-gray-100 px-5 pb-5 pt-4 text-sm leading-relaxed text-gray-600">
+            <p className="pb-6 ps-1 pe-1 pt-1 text-sm leading-relaxed text-gray-600 sm:pe-10">
               {item.a}
             </p>
           </details>

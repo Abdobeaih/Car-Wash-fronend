@@ -130,7 +130,7 @@ export default function VehiclesPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+        <h1 className="display-title text-2xl text-gray-900 sm:text-3xl">{t('title')}</h1>
         <p className="mt-2 text-sm text-gray-500">
           {t('subtitle')}
         </p>
@@ -140,7 +140,7 @@ export default function VehiclesPage() {
       {message && <Alert type="success">{message}</Alert>}
 
       <form onSubmit={handleSubmit} className="card" noValidate>
-        <h2 className="font-semibold text-gray-900">
+        <h2 className="display-title text-lg text-gray-900">
           {editingId ? t('editTitle') : t('addTitle')}
         </h2>
         <div className="mt-4 grid gap-x-4 sm:grid-cols-2">
@@ -209,7 +209,7 @@ export default function VehiclesPage() {
           {vehicles.map((v) => (
             <li key={v._id} className="card flex flex-wrap items-center justify-between gap-4 p-5">
               <div className="flex items-center gap-3">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-gray-800 bg-black text-brand-500">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <path
                       d="M5 13l1.5-4.5A2 2 0 0 1 8.4 7h7.2a2 2 0 0 1 1.9 1.5L19 13m-14 0h14m-14 0v3m14-3v3"

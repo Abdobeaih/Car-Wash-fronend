@@ -131,7 +131,7 @@ export default function AdminServicesPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+        <h1 className="display-title text-2xl text-gray-900 sm:text-3xl">{t('title')}</h1>
         <p className="mt-2 text-sm text-gray-500">{t('subtitle')}</p>
       </div>
 
@@ -139,7 +139,7 @@ export default function AdminServicesPage() {
       {message && <Alert type="success">{message}</Alert>}
 
       <form onSubmit={handleSubmit} className="card" noValidate>
-        <h2 className="font-semibold text-gray-900">{editingId ? t('editTitle') : t('createTitle')}</h2>
+        <h2 className="display-title text-lg text-gray-900">{editingId ? t('editTitle') : t('createTitle')}</h2>
         <div className="mt-4 grid gap-x-4 sm:grid-cols-2">
           <Input label={t('name')} name="name" required minLength={2} placeholder={t('namePlaceholder')} {...set('name')} />
           <Input label={t('imageUrl')} name="image" type="url" required placeholder={t('imagePlaceholder')} {...set('image')} />

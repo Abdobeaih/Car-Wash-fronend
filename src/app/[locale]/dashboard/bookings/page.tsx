@@ -37,7 +37,7 @@ export default function BookingsPage() {
   return (
     <div className="space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+        <h1 className="display-title text-2xl text-gray-900 sm:text-3xl">{t('title')}</h1>
         <Link href="/book" className="btn-primary whitespace-nowrap">
           {t('book')}
         </Link>

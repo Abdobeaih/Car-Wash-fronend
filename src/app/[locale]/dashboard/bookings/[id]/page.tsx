@@ -80,7 +80,7 @@ export default function BookingDetailPage() {
         <StatusBadge status={booking.status} />
       </div>
 
-      <h1 className="break-all text-2xl font-bold text-gray-900">{t('title', { id: booking._id })}</h1>
+      <h1 className="display-title break-all text-2xl text-gray-900">{t('title', { id: booking._id })}</h1>
 
       {message && <Alert type="success">{message}</Alert>}
       {error && <Alert type="error">{error}</Alert>}
@@ -130,7 +130,7 @@ export default function BookingDetailPage() {
         </section>
 
         <section className="card space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900">{t('summary')}</h2>
+          <h2 className="display-title text-lg text-gray-900">{t('summary')}</h2>
           <div className="space-y-2 text-sm">
             {lines.map((l, i) => (
               <div key={i}>
@@ -146,9 +146,9 @@ export default function BookingDetailPage() {
                 ))}
               </div>
             ))}
-            <div className="flex items-center justify-between rounded-xl bg-brand-50 px-4 py-3">
-              <span className="font-semibold text-gray-900">{t('total')}</span>
-              <span className="text-lg font-bold text-brand-700">{formatMoney(booking.total)}</span>
+            <div className="flex items-center justify-between rounded-lg bg-black px-4 py-3">
+              <span className="font-semibold text-gray-100">{t('total')}</span>
+              <span className="font-display text-xl font-semibold text-brand-400">{formatMoney(booking.total)}</span>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3 border-t border-gray-100 pt-4 text-sm">

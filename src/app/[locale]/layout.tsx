@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Oswald } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { hasLocale } from 'next-intl';
 import { NextIntlClientProvider } from 'next-intl';
@@ -11,6 +11,8 @@ import { AuthProvider } from '@/lib/auth-context';
 import { routing } from '@/i18n/routing';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
+
+const oswald = Oswald({ subsets: ['latin'], variable: '--font-display' });
 
 export async function generateMetadata({
   params,
@@ -53,7 +55,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
-  themeColor: '#2563eb',
+  themeColor: '#181716',
 };
 
 export default async function LocaleLayout({
@@ -74,7 +76,7 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       dir={locale === 'ar' ? 'rtl' : 'ltr'}
-      className={inter.variable}
+      className={`${inter.variable} ${oswald.variable}`}
       data-scroll-behavior="smooth"
     >
       <body className="flex min-h-screen flex-col">

@@ -13,16 +13,19 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
-  overflow-x: clip;
 }
 
 body {
   @apply bg-gray-50 text-gray-900 antialiased;
-  overflow-x: clip;
+}
+
+/* Arabic script is cursive — letter-spacing breaks connected glyphs. */
+html[lang='ar'] * {
+  letter-spacing: 0 !important;
 }
 
 :focus-visible {
-  outline: 2px solid #2563eb;
+  outline: 2px solid #c45a2a;
   outline-offset: 2px;
 }
 
@@ -31,20 +34,28 @@ body {
     @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
   }
 
+  .eyebrow {
+    @apply text-xs font-bold uppercase tracking-[0.2em] text-brand-600;
+  }
+
+  .display-title {
+    @apply font-display font-semibold uppercase tracking-wide text-gray-900;
+  }
+
   .btn {
-    @apply inline-flex select-none items-center justify-center gap-2 rounded-lg font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60;
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-lg font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-60;
   }
 
   .btn-primary {
-    @apply btn bg-brand-600 px-5 py-2.5 text-sm text-white shadow-sm shadow-brand-600/20 hover:bg-brand-700 hover:shadow-md hover:shadow-brand-600/20 active:bg-brand-800;
+    @apply btn bg-brand-600 px-5 py-2.5 text-sm text-white hover:bg-brand-700 active:bg-brand-800;
   }
 
   .btn-secondary {
-    @apply btn border border-gray-300 bg-white px-5 py-2.5 text-sm text-gray-700 shadow-sm hover:border-gray-400 hover:bg-gray-50 active:bg-gray-100;
+    @apply btn border border-gray-300 bg-white px-5 py-2.5 text-sm text-gray-800 hover:border-gray-400 hover:bg-gray-100 active:bg-gray-200;
   }
 
   .btn-danger {
-    @apply btn bg-red-600 px-5 py-2.5 text-sm text-white shadow-sm shadow-red-600/20 hover:bg-red-700 active:bg-red-800;
+    @apply btn bg-red-600 px-5 py-2.5 text-sm text-white hover:bg-red-700 active:bg-red-800;
   }
 
   .btn-sm {
@@ -52,11 +63,11 @@ body {
   }
 
   .btn-lg {
-    @apply px-6 py-3 text-base;
+    @apply px-7 py-3 text-base;
   }
 
   .input {
-    @apply w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 shadow-sm transition placeholder:text-gray-400 hover:border-gray-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-70;
+    @apply w-full rounded-md border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 transition placeholder:text-gray-400 hover:border-gray-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-70;
   }
 
   .input-error {
@@ -64,15 +75,15 @@ body {
   }
 
   .label {
-    @apply mb-2 block text-sm font-medium text-gray-700;
+    @apply mb-2 block text-sm font-semibold text-gray-800;
   }
 
   .card {
-    @apply rounded-2xl border border-gray-200 bg-white p-6 shadow-sm;
+    @apply rounded-xl border border-gray-200 bg-white p-6;
   }
 
   .badge {
-    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium;
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium;
   }
 
   .no-scrollbar {

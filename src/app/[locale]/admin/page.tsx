@@ -32,18 +32,18 @@ export default function AdminDashboardPage() {
   if (!data) return <LoadingState />;
 
   const metrics = [
-    { label: t('totalBookings'), value: String(data.totalBookings), tone: 'bg-brand-50 text-brand-600', icon: 'calendar' },
-    { label: t('pending'), value: String(data.pendingBookings), tone: 'bg-amber-50 text-amber-600', icon: 'clock' },
-    { label: t('confirmed'), value: String(data.confirmedBookings), tone: 'bg-blue-50 text-blue-600', icon: 'check' },
-    { label: t('completed'), value: String(data.completedBookings), tone: 'bg-green-50 text-green-600', icon: 'checkCircle' },
-    { label: t('customers'), value: String(data.customers), tone: 'bg-purple-50 text-purple-600', icon: 'users' },
-    { label: t('revenue'), value: formatMoney(data.revenue), tone: 'bg-emerald-50 text-emerald-600', icon: 'dollar' },
+    { label: t('totalBookings'), value: String(data.totalBookings), tone: 'bg-gray-900 text-brand-500', icon: 'calendar' },
+    { label: t('pending'), value: String(data.pendingBookings), tone: 'bg-amber-100 text-amber-700', icon: 'clock' },
+    { label: t('confirmed'), value: String(data.confirmedBookings), tone: 'bg-gray-200 text-gray-700', icon: 'check' },
+    { label: t('completed'), value: String(data.completedBookings), tone: 'bg-green-100 text-green-700', icon: 'checkCircle' },
+    { label: t('customers'), value: String(data.customers), tone: 'bg-gray-100 text-gray-600', icon: 'users' },
+    { label: t('revenue'), value: formatMoney(data.revenue), tone: 'bg-brand-50 text-brand-700', icon: 'dollar' },
   ];
 
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+        <h1 className="display-title text-2xl text-gray-900 sm:text-3xl">{t('title')}</h1>
         <p className="mt-2 text-sm text-gray-500">{t('subtitle')}</p>
       </div>
 
@@ -84,7 +84,7 @@ export default function AdminDashboardPage() {
       </div>
 
       <div className="card p-6">
-        <h2 className="font-semibold text-gray-900">{t('quickActions')}</h2>
+        <h2 className="display-title text-lg text-gray-900">{t('quickActions')}</h2>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           <Link href="/admin/bookings" className="btn-secondary justify-start">
             {t('manageBookings')}

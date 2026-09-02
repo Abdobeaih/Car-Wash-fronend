@@ -64,7 +64,7 @@ export default function NotificationsPanel({ basePath }: { basePath?: string }) 
     <div className="space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+          <h1 className="display-title text-2xl text-gray-900 sm:text-3xl">{t('title')}</h1>
           <p className="mt-2 text-sm text-gray-500">
             {unread === 0 ? t('allCaughtUp') : t('unread', { count: unread })}
           </p>
@@ -87,9 +87,7 @@ export default function NotificationsPanel({ basePath }: { basePath?: string }) 
             <li key={n._id}>
               <div
                 className={`card p-5 transition ${
-                  n.read
-                    ? 'opacity-75'
-                    : 'border-s-4 border-s-brand-500 shadow-md shadow-brand-600/5'
+                  n.read ? 'opacity-75' : 'border-s-4 border-s-brand-600'
                 }`}
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">

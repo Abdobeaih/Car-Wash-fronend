@@ -94,7 +94,7 @@ export default function ProfilePage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+        <h1 className="display-title text-2xl text-gray-900 sm:text-3xl">{t('title')}</h1>
         <p className="mt-2 text-sm text-gray-500">
           {t('subtitle')}
         </p>
@@ -102,13 +102,13 @@ export default function ProfilePage() {
 
       <section className="card">
         <div className="flex items-center gap-3">
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-black text-brand-500">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.8" />
               <path d="M4 20a8 8 0 0 1 16 0" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
             </svg>
           </span>
-          <h2 className="font-semibold text-gray-900">{t('accountDetails')}</h2>
+          <h2 className="display-title text-lg text-gray-900">{t('accountDetails')}</h2>
         </div>
         <dl className="mt-4 grid min-w-0 gap-4 text-sm sm:grid-cols-2">
           <div className="min-w-0">
@@ -138,14 +138,14 @@ export default function ProfilePage() {
 
       <section className="card">
         <div className="flex items-center gap-3">
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-black text-brand-500">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" stroke="currentColor" strokeWidth="1.8" />
               <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.98 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.03H2a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 3.6 8.98a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H8a1.7 1.7 0 0 0 1.03-1.56V2a2 2 0 1 1 4 0v.09c0 .7.42 1.33 1.03 1.56a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.09c.23.61.86 1.03 1.56 1.03H22a2 2 0 1 1 0 4h-.09c-.7 0-1.33.42-1.56 1.03z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
             </svg>
           </span>
           <div>
-            <h2 className="font-semibold text-gray-900">{t('editProfile')}</h2>
+            <h2 className="display-title text-lg text-gray-900">{t('editProfile')}</h2>
             <p className="text-sm text-gray-500">{t('editSubtitle')}</p>
           </div>
         </div>
@@ -185,14 +185,14 @@ export default function ProfilePage() {
 
       <section className="card">
         <div className="flex items-center gap-3">
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-black text-brand-500">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <rect x="4" y="11" width="16" height="9" rx="2" stroke="currentColor" strokeWidth="1.8" />
               <path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
             </svg>
           </span>
           <div>
-            <h2 className="font-semibold text-gray-900">{t('changePassword')}</h2>
+            <h2 className="display-title text-lg text-gray-900">{t('changePassword')}</h2>
             <p className="text-sm text-gray-500">
               {t('passwordSubtitle')}
             </p>

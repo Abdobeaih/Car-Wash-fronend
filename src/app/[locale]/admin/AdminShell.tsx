@@ -27,19 +27,22 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 lg:mx-0 lg:flex-col lg:px-0 lg:pb-0"
             aria-label="Admin navigation"
           >
-            {links.map((link) => {
+            {links.map((link, i) => {
               const active =
                 link.href === '/admin' ? pathname === '/admin' : pathname.startsWith(link.href);
               return (
                 <Link
                   key={link.key}
                   href={link.href}
-                  className={`shrink-0 rounded-xl px-4 py-2.5 text-sm font-medium transition ${
+                  className={`shrink-0 rounded-lg px-4 py-2.5 text-sm font-medium transition ${
                     active
-                      ? 'bg-brand-600 text-white shadow-md shadow-brand-600/25'
-                      : 'border border-gray-200 bg-white text-gray-600 shadow-sm hover:border-brand-200 hover:text-gray-900'
+                      ? 'bg-black text-brand-500'
+                      : 'border border-gray-200 bg-white text-gray-500 hover:border-gray-300 hover:text-gray-700'
                   }`}
                 >
+                  <span className="font-display text-xs text-gray-400 me-1.5 hidden lg:inline">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
                   {link.label}
                 </Link>
               );
@@ -47,10 +50,10 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             <NotificationsNavLink
               href="/admin/notifications"
               label={t('notifications')}
-              className={`shrink-0 rounded-xl px-4 py-2.5 text-sm font-medium transition ${
+              className={`shrink-0 rounded-lg px-4 py-2.5 text-sm font-medium transition ${
                 pathname.startsWith('/admin/notifications')
-                  ? 'bg-brand-600 text-white shadow-md shadow-brand-600/25'
-                  : 'border border-gray-200 bg-white text-gray-600 shadow-sm hover:border-brand-200 hover:text-gray-900'
+                  ? 'bg-black text-brand-500'
+                  : 'border border-gray-200 bg-white text-gray-500 hover:border-gray-300 hover:text-gray-700'
               }`}
             />
           </nav>

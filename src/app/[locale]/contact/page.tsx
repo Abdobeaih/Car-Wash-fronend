@@ -37,26 +37,35 @@ export default async function ContactPage() {
   };
 
   return (
-    <div className="container-page max-w-3xl py-10 sm:py-14">
-      <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
-      <p className="mt-3 leading-relaxed text-gray-600">
-        {t('subtitle')}
-      </p>
+    <div className="container-page py-12 sm:py-16">
+      <div className="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-16">
+        <div>
+          <p className="eyebrow">Mobile Car Care</p>
+          <h1 className="display-title mt-4 text-3xl text-gray-900 sm:text-4xl">{t('title')}</h1>
+          <p className="mt-4 max-w-xl leading-relaxed text-gray-600">{t('subtitle')}</p>
 
-      <ContactForm />
+          <ul className="mt-10 divide-y divide-gray-200 border-y border-gray-200">
+            {cards.map((item) => (
+              <li key={item.title} className="flex items-center gap-5 py-5">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-gray-300 text-gray-900">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    {cardIcons[item.icon]}
+                  </svg>
+                </span>
+                <div className="min-w-0">
+                  <p className="font-display text-sm font-semibold uppercase tracking-wide text-gray-900">
+                    {item.title}
+                  </p>
+                  <p className="mt-0.5 text-sm text-gray-500">{item.value}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-3">
-        {cards.map((item) => (
-          <div key={item.title} className="card p-5 text-center">
-            <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                {cardIcons[item.icon]}
-              </svg>
-            </span>
-            <p className="mt-3 font-semibold text-gray-900">{item.title}</p>
-            <p className="mt-1.5 text-sm text-gray-500">{item.value}</p>
-          </div>
-        ))}
+        <div>
+          <ContactForm />
+        </div>
       </div>
     </div>
   );

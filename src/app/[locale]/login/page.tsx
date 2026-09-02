@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { getTranslations } from 'next-intl/server';
 import LoginForm from '@/components/auth/LoginForm';
+import AuthShell from '@/components/auth/AuthShell';
 import { LoadingState } from '@/components/States';
 
 export async function generateMetadata({
@@ -21,10 +22,10 @@ export async function generateMetadata({
 export default async function LoginPage() {
   const t = await getTranslations('Common');
   return (
-    <div className="container-page flex justify-center px-4 py-10 sm:py-16">
+    <AuthShell>
       <Suspense fallback={<LoadingState label={t('loading')} />}>
         <LoginForm />
       </Suspense>
-    </div>
+    </AuthShell>
   );
 }

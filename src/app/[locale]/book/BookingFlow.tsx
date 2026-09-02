@@ -199,14 +199,14 @@ export default function BookingFlow() {
     return (
       <div className="container-page max-w-2xl py-16">
         <div className="card overflow-hidden p-0 text-center">
-          <div className="bg-gradient-to-b from-green-50 to-white px-6 pt-10">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-green-600 ring-8 ring-green-50">
+          <div className="bg-black px-6 pb-10 pt-12">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-600 text-white ring-8 ring-brand-600/25">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
-            <h1 className="mt-5 text-2xl font-bold text-gray-900">{t('confirmedTitle')}</h1>
-            <p className="mt-2 leading-relaxed text-gray-600">
+            <h1 className="display-title mt-6 text-2xl text-white">{t('confirmedTitle')}</h1>
+            <p className="mx-auto mt-3 max-w-md leading-relaxed text-gray-400">
               {t('confirmedText', {
                 services: lineNames,
                 date: formatDate(createdBooking.date),
@@ -214,9 +214,9 @@ export default function BookingFlow() {
               })}
             </p>
           </div>
-          <div className="mx-auto max-w-md px-6 pb-8">
-            <p className="mt-4 inline-flex items-center gap-2 rounded-full bg-gray-100 px-4 py-1.5 text-sm font-medium text-gray-700">
-              <span className="text-gray-400">{t('bookingId', { id: createdBooking._id, total: formatMoney(createdBooking.total) })}</span>
+          <div className="mx-auto max-w-md px-6 pb-8 pt-6">
+            <p className="mt-2 inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-1.5 text-sm font-medium text-gray-700">
+              <span className="text-gray-500">{t('bookingId', { id: createdBooking._id, total: formatMoney(createdBooking.total) })}</span>
             </p>
             <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
               <Link href={`/dashboard/bookings/${createdBooking._id}`} className="btn-primary">
@@ -264,41 +264,35 @@ export default function BookingFlow() {
   return (
     <div className="container-page max-w-3xl py-12">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">{t('title')}</h1>
+        <h1 className="display-title text-2xl text-gray-900 sm:text-3xl">{t('title')}</h1>
         <Link href="/dashboard" className="btn-secondary whitespace-nowrap">
           {t('backToDashboard')}
         </Link>
       </div>
 
-      <ol className="mt-6 flex flex-wrap items-center gap-y-3" aria-label={t('title')}>
+      <ol className="no-scrollbar mt-8 flex items-stretch gap-2 overflow-x-auto pb-1" aria-label={t('title')}>
         {steps.map((s, i) => {
           const done = i < currentIndex;
           const active = i === currentIndex;
           return (
-            <li key={s.key} className="flex items-center">
-              {i > 0 && (
-                <span
-                  aria-hidden="true"
-                  className={`mx-1.5 h-0.5 w-5 rounded-full sm:mx-2 sm:w-8 ${done ? 'bg-brand-500' : 'bg-gray-200'}`}
-                />
-              )}
+            <li key={s.key} className="flex min-w-0 flex-1 items-center">
               <span
                 aria-current={active ? 'step' : undefined}
-                className={`flex items-center gap-2 rounded-full px-2 py-1 text-xs font-medium transition sm:px-2.5 sm:text-sm ${
+                className={`flex items-center gap-2.5 rounded-lg border px-3 py-2 text-xs font-semibold transition sm:gap-3 sm:px-4 sm:text-sm ${
                   active
-                    ? 'bg-brand-600 text-white shadow-md shadow-brand-600/25'
+                    ? 'border-brand-600 bg-brand-600 text-white'
                     : done
-                      ? 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20'
-                      : 'bg-gray-100 text-gray-500'
+                      ? 'border-gray-800 bg-black text-gray-100'
+                      : 'border-gray-200 bg-white text-gray-500'
                 }`}
               >
                 <span
-                  className={`flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-bold ${
+                  className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md font-display text-[11px] font-semibold transition ${
                     active
                       ? 'bg-white/20 text-white'
                       : done
-                        ? 'bg-green-600 text-white'
-                        : 'bg-white text-gray-500 ring-1 ring-inset ring-gray-300'
+                        ? 'bg-brand-600 text-white'
+                        : 'bg-gray-100 text-gray-600'
                   }`}
                 >
                   {done ? (
@@ -309,8 +303,14 @@ export default function BookingFlow() {
                     i + 1
                   )}
                 </span>
-                <span className="hidden sm:inline">{s.label}</span>
+                <span className="hidden truncate sm:inline">{s.label}</span>
               </span>
+              {i < steps.length - 1 && (
+                <span
+                  aria-hidden="true"
+                  className={`mx-1 h-px flex-1 sm:mx-2 ${done ? 'bg-gray-800' : 'bg-gray-300'}`}
+                />
+              )}
             </li>
           );
         })}
@@ -321,7 +321,7 @@ export default function BookingFlow() {
       <form onSubmit={handleConfirm} onKeyDown={preventImplicitSubmit} className="card mt-6">
         {step === 'service' && (
           <div>
-            <h2 className="font-semibold text-gray-900">{t('chooseService')}</h2>
+            <h2 className="display-title text-xl text-gray-900">{t('chooseService')}</h2>
             <ul className="mt-4 space-y-3">
               {services.map((s) => (
                 <li key={s._id}>
@@ -372,7 +372,7 @@ export default function BookingFlow() {
 
         {step === 'vehicle' && (
           <div>
-            <h2 className="font-semibold text-gray-900">{t('chooseVehicle')}</h2>
+            <h2 className="display-title text-xl text-gray-900">{t('chooseVehicle')}</h2>
             {vehicles === null ? (
               <LoadingState label={t('loadingVehicles')} />
             ) : vehicles.length === 0 ? (
@@ -449,7 +449,7 @@ export default function BookingFlow() {
 
         {step === 'addons' && (
           <div>
-            <h2 className="font-semibold text-gray-900">{t('addExtras')}</h2>
+            <h2 className="display-title text-xl text-gray-900">{t('addExtras')}</h2>
             <ul className="mt-4 space-y-3">
               {addOns.map((a) => (
                 <li key={a._id}>
@@ -505,7 +505,7 @@ export default function BookingFlow() {
 
         {step === 'location' && (
           <div>
-            <h2 className="font-semibold text-gray-900">{t('whereShouldWeCome')}</h2>
+            <h2 className="display-title text-xl text-gray-900">{t('whereShouldWeCome')}</h2>
             <div className="mt-4 grid gap-x-4 sm:grid-cols-2">
               <Input
                 label={t('country')}
@@ -559,7 +559,7 @@ export default function BookingFlow() {
 
         {step === 'date' && (
           <div>
-            <h2 className="font-semibold text-gray-900">{t('pickDate')}</h2>
+            <h2 className="display-title text-xl text-gray-900">{t('pickDate')}</h2>
             <p className="mt-2 text-sm text-gray-500">
               {t('workingHours')}
             </p>
@@ -585,7 +585,7 @@ export default function BookingFlow() {
 
         {step === 'time' && (
           <div>
-            <h2 className="font-semibold text-gray-900">{t('pickTime')}</h2>
+            <h2 className="display-title text-xl text-gray-900">{t('pickTime')}</h2>
             <p className="mt-2 text-sm text-gray-500">
               {t('timeSubtitle', {
                 date: formatDate(date),
@@ -647,7 +647,7 @@ export default function BookingFlow() {
 
         {step === 'review' && (
           <div>
-            <h2 className="font-semibold text-gray-900">{t('reviewBooking')}</h2>
+            <h2 className="display-title text-xl text-gray-900">{t('reviewBooking')}</h2>
             <dl className="mt-4 divide-y divide-gray-100 rounded-xl border border-gray-100">
               <div className="p-4">
                 <dt className="text-xs font-semibold uppercase tracking-wide text-gray-500">{t('services')}</dt>
@@ -780,7 +780,7 @@ export default function BookingFlow() {
                   )}
                 </dd>
               </div>
-              <div className="flex justify-between bg-gray-50/70 p-4 text-base">
+              <div className="flex justify-between border-t border-gray-200 bg-gray-100/70 p-4 text-base">
                 <dt className="font-semibold text-gray-900">{t('total')}</dt>
                 <dd className="font-bold text-brand-600">{formatMoney(cartTotal)}</dd>
               </div>

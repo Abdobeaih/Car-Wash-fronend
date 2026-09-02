@@ -50,8 +50,8 @@ export function EmptyState({
   action?: ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-gray-300 bg-white px-6 py-16 text-center">
-      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 text-gray-400">
+    <div className="flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-gray-300 bg-white px-6 py-16 text-center">
+      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-200 text-gray-600">
         <EmptyIcon />
       </div>
       <h3 className="mt-2 text-lg font-semibold text-gray-900">{title}</h3>
@@ -71,7 +71,7 @@ export function ErrorState({
   const t = useTranslations('Common');
   return (
     <div
-      className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-red-200 bg-red-50 px-6 py-12 text-center"
+      className="flex flex-col items-center justify-center gap-3 rounded-xl border border-red-200 bg-red-50 px-6 py-12 text-center"
       role="alert"
     >
       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-600">
@@ -116,7 +116,7 @@ const alertIcons = {
 const alertStyles = {
   error: 'border-red-200 bg-red-50 text-red-700',
   success: 'border-green-200 bg-green-50 text-green-700',
-  info: 'border-blue-200 bg-blue-50 text-blue-700',
+  info: 'border-gray-300 bg-gray-100 text-gray-700',
 };
 
 export function Alert({

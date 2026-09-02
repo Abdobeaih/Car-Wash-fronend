@@ -71,14 +71,14 @@ export default function ForgotPasswordForm() {
   };
 
   return (
-    <div className="card w-full max-w-md p-8">
-      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+    <div className="mx-auto w-full max-w-md">
+      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <rect x="4" y="10" width="16" height="10" rx="2" stroke="currentColor" strokeWidth="1.8" />
           <path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
         </svg>
       </div>
-      <h1 className="mt-4 text-center text-2xl font-bold text-gray-900">{t('title')}</h1>
+      <h1 className="display-title mt-5 text-center text-2xl text-gray-900">{t('title')}</h1>
       <p className="mt-2 text-center text-sm text-gray-500">
         {t('subtitle')}
       </p>

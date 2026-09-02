@@ -77,7 +77,7 @@ export default function AdminBookingDetailPage() {
         {t('back')}
       </Link>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="min-w-0 break-all text-xl font-bold text-gray-900 sm:text-2xl">
+        <h1 className="display-title min-w-0 break-all text-xl text-gray-900 sm:text-2xl">
           {t('title', { id: booking._id })}
         </h1>
         <StatusBadge status={booking.status} />
@@ -145,7 +145,7 @@ export default function AdminBookingDetailPage() {
           </div>
           <div className="flex justify-between border-t border-gray-100 pt-3">
             <span className="font-semibold text-gray-900">{t('total')}</span>
-            <span className="font-bold text-brand-600">{formatMoney(booking.total)}</span>
+            <span className="font-display text-lg font-semibold text-brand-600">{formatMoney(booking.total)}</span>
           </div>
           <div className="grid grid-cols-2 gap-3 border-t border-gray-100 pt-3">
             <div className="min-w-0">
@@ -161,7 +161,7 @@ export default function AdminBookingDetailPage() {
       </div>
 
       <section className="card">
-        <h2 className="font-semibold text-gray-900">{t('updateStatus')}</h2>
+        <h2 className="display-title text-lg text-gray-900">{t('updateStatus')}</h2>
         <p className="mt-2 text-sm text-gray-500">
           {t('updateSubtitle')}
         </p>

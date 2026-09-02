@@ -92,7 +92,7 @@ export default function OtpInput({ value, onChange, disabled = false, autoFocus 
           onChange={(e) => handleChange(i, e.target.value)}
           onKeyDown={(e) => handleKeyDown(i, e)}
           onPaste={handlePaste}
-          className="h-12 w-12 rounded-xl border border-gray-300 bg-white text-center text-xl font-semibold text-gray-900 shadow-sm transition-colors focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20 sm:h-14 sm:w-14 sm:text-2xl"
+          className="h-12 w-12 rounded-lg border border-gray-300 bg-white text-center font-display text-xl font-semibold text-gray-900 transition-colors focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/25 sm:h-14 sm:w-14 sm:text-2xl"
           aria-label={`Digit ${i + 1}`}
         />
       ))}
