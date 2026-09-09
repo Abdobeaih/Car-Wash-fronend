@@ -87,7 +87,7 @@ export default function RegisterForm() {
     if (!validate()) return;
     setSubmitting(true);
     try {
-      await register({ name, email, password, confirmPassword: confirm });
+      await register({ name, email, password });
       setStep('verify');
       startCooldown();
     } catch (err) {
