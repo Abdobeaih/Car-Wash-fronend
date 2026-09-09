@@ -10,22 +10,25 @@ import {
   type ReactNode,
 } from 'react';
 import { apiRequest, clearToken, getToken, setToken } from './api';
-import type { AuthResponse, MeResponse, OtpChannel, User } from './types';
+import type { AuthResponse, MeResponse, User } from './types';
 
 export interface RegisterInput {
   name: string;
   email: string;
-  phone: string;
   password: string;
-  verificationChannel?: OtpChannel;
-  countryCode?: string;
+  confirmPassword?: string;
+}
+
+interface RegisterResponse {
+  user: User;
+  message?: string;
 }
 
 interface AuthContextValue {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<User>;
-  register: (input: RegisterInput) => Promise<{ user: User }>;
+  register: (input: RegisterInput) => Promise<{ user: User; message?: string }>;
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
 }
@@ -69,11 +72,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const register = useCallback(async (input: RegisterInput) => {
-    const res = await apiRequest<AuthResponse>('/auth/register', {
+    const res = await apiRequest<RegisterResponse>('/auth/register', {
       method: 'POST',
       body: input,
     });
-    return { user: res.user };
+    return { user: res.user, message: res.message };
   }, []);
 
   const logout = useCallback(async () => {

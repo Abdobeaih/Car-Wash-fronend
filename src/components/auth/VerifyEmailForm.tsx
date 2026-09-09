@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { apiRequest } from '@/lib/api';
+import { getOtpErrorMessage } from '@/lib/otp-errors';
 import { useRouter } from '@/i18n/navigation';
 import Button from '@/components/Button';
 import OtpInput from './OtpInput';
@@ -18,36 +19,6 @@ interface SendOtpResponse {
 }
 
 const RESEND_COOLDOWN = 60;
-
-function getOtpErrorMessage(
-  err: unknown,
-  fallback: string,
-  t: (key: string) => string,
-): string {
-  if (!(err instanceof Error)) return fallback;
-  const status = (err as { status?: number }).status;
-  const msg = err.message.toLowerCase();
-
-  if (status === 429 || /rate\s*limit|too many requests?/.test(msg)) {
-    return t('errorRateLimited');
-  }
-  if (/too many (failed )?attempts|max(imum)? attempts?/.test(msg)) {
-    return t('errorMaxAttempts');
-  }
-  if (/expired|no longer valid/.test(msg)) {
-    return t('errorExpiredOtp');
-  }
-  if (/resend.*(soon|wait|cooldown)|too soon/.test(msg)) {
-    return t('errorResendTooSoon');
-  }
-  if (/invalid (otp|code)|incorrect (otp|code)|wrong (otp|code)/.test(msg)) {
-    return t('errorWrongOtp');
-  }
-  if (status === 502 || status === 503 || /unreachable|network|gateway/.test(msg)) {
-    return t('errorNetwork');
-  }
-  return fallback;
-}
 
 export default function VerifyEmailForm() {
   const t = useTranslations('VerifyEmail');

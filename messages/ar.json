@@ -204,12 +204,6 @@
     "namePlaceholder": "اسمك",
     "email": "البريد الإلكتروني",
     "emailPlaceholder": "you@example.com",
-    "country": "الدولة",
-    "countryLoading": "جارٍ تحميل الدول…",
-    "dialCode": "رمز الاتصال",
-    "phone": "رقم الهاتف",
-    "phonePlaceholder": "مثال: 505123456",
-    "phoneError": "أدخل رقم هاتف صحيحًا.",
     "password": "كلمة المرور",
     "passwordPlaceholder": "8 أحرف على الأقل",
     "confirm": "تأكيد كلمة المرور",
@@ -221,12 +215,7 @@
     "nameError": "يجب ألا يقل الاسم عن حرفين.",
     "emailError": "أدخل بريدًا إلكترونيًا صحيحًا.",
     "passwordError": "يجب ألا تقل كلمة المرور عن 8 أحرف.",
-    "confirmError": "كلمتا المرور غير متطابقتين.",
-    "channelLabel": "كيف تريد استلام رمز التحقق؟",
-    "channelEmail": "البريد الإلكتروني",
-    "channelSms": "رسالة نصية إلى هاتفي",
-    "channelHintEmail": "سيتم إرسال رمز التحقق إلى بريدك الإلكتروني.",
-    "channelHintSms": "سيتم إرسال رمز التحقق برسالة نصية إلى رقم هاتفك."
+    "confirmError": "كلمتا المرور غير متطابقتين."
   },
   "ForgotPassword": {
     "title": "إعادة تعيين كلمة المرور",
