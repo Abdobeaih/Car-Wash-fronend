@@ -15,6 +15,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow,
       },
     ],
-    sitemap: 'http://localhost:3000/sitemap.xml',
+    sitemap: `${process.env.SITE_URL ?? 'http://localhost:3000'}/sitemap.xml`,
   };
 }

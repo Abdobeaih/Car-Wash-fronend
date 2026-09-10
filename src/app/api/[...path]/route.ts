@@ -3,6 +3,22 @@ import { NextRequest, NextResponse } from 'next/server';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+// Only these backend route prefixes are reachable through the gateway. Any other
+// path is rejected so the proxy cannot be abused as an open relay to arbitrary
+// destinations (SSRF).
+const ALLOWED_PREFIXES = [
+  'auth',
+  'services',
+  'add-ons',
+  'availability',
+  'vehicles',
+  'bookings',
+  'notifications',
+  'admin',
+  'contact',
+  'health',
+];
+
 const HOP_BY_HOP_HEADERS = new Set([
   'connection',
   'content-length',
@@ -23,6 +39,13 @@ function getApiBase(): string {
 }
 
 async function proxy(request: NextRequest, path: string[]): Promise<NextResponse> {
+  if (!ALLOWED_PREFIXES.includes(path[0])) {
+    return NextResponse.json(
+      { statusCode: 400, message: `Path /${path.join('/')} is not allowed.` },
+      { status: 400 },
+    );
+  }
+
   const apiBase = getApiBase();
   const search = request.nextUrl.search;
   const url = `${apiBase}/${path.join('/')}${search}`;

@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useFormatter, useTranslations } from 'next-intl';
+import { useFormatter, useLocale, useTranslations } from 'next-intl';
 import { apiRequest } from '@/lib/api';
 import { Link } from '@/i18n/navigation';
 import type { Booking } from '@/lib/types';
@@ -27,6 +27,8 @@ function addDays(d: Date, days: number): Date {
 export default function AdminCalendarPage() {
   const t = useTranslations('AdminCalendar');
   const format = useFormatter();
+  const locale = useLocale();
+  const isRtl = locale === 'ar';
   const formatMoney = useMoney();
   const [view, setView] = useState<View>('month');
   const [anchor, setAnchor] = useState<Date>(() => new Date());
@@ -103,6 +105,20 @@ export default function AdminCalendarPage() {
     return days;
   }, [view, anchor]);
 
+  // Empty leading cells (plus trailing filler) keep the month grid aligned to
+  // the weekday header: the header starts on Sunday, so the first day of the
+  // month must be placed at column `new Date(y, m, 1).getDay()`.
+  const leadingEmptyCells = useMemo(() => {
+    if (view !== 'month') return 0;
+    return new Date(anchor.getFullYear(), anchor.getMonth(), 1).getDay();
+  }, [view, anchor]);
+
+  const trailingEmptyCells = useMemo(() => {
+    if (view !== 'month') return 0;
+    const total = leadingEmptyCells + daysInMonth.length;
+    return total % 7 === 0 ? 0 : 7 - (total % 7);
+  }, [view, leadingEmptyCells, daysInMonth]);
+
   const renderDay = (date: Date) => {
     const iso = toISODate(date);
     const list = byDate.get(iso) ?? [];
@@ -150,15 +166,27 @@ export default function AdminCalendarPage() {
         <h1 className="display-title text-2xl text-gray-900 sm:text-3xl">{t('title')}</h1>
         <div className="flex items-center gap-2">
           <Button variant="secondary" onClick={() => navigate(-1)} aria-label={t('previous')}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            {isRtl ? (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            ) : (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            )}
           </Button>
           <span className="min-w-40 text-center text-sm font-medium text-gray-700">{periodLabel}</span>
           <Button variant="secondary" onClick={() => navigate(1)} aria-label={t('next')}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            {isRtl ? (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            ) : (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            )}
           </Button>
         </div>
       </div>
@@ -190,7 +218,13 @@ export default function AdminCalendarPage() {
                 {d}
               </div>
             ))}
+            {Array.from({ length: leadingEmptyCells }).map((_, i) => (
+              <div key={`lead-${i}`} aria-hidden="true" />
+            ))}
             {daysInMonth.map((d) => renderDay(d))}
+            {Array.from({ length: trailingEmptyCells }).map((_, i) => (
+              <div key={`trail-${i}`} aria-hidden="true" />
+            ))}
           </div>
         </div>
       )}

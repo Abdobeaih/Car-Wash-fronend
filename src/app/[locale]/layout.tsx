@@ -22,7 +22,7 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Metadata' });
   return {
-    metadataBase: new URL('http://localhost:3000'),
+    metadataBase: new URL(process.env.SITE_URL ?? 'http://localhost:3000'),
     title: {
       default: t('defaultTitle'),
       template: t('titleTemplate'),

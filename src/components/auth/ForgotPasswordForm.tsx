@@ -10,20 +10,19 @@ import { Alert } from '@/components/States';
 
 interface ForgotResponse {
   message?: string;
-  resetToken?: string | null;
 }
 
 export default function ForgotPasswordForm() {
   const t = useTranslations('ForgotPassword');
   const [email, setEmail] = useState('');
-  const [token, setToken] = useState('');
+  const [otp, setOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [resetTokenIssued, setResetTokenIssued] = useState(false);
+  const [codeSent, setCodeSent] = useState(false);
 
   const requestCode = async (e: FormEvent) => {
     e.preventDefault();
@@ -36,10 +35,9 @@ export default function ForgotPasswordForm() {
         body: { email },
       });
       setInfo(res.message ?? '');
-      if (res.resetToken) {
-        setToken(res.resetToken);
-        setResetTokenIssued(true);
-      }
+      // The reset code is delivered to the user's email box; the backend never
+      // returns it in the response. Move to the code+password step regardless.
+      setCodeSent(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : t('requestError'));
     } finally {
@@ -55,14 +53,18 @@ export default function ForgotPasswordForm() {
       setError(t('mismatchError'));
       return;
     }
+    if (!/^\d{6}$/.test(otp)) {
+      setError(t('otpError'));
+      return;
+    }
     setSubmitting(true);
     try {
       const res = await apiRequest<{ message: string }>('/auth/reset-password', {
         method: 'POST',
-        body: { email, token, newPassword },
+        body: { email, otp, newPassword },
       });
       setSuccess(res.message ?? t('success'));
-      setResetTokenIssued(false);
+      setCodeSent(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : t('resetError'));
     } finally {
@@ -96,7 +98,7 @@ export default function ForgotPasswordForm() {
 
       {!success && (
         <>
-          {!resetTokenIssued ? (
+          {!codeSent ? (
             <form onSubmit={requestCode} className="mt-6" noValidate>
               {error && <Alert type="error">{error}</Alert>}
               <Input
@@ -119,11 +121,14 @@ export default function ForgotPasswordForm() {
               {error && <Alert type="error">{error}</Alert>}
               <Input
                 label={t('resetCode')}
-                name="token"
+                name="otp"
                 required
                 autoComplete="off"
-                value={token}
-                onChange={(e) => setToken(e.target.value)}
+                inputMode="numeric"
+                pattern="[0-9]{6}"
+                maxLength={6}
+                value={otp}
+                onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
               />
               <Input
                 label={t('newPassword')}
@@ -153,8 +158,8 @@ export default function ForgotPasswordForm() {
                   type="button"
                   className="font-medium text-gray-500 hover:text-gray-700"
                   onClick={() => {
-                    setResetTokenIssued(false);
-                    setToken('');
+                    setCodeSent(false);
+                    setOtp('');
                     setError(null);
                     setInfo(null);
                   }}

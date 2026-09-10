@@ -3,7 +3,7 @@ import { API_URL } from '@/lib/api';
 import { routing } from '@/i18n/routing';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = 'http://localhost:3000';
+  const base = process.env.SITE_URL ?? 'http://localhost:3000';
 
   const staticPaths = [
     '',

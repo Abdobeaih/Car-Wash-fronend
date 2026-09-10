@@ -7,7 +7,7 @@ import { apiRequest } from '@/lib/api';
 import type { Booking, BookingStatus } from '@/lib/types';
 import Button from '@/components/Button';
 import { Select } from '@/components/Input';
-import { LoadingState, EmptyState, Alert } from '@/components/States';
+import { LoadingState, EmptyState, ErrorState, Alert } from '@/components/States';
 import { StatusBadge } from '@/components/Badges';
 import { useDate, useMoney } from '@/lib/format';
 import { bookingLines } from '@/lib/booking-lines';
@@ -24,6 +24,7 @@ export default function AdminBookingsPage() {
   const [message, setMessage] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState('');
   const [search, setSearch] = useState('');
+  const [appliedSearch, setAppliedSearch] = useState('');
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
   const load = useCallback(async () => {
@@ -31,14 +32,14 @@ export default function AdminBookingsPage() {
     try {
       const params = new URLSearchParams();
       if (statusFilter) params.set('status', statusFilter);
-      if (search.trim()) params.set('search', search.trim());
+      if (appliedSearch) params.set('search', appliedSearch);
       const qs = params.toString();
       const data = await apiRequest<Booking[]>(`/admin/bookings${qs ? `?${qs}` : ''}`, { auth: true });
       setBookings(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : t('loadFailed'));
     }
-  }, [statusFilter, search, t]);
+  }, [statusFilter, appliedSearch, t]);
 
   useEffect(() => {
     void load();
@@ -63,6 +64,7 @@ export default function AdminBookingsPage() {
     }
   };
 
+  if (error && !bookings) return <ErrorState message={error} onRetry={load} />;
   if (!bookings) return <LoadingState />;
 
   return (
@@ -80,7 +82,7 @@ export default function AdminBookingsPage() {
           className="grid gap-4 sm:grid-cols-[1fr_200px_auto]"
           onSubmit={(e) => {
             e.preventDefault();
-            void load();
+            setAppliedSearch(search.trim());
           }}
         >
           <div>

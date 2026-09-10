@@ -42,6 +42,7 @@ export default function AdminMessagesPage() {
     }
   };
 
+  if (error && !messages) return <ErrorState message={error} onRetry={load} />;
   if (!messages) return <LoadingState />;
 
   const unread = messages.filter((m) => !m.read).length;

@@ -6,7 +6,7 @@ import { apiRequest } from '@/lib/api';
 import type { AddOn } from '@/lib/types';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
-import { LoadingState, EmptyState, Alert } from '@/components/States';
+import { LoadingState, EmptyState, ErrorState, Alert } from '@/components/States';
 import { ActiveBadge } from '@/components/Badges';
 import { useMoney } from '@/lib/format';
 
@@ -104,6 +104,7 @@ export default function AdminAddOnsPage() {
     }
   };
 
+  if (error && !addOns) return <ErrorState message={error} onRetry={load} />;
   if (!addOns) return <LoadingState />;
 
   const set = (key: keyof FormState) => ({

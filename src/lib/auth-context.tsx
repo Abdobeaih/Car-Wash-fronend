@@ -16,6 +16,11 @@ export interface RegisterInput {
   name: string;
   email: string;
   password: string;
+  confirmPassword?: string;
+  country?: string;
+  dialCode?: string;
+  phone?: string;
+  countryCode?: string;
 }
 
 interface RegisterResponse {

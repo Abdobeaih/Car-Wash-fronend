@@ -32,7 +32,11 @@ export default async function FaqPage() {
     <div className="container-page max-w-3xl py-12 sm:py-16">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{
+          // Escape U+003C so FAQ answers containing "</script>" cannot break out
+          // of the JSON-LD script block.
+          __html: JSON.stringify(schema).replace(/</g, '\\u003c'),
+        }}
       />
       <p className="eyebrow">Mobile Car Care</p>
       <h1 className="display-title mt-4 text-3xl text-gray-900 sm:text-4xl">{t('title')}</h1>

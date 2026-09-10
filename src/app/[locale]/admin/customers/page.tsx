@@ -15,22 +15,24 @@ export default function AdminCustomersPage() {
   const [customers, setCustomers] = useState<AdminCustomer[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
+  const [appliedSearch, setAppliedSearch] = useState('');
 
   const load = useCallback(async () => {
     setError(null);
     try {
-      const params = search.trim() ? `?search=${encodeURIComponent(search.trim())}` : '';
+      const params = appliedSearch ? `?search=${encodeURIComponent(appliedSearch)}` : '';
       const data = await apiRequest<AdminCustomer[]>(`/admin/customers${params}`, { auth: true });
       setCustomers(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : t('loadFailed'));
     }
-  }, [search, t]);
+  }, [appliedSearch, t]);
 
   useEffect(() => {
     void load();
   }, [load]);
 
+  if (error && !customers) return <ErrorState message={error} onRetry={load} />;
   if (!customers) return <LoadingState />;
 
   return (
@@ -46,7 +48,7 @@ export default function AdminCustomersPage() {
         className="card"
         onSubmit={(e) => {
           e.preventDefault();
-          void load();
+          setAppliedSearch(search.trim());
         }}
       >
         <div className="flex flex-col gap-3 sm:flex-row">

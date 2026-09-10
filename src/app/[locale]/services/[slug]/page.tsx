@@ -162,6 +162,8 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
+          // Escape U+003C so a value containing "</script>" cannot break out of
+          // the JSON-LD script block (JSON.stringify does not escape it).
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'Service',
@@ -174,7 +176,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
               price: service.basePrice,
               priceCurrency: 'USD',
             },
-          }),
+          }).replace(/</g, '\\u003c'),
         }}
       />
     </div>
