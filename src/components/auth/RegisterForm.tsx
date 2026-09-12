@@ -10,7 +10,7 @@ import Button from '@/components/Button';
 import Input, { Select } from '@/components/Input';
 import { Alert } from '@/components/States';
 import { countries as allCountries } from '@/lib/countries';
-import OtpInput from './OtpInput';
+import OtpInput from '@/components/ui/otp-input';
 
 const RESEND_COOLDOWN = 60;
 
@@ -220,9 +220,14 @@ export default function RegisterForm() {
             className="mt-6"
             noValidate
           >
-            {error && <Alert type="error">{error}</Alert>}
-
-            <OtpInput value={otp} onChange={setOtp} disabled={submitting} />
+            <OtpInput
+              onChange={setOtp}
+              disabled={submitting}
+              autoFocus
+              label={vt('title')}
+              status={error ? 'error' : 'idle'}
+              errorMessage={error ?? ''}
+            />
 
             <div className="mt-6">
               <Button

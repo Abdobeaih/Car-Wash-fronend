@@ -7,7 +7,7 @@ import { apiRequest } from '@/lib/api';
 import { getOtpErrorMessage } from '@/lib/otp-errors';
 import { useRouter } from '@/i18n/navigation';
 import Button from '@/components/Button';
-import OtpInput from './OtpInput';
+import OtpInput from '@/components/ui/otp-input';
 import { Alert } from '@/components/States';
 
 interface VerifyOtpResponse {
@@ -146,9 +146,14 @@ export default function VerifyEmailForm() {
           className="mt-6"
           noValidate
         >
-          {error && <Alert type="error">{error}</Alert>}
-
-          <OtpInput value={otp} onChange={setOtp} disabled={submitting} />
+          <OtpInput
+            onChange={setOtp}
+            disabled={submitting}
+            autoFocus
+            label={t('title')}
+            status={error ? 'error' : 'idle'}
+            errorMessage={error ?? ''}
+          />
 
           <div className="mt-6">
             <Button
