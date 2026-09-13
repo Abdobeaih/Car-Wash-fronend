@@ -16,6 +16,7 @@ interface VerifyOtpResponse {
 
 interface SendOtpResponse {
   message?: string;
+  devOtp?: string;
 }
 
 const RESEND_COOLDOWN = 60;
@@ -30,6 +31,7 @@ export default function VerifyEmailForm() {
   const contact = channel === 'SMS' && phone ? phone : email;
 
   const [otp, setOtp] = useState('');
+  const [devOtp, setDevOtp] = useState<string | undefined>(undefined);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -85,10 +87,11 @@ export default function VerifyEmailForm() {
     setError(null);
     setResending(true);
     try {
-      await apiRequest<SendOtpResponse>('/auth/resend-verification', {
+      const res = await apiRequest<SendOtpResponse>('/auth/resend-verification', {
         method: 'POST',
         body: { email },
       });
+      if (res.devOtp) setDevOtp(res.devOtp);
       startCooldown();
     } catch (err) {
       setError(getOtpErrorMessage(err, t('resendError'), t));
@@ -132,6 +135,19 @@ export default function VerifyEmailForm() {
       >
         {contact}
       </p>
+
+      {devOtp && (
+        <div
+          className="mt-4 rounded-lg border border-dashed border-brand-300 bg-brand-50 p-3 text-center"
+          dir="ltr"
+        >
+          <p className="text-xs font-semibold uppercase tracking-wide text-brand-600">
+            {t('devCodeLabel')}
+          </p>
+          <p className="mt-1 text-xl font-bold tracking-[0.4em] text-brand-700">{devOtp}</p>
+          <p className="mt-1 text-xs text-gray-500">{t('devCodeHint')}</p>
+        </div>
+      )}
 
       {success ? (
         <div className="mt-6">

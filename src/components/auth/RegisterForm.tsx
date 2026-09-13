@@ -20,6 +20,7 @@ interface VerifyOtpResponse {
 
 interface SendOtpResponse {
   message?: string;
+  devOtp?: string;
 }
 
 type Step = 'register' | 'verify';
@@ -88,6 +89,7 @@ export default function RegisterForm() {
   const [submitting, setSubmitting] = useState(false);
 
   const [otp, setOtp] = useState('');
+  const [devOtp, setDevOtp] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | null>(null);
   const [resending, setResending] = useState(false);
   const [cooldown, setCooldown] = useState(0);
@@ -119,7 +121,7 @@ export default function RegisterForm() {
     const errors: FieldErrors = {};
     if (name.trim().length < 2) errors.name = t('nameError');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = t('emailError');
-    if (!/^\d{6,15}$/.test(phone)) errors.phone = t('phoneError');
+    if (!/^\d{11}$/.test(phone)) errors.phone = t('phoneError');
     if (password.length < 8) errors.password = t('passwordError');
     if (confirm !== password) errors.confirm = t('confirmError');
     setFieldErrors(errors);
@@ -136,7 +138,7 @@ export default function RegisterForm() {
         countries.find((c) => c.code === countryCode)?.dial ?? '',
         phone,
       );
-      await register({
+      const result = await register({
         name,
         email,
         password,
@@ -146,6 +148,7 @@ export default function RegisterForm() {
         phone: normalizedPhone,
         countryCode,
       });
+      setDevOtp(result.devOtp);
       setStep('verify');
       startCooldown();
     } catch (err) {
@@ -178,10 +181,11 @@ export default function RegisterForm() {
     setError(null);
     setResending(true);
     try {
-      await apiRequest<SendOtpResponse>('/auth/resend-verification', {
+      const res = await apiRequest<SendOtpResponse>('/auth/resend-verification', {
         method: 'POST',
         body: { email },
       });
+      if (res.devOtp) setDevOtp(res.devOtp);
       startCooldown();
     } catch (err) {
       setError(getOtpErrorMessage(err, vt('resendError'), vt));
@@ -206,6 +210,19 @@ export default function RegisterForm() {
         <p className="mt-1 text-center text-sm font-medium text-gray-700" dir="ltr">
           {email}
         </p>
+
+        {devOtp && (
+          <div
+            className="mt-4 rounded-lg border border-dashed border-brand-300 bg-brand-50 p-3 text-center"
+            dir="ltr"
+          >
+            <p className="text-xs font-semibold uppercase tracking-wide text-brand-600">
+              {vt('devCodeLabel')}
+            </p>
+            <p className="mt-1 text-xl font-bold tracking-[0.4em] text-brand-700">{devOtp}</p>
+            <p className="mt-1 text-xs text-gray-500">{vt('devCodeHint')}</p>
+          </div>
+        )}
 
         {success ? (
           <div className="mt-6">
@@ -333,6 +350,7 @@ export default function RegisterForm() {
           name="phone"
           type="tel"
           inputMode="numeric"
+          maxLength={11}
           autoComplete="tel-national"
           required
           placeholder={t('phonePlaceholder')}

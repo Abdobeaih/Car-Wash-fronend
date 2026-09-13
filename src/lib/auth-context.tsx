@@ -23,16 +23,17 @@ export interface RegisterInput {
   countryCode?: string;
 }
 
-interface RegisterResponse {
+export interface RegisterResponse {
   user: User;
   message?: string;
+  devOtp?: string;
 }
 
 interface AuthContextValue {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<User>;
-  register: (input: RegisterInput) => Promise<{ user: User; message?: string }>;
+  register: (input: RegisterInput) => Promise<{ user: User; message?: string; devOtp?: string }>;
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
 }
@@ -80,7 +81,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       method: 'POST',
       body: input,
     });
-    return { user: res.user, message: res.message };
+    return { user: res.user, message: res.message, devOtp: res.devOtp };
   }, []);
 
   const logout = useCallback(async () => {

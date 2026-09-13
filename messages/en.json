@@ -208,8 +208,8 @@
     "countryLoading": "Loading countries…",
     "dialCode": "Dial code",
     "phone": "Phone number",
-    "phonePlaceholder": "e.g. 505123456",
-    "phoneError": "Enter a valid phone number.",
+    "phonePlaceholder": "e.g. 01012345678",
+    "phoneError": "Enter a valid 11-digit phone number.",
     "password": "Password",
     "passwordPlaceholder": "At least 8 characters",
     "confirm": "Confirm password",
@@ -259,7 +259,9 @@
     "resendError": "Failed to resend the code.",
     "noEmail": "No email provided. Please register or log in first.",
     "goToRegister": "Create an account",
-    "backToLogin": "Back to login"
+    "backToLogin": "Back to login",
+    "devCodeLabel": "Development code (local only)",
+    "devCodeHint": "Email delivery is not available in this environment, so the code is shown here."
   },
   "NotFound": {
     "code": "404",
