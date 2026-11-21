@@ -69,7 +69,7 @@ export default async function ServicesPage() {
                   <div className={`relative ${flip ? 'lg:order-2' : ''}`}>
                     <Link
                       href={`/services/${service.slug}`}
-                      className="relative block overflow-hidden rounded-lg border border-gray-200 bg-gray-100"
+                      className="relative block overflow-hidden rounded-2xl border border-gray-200 bg-gray-100 shadow-card transition-shadow duration-300 group-hover:shadow-lift"
                     >
                       <Image
                         src={serviceImagePath(service.image)}

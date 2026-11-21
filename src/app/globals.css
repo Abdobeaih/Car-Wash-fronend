@@ -15,6 +15,12 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+html,
+body {
+  /* Never let a wide child create horizontal page scroll (RTL included). */
+  overflow-x: clip;
+}
+
 body {
   @apply bg-gray-50 text-gray-900 antialiased;
 }
@@ -22,6 +28,13 @@ body {
 /* Arabic script is cursive — letter-spacing breaks connected glyphs. */
 html[lang='ar'] * {
   letter-spacing: 0 !important;
+}
+
+/* Arabic typography: proper Arabic typeface instead of system fallback. */
+html[lang='ar'] body,
+html[lang='ar'] .font-display,
+html[lang='ar'] .display-title {
+  font-family: var(--font-arabic), var(--font-sans), system-ui, sans-serif;
 }
 
 :focus-visible {
@@ -43,15 +56,15 @@ html[lang='ar'] * {
   }
 
   .btn {
-    @apply inline-flex select-none items-center justify-center gap-2 rounded-lg font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-60;
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60;
   }
 
   .btn-primary {
-    @apply btn bg-brand-600 px-5 py-2.5 text-sm text-white hover:bg-brand-700 active:bg-brand-800;
+    @apply btn bg-brand-600 px-5 py-2.5 text-sm text-white shadow-sm shadow-brand-600/30 hover:bg-brand-700 hover:shadow-md hover:shadow-brand-600/25 active:bg-brand-800;
   }
 
   .btn-secondary {
-    @apply btn border border-gray-300 bg-white px-5 py-2.5 text-sm text-gray-800 hover:border-gray-400 hover:bg-gray-100 active:bg-gray-200;
+    @apply btn border border-gray-300 bg-white px-5 py-2.5 text-sm text-gray-800 shadow-sm hover:border-gray-400 hover:bg-gray-100 active:bg-gray-200;
   }
 
   .btn-danger {
@@ -67,7 +80,7 @@ html[lang='ar'] * {
   }
 
   .input {
-    @apply w-full rounded-md border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 transition placeholder:text-gray-400 hover:border-gray-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-70;
+    @apply w-full rounded-xl border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 transition placeholder:text-gray-400 hover:border-gray-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-70;
   }
 
   .input-error {
@@ -79,7 +92,7 @@ html[lang='ar'] * {
   }
 
   .card {
-    @apply rounded-xl border border-gray-200 bg-white p-6;
+    @apply rounded-2xl border border-gray-200/90 bg-white p-6 shadow-card;
   }
 
   .badge {

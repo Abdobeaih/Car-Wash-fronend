@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
+import LogoMark from '@/components/LogoMark';
 
 export default async function AuthShell({ children }: { children: React.ReactNode }) {
   const t = await getTranslations('Home');
@@ -12,17 +13,7 @@ export default async function AuthShell({ children }: { children: React.ReactNod
           <aside className="relative hidden bg-black lg:flex">
             <div className="flex min-h-full w-full flex-col justify-between gap-20 p-10 xl:p-14">
               <Link href="/" className="flex items-center gap-2.5">
-                <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-600 text-white">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path
-                      d="M5 13l1.5-4.5A2 2 0 0 1 8.4 7h7.2a2 2 0 0 1 1.9 1.5L19 13m-14 0h14m-14 0v3m14-3v3"
-                      stroke="currentColor"
-                      strokeWidth="1.8"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
+                <LogoMark size={36} className="shrink-0" />
                 <span className="font-display text-base font-semibold uppercase tracking-[0.08em] text-white">
                   Mobile <span className="text-brand-500">CarCare</span>
                 </span>

@@ -92,6 +92,10 @@ const config: Config = {
           900: '#2b2a24',
         },
       },
+      boxShadow: {
+        card: '0 1px 2px rgba(24, 23, 22, 0.04), 0 10px 30px -14px rgba(24, 23, 22, 0.14)',
+        lift: '0 2px 4px rgba(24, 23, 22, 0.05), 0 18px 44px -16px rgba(24, 23, 22, 0.22)',
+      },
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
         display: ['var(--font-display)', 'var(--font-sans)', 'system-ui', 'sans-serif'],

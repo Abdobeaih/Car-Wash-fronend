@@ -21,8 +21,8 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
 
   return (
     <RequireRole role="ADMIN">
-      <div className="container-page grid gap-6 py-10 lg:grid-cols-[220px_1fr]">
-        <aside className="lg:sticky lg:top-24 lg:self-start">
+      <div className="container-page grid grid-cols-1 gap-6 py-10 lg:grid-cols-[220px_1fr]">
+        <aside className="min-w-0 lg:sticky lg:top-24 lg:self-start">
           <nav
             className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 lg:mx-0 lg:flex-col lg:px-0 lg:pb-0"
             aria-label="Admin navigation"

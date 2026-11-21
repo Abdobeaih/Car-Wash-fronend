@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Oswald } from 'next/font/google';
+import { Cairo, Inter, Oswald } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { hasLocale } from 'next-intl';
 import { NextIntlClientProvider } from 'next-intl';
@@ -13,6 +13,8 @@ import { routing } from '@/i18n/routing';
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 const oswald = Oswald({ subsets: ['latin'], variable: '--font-display' });
+
+const cairo = Cairo({ subsets: ['arabic', 'latin'], variable: '--font-arabic' });
 
 export async function generateMetadata({
   params,
@@ -76,7 +78,7 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       dir={locale === 'ar' ? 'rtl' : 'ltr'}
-      className={`${inter.variable} ${oswald.variable}`}
+      className={`${inter.variable} ${oswald.variable} ${cairo.variable}`}
       data-scroll-behavior="smooth"
     >
       <body className="flex min-h-screen flex-col">

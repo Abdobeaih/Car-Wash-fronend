@@ -1,8 +1,8 @@
 import type { StaticImageData } from 'next/image';
-import exteriorWash from '../../public/images/services/pngtree-car-wash-fast-delicate-png-image_15497309.png';
-import interiorCleaning from '../../public/images/services/pngtree-cartoon-illustration-of-car-wash-service-png-image_15194039.png';
-import fullDetailing from '../../public/images/services/ما-أهمية-غسيل-السيارات-وهل-هو-ضروري؟-ماذا-عن-النوافذ؟-6.jpg';
-import premiumDetailing from '../../public/images/services/تصميم-شعار-لوجو-مغسلة-سيارات.jpg.webp';
+import exteriorWash from '../../public/images/services/exterior-wash.jpg';
+import interiorCleaning from '../../public/images/services/interior-cleaning.jpg';
+import fullDetailing from '../../public/images/services/full-detailing.jpg';
+import premiumDetailing from '../../public/images/services/premium-detailing.jpg';
 
 const FALLBACK: StaticImageData = exteriorWash;
 

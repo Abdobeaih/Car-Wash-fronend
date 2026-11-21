@@ -86,7 +86,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
             aria-hidden="true"
             className="absolute -bottom-4 -end-4 hidden h-24 w-24 bg-brand-600 sm:block"
           />
-          <div className="relative overflow-hidden rounded-none border border-gray-300 bg-gray-100">
+          <div className="relative overflow-hidden rounded-3xl border border-gray-200 bg-gray-100 shadow-lift">
             <Image
               src={serviceImagePath(service.image)}
               alt={service.name}

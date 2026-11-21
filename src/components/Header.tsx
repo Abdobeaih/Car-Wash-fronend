@@ -5,6 +5,7 @@ import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import LogoMark from '@/components/LogoMark';
 
 export default function Header() {
   const { user, loading, logout } = useAuth();
@@ -36,17 +37,7 @@ export default function Header() {
     <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/95 backdrop-blur">
       <div className="container-page flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5" onClick={close}>
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-black text-brand-500">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                d="M5 13l1.5-4.5A2 2 0 0 1 8.4 7h7.2a2 2 0 0 1 1.9 1.5L19 13m-14 0h14m-14 0v3m14-3v3"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
+          <LogoMark size={36} className="shrink-0" />
           <span className="whitespace-nowrap font-display text-base font-semibold uppercase tracking-[0.08em] text-gray-900 sm:text-lg">
             Mobile <span className="text-brand-600">CarCare</span>
           </span>

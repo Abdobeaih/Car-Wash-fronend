@@ -122,7 +122,7 @@ export default async function HomePage() {
             <div className="relative lg:ms-6">
               <span
                 aria-hidden="true"
-                className="absolute -start-4 -top-4 h-28 w-28 rounded-none border border-gray-300"
+                className="absolute -start-4 -top-4 h-28 w-28 rounded-3xl border border-gray-300"
               />
               <span
                 aria-hidden="true"
@@ -130,7 +130,7 @@ export default async function HomePage() {
               />
               <Link
                 href={`/services/${featured.slug}`}
-                className="group relative block overflow-hidden rounded-none border border-gray-300 bg-gray-100"
+                className="group relative block overflow-hidden rounded-3xl border border-gray-200 bg-gray-100 shadow-lift"
               >
                 <Image
                   src={serviceImagePath(featured.image)}
@@ -162,7 +162,7 @@ export default async function HomePage() {
               </div>
             </div>
           ) : (
-            <div className="relative flex aspect-[4/5] items-center justify-center rounded-none border border-gray-300 bg-black text-brand-500">
+            <div className="relative flex aspect-[4/5] items-center justify-center rounded-3xl border border-gray-200 bg-black text-brand-500">
               <svg width="72" height="72" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path
                   d="M5 13l1.5-4.5A2 2 0 0 1 8.4 7h7.2a2 2 0 0 1 1.9 1.5L19 13m-14 0h14m-14 0v3m14-3v3"
@@ -190,31 +190,42 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="mt-12 divide-y divide-gray-200 border-y border-gray-200">
+          <div className="mt-12 grid gap-6 sm:grid-cols-2">
             {services.slice(0, 4).map((service, i) => (
               <Link
                 key={service._id}
                 href={`/services/${service.slug}`}
-                className="group flex items-center gap-4 py-5 transition sm:gap-6"
+                className="group card overflow-hidden p-0 transition-shadow duration-300 hover:shadow-lift"
               >
-                <span className="w-9 shrink-0 font-display text-lg font-semibold text-gray-300 transition group-hover:text-brand-500">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <div className="min-w-0 flex-1">
-                  <h3 className="truncate font-display text-base font-semibold uppercase tracking-wide text-gray-900 transition group-hover:text-brand-700 sm:text-lg">
-                    {service.name}
-                  </h3>
-                  <p className="mt-0.5 text-sm text-gray-500">
-                    {formatDuration(tc, service.duration)}
-                  </p>
-                </div>
-                <div className="flex shrink-0 items-center gap-2 sm:gap-4">
-                  <p className="font-display text-base font-semibold sm:text-lg">
-                    {formatMoney(locale, service.basePrice, tc('currencyLabel'))}
-                  </p>
-                  <span className="flex h-9 w-9 items-center justify-center rounded-md border border-gray-300 text-gray-500 transition group-hover:border-brand-600 group-hover:bg-brand-600 group-hover:text-white">
-                    <ArrowIcon />
+                <div className="relative overflow-hidden">
+                  <Image
+                    src={serviceImagePath(service.image)}
+                    alt={service.name}
+                    width={640}
+                    height={400}
+                    className="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-[1.04]"
+                  />
+                  <span className="absolute start-4 top-4 rounded-md bg-black/90 px-2.5 py-1 font-display text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-400">
+                    {String(i + 1).padStart(2, '0')}
                   </span>
+                </div>
+                <div className="flex items-center justify-between gap-4 p-5">
+                  <div className="min-w-0">
+                    <h3 className="truncate font-display text-base font-semibold uppercase tracking-wide text-gray-900 transition group-hover:text-brand-700 sm:text-lg">
+                      {service.name}
+                    </h3>
+                    <p className="mt-0.5 text-sm text-gray-500">
+                      {formatDuration(tc, service.duration)}
+                    </p>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-3">
+                    <p className="font-display text-base font-semibold sm:text-lg">
+                      {formatMoney(locale, service.basePrice, tc('currencyLabel'))}
+                    </p>
+                    <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-300 text-gray-500 transition group-hover:border-brand-600 group-hover:bg-brand-600 group-hover:text-white">
+                      <ArrowIcon />
+                    </span>
+                  </div>
                 </div>
               </Link>
             ))}
@@ -260,7 +271,7 @@ export default async function HomePage() {
           <h2 className="display-title mt-4 max-w-2xl text-3xl text-gray-900 sm:text-4xl">
             {t('whyTitle')}
           </h2>
-          <div className="mt-12 grid gap-px overflow-hidden rounded-none border border-gray-200 bg-gray-200 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-gray-200 bg-gray-200 shadow-card sm:grid-cols-2 lg:grid-cols-4">
             {why.map((item, i) => (
               <div key={item.title} className="bg-white p-7">
                 <div className="flex items-center justify-between">
