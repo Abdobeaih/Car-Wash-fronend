@@ -1,6 +1,6 @@
 import type { AppLocale } from '@/i18n/routing';
 
-export const DEFAULT_CURRENCY = 'USD';
+export const DEFAULT_CURRENCY = 'EGP';
 
 const MONEY_CONFIG: Record<AppLocale, { numberingSystem?: string; labelPosition: 'before' | 'after' }> = {
   en: { labelPosition: 'before' },

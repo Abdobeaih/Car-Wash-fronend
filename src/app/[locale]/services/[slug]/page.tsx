@@ -175,7 +175,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
             offers: {
               '@type': 'Offer',
               price: service.basePrice,
-              priceCurrency: 'USD',
+              priceCurrency: 'EGP',
             },
           }).replace(/</g, '\\u003c'),
         }}
