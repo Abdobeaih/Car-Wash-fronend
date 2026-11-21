@@ -60,7 +60,7 @@ export default function AdminDashboardPage() {
         />
         <div className="relative flex flex-wrap items-end justify-between gap-6">
           <div>
-            <p className="eyebrow text-brand-400">Admin</p>
+            <p className="eyebrow text-brand-400">{t('eyebrow')}</p>
             <h1 className="display-title mt-3 text-2xl text-white sm:text-3xl">{t('title')}</h1>
             <p className="mt-2 text-sm text-gray-400">{t('subtitle')}</p>
           </div>

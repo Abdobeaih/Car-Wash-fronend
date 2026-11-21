@@ -141,24 +141,60 @@
   "Faq": {
     "title": "Frequently Asked Questions",
     "items": [
-      { "q": "How do I book a service?", "a": "Create an account, add your vehicle, then use the booking flow to pick a service, add-ons, location and an available time slot." },
-      { "q": "Do you come to my location?", "a": "Yes. Mobile CarCare is fully mobile — a professional travels to the location you provide during booking." },
-      { "q": "How is the price calculated?", "a": "The final price is the service base price plus any add-ons you select. The total is always confirmed by our system before you complete the booking." },
-      { "q": "What are the working hours?", "a": "Bookings can be scheduled every day between 09:00 and 18:00. Available slots depend on service duration and existing bookings." },
-      { "q": "Can I cancel a booking?", "a": "Yes. Pending and confirmed bookings can be cancelled from your dashboard. Completed and already-cancelled bookings cannot be cancelled." },
-      { "q": "Which vehicles can I add?", "a": "You can add any car (sedan, SUV, pickup or luxury) by providing the brand, model, year, color and plate number." }
+      {
+        "q": "How do I book a service?",
+        "a": "Create an account, add your vehicle, then use the booking flow to pick a service, add-ons, location and an available time slot."
+      },
+      {
+        "q": "Do you come to my location?",
+        "a": "Yes. Mobile CarCare is fully mobile — a professional travels to the location you provide during booking."
+      },
+      {
+        "q": "How is the price calculated?",
+        "a": "The final price is the service base price plus any add-ons you select. The total is always confirmed by our system before you complete the booking."
+      },
+      {
+        "q": "What are the working hours?",
+        "a": "Bookings can be scheduled every day between 09:00 and 18:00. Available slots depend on service duration and existing bookings."
+      },
+      {
+        "q": "Can I cancel a booking?",
+        "a": "Yes. Pending and confirmed bookings can be cancelled from your dashboard. Completed and already-cancelled bookings cannot be cancelled."
+      },
+      {
+        "q": "Which vehicles can I add?",
+        "a": "You can add any car (sedan, SUV, pickup or luxury) by providing the brand, model, year, color and plate number."
+      }
     ]
   },
   "HowItWorks": {
     "title": "How It Works",
     "subtitle": "Booking a mobile car care service takes less than two minutes.",
     "steps": [
-      { "title": "Browse services", "text": "Choose from exterior wash, interior cleaning, full detailing or premium detailing packages." },
-      { "title": "Create an account", "text": "Register with your email and add your vehicle details so booking is fast every time." },
-      { "title": "Select your vehicle", "text": "Pick one of your saved vehicles or add a new one during the booking flow." },
-      { "title": "Pick add-ons", "text": "Add extras like tire cleaning, engine bay cleaning, leather conditioning or odor treatment." },
-      { "title": "Choose location & time", "text": "Tell us where your car is and select an available date and time that works for you." },
-      { "title": "We come to you", "text": "A professional arrives at your location, completes the service and you are done." }
+      {
+        "title": "Browse services",
+        "text": "Choose from exterior wash, interior cleaning, full detailing or premium detailing packages."
+      },
+      {
+        "title": "Create an account",
+        "text": "Register with your email and add your vehicle details so booking is fast every time."
+      },
+      {
+        "title": "Select your vehicle",
+        "text": "Pick one of your saved vehicles or add a new one during the booking flow."
+      },
+      {
+        "title": "Pick add-ons",
+        "text": "Add extras like tire cleaning, engine bay cleaning, leather conditioning or odor treatment."
+      },
+      {
+        "title": "Choose location & time",
+        "text": "Tell us where your car is and select an available date and time that works for you."
+      },
+      {
+        "title": "We come to you",
+        "text": "A professional arrives at your location, completes the service and you are done."
+      }
     ],
     "book": "Book a Service"
   },
@@ -481,7 +517,8 @@
     "manageBookings": "Manage bookings",
     "manageServices": "Manage services",
     "viewCalendar": "View calendar",
-    "loadFailed": "Failed to load dashboard."
+    "loadFailed": "Failed to load dashboard.",
+    "eyebrow": "Admin"
   },
   "AdminServices": {
     "title": "Services",
