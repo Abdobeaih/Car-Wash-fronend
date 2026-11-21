@@ -71,7 +71,18 @@ async function proxy(request: NextRequest, path: string[]): Promise<NextResponse
     );
   }
 
-  const responseBody = await upstream.arrayBuffer();
+  // Null-body statuses (101/204/205/304) and HEAD responses must be constructed
+  // with a null body: the Response constructor throws on any non-null body for
+  // these, even an empty ArrayBuffer. When the browser revalidates a cached
+  // response (If-None-Match) the API replies 304, and passing its empty buffer
+  // crashed the proxy with `TypeError: Invalid response status code 304`.
+  const isNullBodyStatus =
+    request.method === 'HEAD' ||
+    upstream.status === 101 ||
+    upstream.status === 204 ||
+    upstream.status === 205 ||
+    upstream.status === 304;
+  const responseBody = isNullBodyStatus ? null : await upstream.arrayBuffer();
   const responseHeaders = new Headers();
   upstream.headers.forEach((value, key) => {
     if (!HOP_BY_HOP_HEADERS.has(key.toLowerCase())) responseHeaders.set(key, value);
