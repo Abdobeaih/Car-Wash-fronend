@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { apiRequest } from '@/lib/api';
@@ -9,9 +9,11 @@ import { LoadingState, EmptyState, ErrorState } from '@/components/States';
 import { StatusBadge } from '@/components/Badges';
 import { useDate, useMoney } from '@/lib/format';
 import { bookingLines } from '@/lib/booking-lines';
+import { localizeContent } from '@/lib/localize-content';
 
 export default function BookingsPage() {
   const t = useTranslations('Bookings');
+  const locale = useLocale();
   const formatDate = useDate();
   const formatMoney = useMoney();
   const [bookings, setBookings] = useState<Booking[] | null>(null);
@@ -76,7 +78,7 @@ export default function BookingsPage() {
                         const lines = bookingLines(b);
                         return lines.length > 1
                           ? `${lines[0].service.name} ${t('more', { count: lines.length - 1 })}`
-                          : lines[0].service.name;
+                          : localizeContent(locale, lines[0].service.name);
                       })()}
                     </p>
                     <p className="mt-1.5 text-sm text-gray-500">

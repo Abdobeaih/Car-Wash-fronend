@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState, type FormEvent } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { apiRequest } from '@/lib/api';
 import type { CarService } from '@/lib/types';
 import Button from '@/components/Button';
@@ -9,6 +9,7 @@ import Input from '@/components/Input';
 import { LoadingState, EmptyState, ErrorState, Alert } from '@/components/States';
 import { ActiveBadge } from '@/components/Badges';
 import { useMoney } from '@/lib/format';
+import { localizeContent } from '@/lib/localize-content';
 
 interface FormState {
   name: string;
@@ -30,6 +31,7 @@ const emptyForm: FormState = {
 
 export default function AdminServicesPage() {
   const t = useTranslations('AdminServices');
+  const locale = useLocale();
   const tc = useTranslations('Common');
   const formatMoney = useMoney();
   const [services, setServices] = useState<CarService[] | null>(null);
@@ -192,7 +194,7 @@ export default function AdminServicesPage() {
               <li key={s._id} className="card p-5">
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div className="min-w-0">
-                    <p className="font-semibold text-gray-900">{s.name}</p>
+                    <p className="font-semibold text-gray-900">{localizeContent(locale, s.name)}</p>
                     <p className="text-xs text-gray-500">{tc('minutes', { value: s.duration })}</p>
                   </div>
                   <div className="flex shrink-0 flex-col items-end gap-1.5">
@@ -245,7 +247,7 @@ export default function AdminServicesPage() {
               <tbody className="divide-y divide-gray-100">
                 {services.map((s) => (
                   <tr key={s._id} className="transition hover:bg-gray-50/70">
-                    <td className="px-4 py-3 font-medium text-gray-900">{s.name}</td>
+                    <td className="px-4 py-3 font-medium text-gray-900">{localizeContent(locale, s.name)}</td>
                     <td className="px-4 py-3">{formatMoney(s.basePrice)}</td>
                     <td className="px-4 py-3">{tc('minutes', { value: s.duration })}</td>
                     <td className="px-4 py-3"><ActiveBadge active={s.isActive} /></td>

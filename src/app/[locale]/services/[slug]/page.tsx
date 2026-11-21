@@ -10,6 +10,7 @@ import { serviceImagePath, serviceImageUrl } from '@/lib/service-images';
 import type { AppLocale } from '@/i18n/routing';
 import type { AddOn, CarService } from '@/lib/types';
 import BackToDashboard from '@/components/BackToDashboard';
+import { localizeContent } from '@/lib/localize-content';
 
 export const dynamic = 'force-dynamic';
 
@@ -45,8 +46,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: t('notFoundTitle') };
   }
   return {
-    title: service.name,
-    description: service.description,
+    title: localizeContent(locale, service.name),
+    description: localizeContent(locale, service.description),
     openGraph: {
       title: service.name,
       description: service.description,
@@ -77,7 +78,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           {t('breadcrumb')}
         </Link>
         <span className="text-gray-300" aria-hidden="true">/</span>
-        <span className="text-gray-800">{service.name}</span>
+        <span className="text-gray-800">{localizeContent(locale, service.name)}</span>
       </nav>
 
       <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
@@ -89,7 +90,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           <div className="relative overflow-hidden rounded-3xl border border-gray-200 bg-gray-100 shadow-lift">
             <Image
               src={serviceImagePath(service.image)}
-              alt={service.name}
+              alt={localizeContent(locale, service.name)}
               width={720}
               height={520}
               className="aspect-[16/11] w-full object-cover"
@@ -98,8 +99,8 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         </div>
         <div>
           <p className="eyebrow">Mobile Car Care</p>
-          <h1 className="display-title mt-4 text-3xl text-gray-900 sm:text-4xl">{service.name}</h1>
-          <p className="mt-4 max-w-xl leading-relaxed text-gray-600">{service.description}</p>
+          <h1 className="display-title mt-4 text-3xl text-gray-900 sm:text-4xl">{localizeContent(locale, service.name)}</h1>
+          <p className="mt-4 max-w-xl leading-relaxed text-gray-600">{localizeContent(locale, service.description)}</p>
           <div className="mt-7 flex flex-wrap items-center gap-3">
             <span className="inline-flex items-center gap-3 rounded-md border border-gray-800 bg-black px-5 py-2.5 text-white">
               <span className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-500">

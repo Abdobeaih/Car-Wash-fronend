@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState, type FormEvent } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { apiRequest } from '@/lib/api';
 import type { AddOn } from '@/lib/types';
 import Button from '@/components/Button';
@@ -9,6 +9,7 @@ import Input from '@/components/Input';
 import { LoadingState, EmptyState, ErrorState, Alert } from '@/components/States';
 import { ActiveBadge } from '@/components/Badges';
 import { useMoney } from '@/lib/format';
+import { localizeContent } from '@/lib/localize-content';
 
 interface FormState {
   name: string;
@@ -21,6 +22,7 @@ const emptyForm: FormState = { name: '', description: '', price: '', isActive: t
 
 export default function AdminAddOnsPage() {
   const t = useTranslations('AdminAddOns');
+  const locale = useLocale();
   const formatMoney = useMoney();
   const [addOns, setAddOns] = useState<AddOn[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -175,8 +177,8 @@ export default function AdminAddOnsPage() {
               <li key={a._id} className="card p-5">
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div className="min-w-0">
-                    <p className="font-semibold text-gray-900">{a.name}</p>
-                    <p className="text-xs text-gray-500">{a.description}</p>
+                    <p className="font-semibold text-gray-900">{localizeContent(locale, a.name)}</p>
+                    <p className="text-xs text-gray-500">{localizeContent(locale, a.description)}</p>
                   </div>
                   <div className="flex shrink-0 flex-col items-end gap-1.5">
                     <span className="font-semibold text-gray-900">{formatMoney(a.price)}</span>
@@ -230,8 +232,8 @@ export default function AdminAddOnsPage() {
                 {addOns.map((a) => (
                   <tr key={a._id} className="transition hover:bg-gray-50/70">
                     <td className="px-4 py-3">
-                      <p className="font-medium text-gray-900">{a.name}</p>
-                      <p className="text-xs text-gray-500">{a.description}</p>
+                      <p className="font-medium text-gray-900">{localizeContent(locale, a.name)}</p>
+                      <p className="text-xs text-gray-500">{localizeContent(locale, a.description)}</p>
                     </td>
                     <td className="px-4 py-3">{formatMoney(a.price)}</td>
                     <td className="px-4 py-3"><ActiveBadge active={a.isActive} /></td>

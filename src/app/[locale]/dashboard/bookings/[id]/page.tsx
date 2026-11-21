@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
@@ -11,11 +11,13 @@ import { LoadingState, ErrorState, Alert } from '@/components/States';
 import { StatusBadge } from '@/components/Badges';
 import { useDate, useDateTime, useMoney } from '@/lib/format';
 import { bookingLines } from '@/lib/booking-lines';
+import { localizeContent } from '@/lib/localize-content';
 
 export default function BookingDetailPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const t = useTranslations('BookingDetail');
+  const locale = useLocale();
   const tc = useTranslations('Common');
   const formatDate = useDate();
   const formatDateTime = useDateTime();
@@ -92,7 +94,7 @@ export default function BookingDetailPage() {
             <ul className="mt-1.5 space-y-2">
               {lines.map((l, i) => (
                 <li key={i}>
-                  <p className="font-semibold text-gray-900">{l.service.name}</p>
+                  <p className="font-semibold text-gray-900">{localizeContent(locale, l.service.name)}</p>
                   <p className="text-sm text-gray-500">
                     {l.addOns.length > 0 ? l.addOns.map((a) => a.name).join(', ') : tc('noExtras')} ·{' '}
                     {tc('minutes', { value: l.duration ?? booking.duration })}
@@ -135,12 +137,12 @@ export default function BookingDetailPage() {
             {lines.map((l, i) => (
               <div key={i}>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">{l.service.name}</span>
+                  <span className="text-gray-500">{localizeContent(locale, l.service.name)}</span>
                   <span className="font-medium text-gray-900">{formatMoney(l.subtotal ?? 0)}</span>
                 </div>
                 {l.addOns.map((a, j) => (
                   <div key={j} className="flex justify-between ps-3">
-                    <span className="text-gray-500">{a.name}</span>
+                    <span className="text-gray-500">{localizeContent(locale, a.name)}</span>
                     <span className="font-medium text-gray-900">{formatMoney(a.price ?? 0)}</span>
                   </div>
                 ))}

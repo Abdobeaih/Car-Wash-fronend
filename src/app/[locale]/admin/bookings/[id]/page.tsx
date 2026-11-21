@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
@@ -11,10 +11,12 @@ import { LoadingState, ErrorState, Alert } from '@/components/States';
 import { StatusBadge } from '@/components/Badges';
 import { useDate, useDateTime, useMoney } from '@/lib/format';
 import { bookingLines } from '@/lib/booking-lines';
+import { localizeContent } from '@/lib/localize-content';
 
 export default function AdminBookingDetailPage() {
   const params = useParams<{ id: string }>();
   const t = useTranslations('AdminBookingDetail');
+  const locale = useLocale();
   const ts = useTranslations('Status');
   const tc = useTranslations('Common');
   const formatDate = useDate();
@@ -98,7 +100,7 @@ export default function AdminBookingDetailPage() {
             <ul className="mt-1.5 space-y-2">
               {lines.map((l, i) => (
                 <li key={i}>
-                  <p className="mt-1.5 font-semibold text-gray-900">{l.service.name}</p>
+                  <p className="mt-1.5 font-semibold text-gray-900">{localizeContent(locale, l.service.name)}</p>
                   <p className="text-gray-500">
                     {l.addOns.length > 0 ? l.addOns.map((a) => a.name).join(', ') : tc('noExtras')} ·{' '}
                     {tc('minutes', { value: l.duration ?? booking.duration })}
@@ -135,7 +137,7 @@ export default function AdminBookingDetailPage() {
                 {lines.flatMap((l) =>
                   l.addOns.map((a, i) => (
                     <li key={`${l.service.name}-${i}`} className="flex justify-between">
-                      <span>{a.name}</span>
+                      <span>{localizeContent(locale, a.name)}</span>
                       <span className="font-medium">{formatMoney(a.price ?? 0)}</span>
                     </li>
                   )),

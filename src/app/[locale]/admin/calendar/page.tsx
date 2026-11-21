@@ -9,6 +9,7 @@ import Button from '@/components/Button';
 import { LoadingState, ErrorState } from '@/components/States';
 import { StatusBadge } from '@/components/Badges';
 import { useMoney } from '@/lib/format';
+import { localizeContent } from '@/lib/localize-content';
 
 type View = 'day' | 'week' | 'month';
 
@@ -145,7 +146,7 @@ export default function AdminCalendarPage() {
               className="block rounded-md bg-brand-50 px-1.5 py-1 text-[11px] leading-tight transition hover:bg-brand-100"
             >
               <p className="truncate font-medium text-brand-700">
-                {b.startTime} {(b.serviceId as { name?: string })?.name}
+                {b.startTime} {localizeContent(locale, (b.serviceId as { name?: string })?.name)}
               </p>
               <p className="truncate text-gray-500">
                 {(b.customerId as { name?: string })?.name} · {formatMoney(b.total)}
@@ -250,7 +251,7 @@ export default function AdminCalendarPage() {
                           className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-gray-100 bg-gray-50 px-3 py-2.5 text-sm transition hover:border-brand-200 hover:bg-brand-50/40"
                         >
                           <span className="font-medium text-gray-900">
-                            {b.startTime} – {b.endTime} · {(b.serviceId as { name?: string })?.name}
+                            {b.startTime} – {b.endTime} · {localizeContent(locale, (b.serviceId as { name?: string })?.name)}
                           </span>
                           <span className="text-gray-500">
                             {(b.customerId as { name?: string })?.name} · {formatMoney(b.total)}

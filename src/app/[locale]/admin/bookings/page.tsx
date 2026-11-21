@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { apiRequest } from '@/lib/api';
@@ -11,11 +11,13 @@ import { LoadingState, EmptyState, ErrorState, Alert } from '@/components/States
 import { StatusBadge } from '@/components/Badges';
 import { useDate, useMoney } from '@/lib/format';
 import { bookingLines } from '@/lib/booking-lines';
+import { localizeContent } from '@/lib/localize-content';
 
 const statuses: BookingStatus[] = ['PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELLED'];
 
 export default function AdminBookingsPage() {
   const t = useTranslations('AdminBookings');
+  const locale = useLocale();
   const ts = useTranslations('Status');
   const formatDate = useDate();
   const formatMoney = useMoney();
@@ -131,7 +133,7 @@ export default function AdminBookingsPage() {
                       const lines = bookingLines(b);
                       return lines.length > 1
                         ? `${lines[0].service.name} ${t('more', { count: lines.length - 1 })}`
-                        : lines[0].service.name;
+                        : localizeContent(locale, lines[0].service.name);
                     })()}
                   </p>
                   <p className="text-xs text-gray-500">
@@ -204,7 +206,7 @@ export default function AdminBookingsPage() {
                           const lines = bookingLines(b);
                           return lines.length > 1
                             ? `${lines[0].service.name} ${t('more', { count: lines.length - 1 })}`
-                            : lines[0].service.name;
+                            : localizeContent(locale, lines[0].service.name);
                         })()}
                       </p>
                       <p className="text-xs text-gray-500">

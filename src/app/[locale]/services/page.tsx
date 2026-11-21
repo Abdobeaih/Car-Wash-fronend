@@ -9,6 +9,7 @@ import { serviceImagePath } from '@/lib/service-images';
 import type { AppLocale } from '@/i18n/routing';
 import type { CarService } from '@/lib/types';
 import { EmptyState } from '@/components/States';
+import { localizeContent } from '@/lib/localize-content';
 
 export const dynamic = 'force-dynamic';
 
@@ -73,7 +74,7 @@ export default async function ServicesPage() {
                     >
                       <Image
                         src={serviceImagePath(service.image)}
-                        alt={service.name}
+                        alt={localizeContent(locale, service.name)}
                         width={640}
                         height={400}
                         className="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-[1.03]"
@@ -86,10 +87,10 @@ export default async function ServicesPage() {
 
                   <div className={flip ? 'lg:order-1' : ''}>
                     <h2 className="display-title text-2xl text-gray-900 transition group-hover:text-brand-700 sm:text-3xl">
-                      {service.name}
+                      {localizeContent(locale, service.name)}
                     </h2>
                     <p className="mt-4 max-w-xl leading-relaxed text-gray-600">
-                      {service.description}
+                      {localizeContent(locale, service.description)}
                     </p>
                     <div className="mt-6 flex flex-wrap items-center gap-3">
                       <span className="inline-flex items-center gap-3 rounded-md border border-gray-800 bg-black px-5 py-2.5 text-white">

@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Link, useRouter } from '@/i18n/navigation';
 import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -13,6 +13,7 @@ import TimeInput, { currentTime, isValidTime } from '@/components/TimeInput';
 import { LoadingState, Alert } from '@/components/States';
 import { useDate, useMoney } from '@/lib/format';
 import { bookingLines } from '@/lib/booking-lines';
+import { localizeContent } from '@/lib/localize-content';
 
 type Step = 'service' | 'vehicle' | 'addons' | 'location' | 'date' | 'time' | 'review';
 
@@ -23,6 +24,7 @@ export default function BookingFlow() {
   const searchParams = useSearchParams();
   const { user } = useAuth();
   const t = useTranslations('Book');
+  const locale = useLocale();
   const tc = useTranslations('Common');
   const formatDate = useDate();
   const formatMoney = useMoney();
@@ -194,7 +196,7 @@ export default function BookingFlow() {
 
   if (createdBooking) {
     const lineNames = bookingLines(createdBooking)
-      .map((l) => l.service.name)
+      .map((l) => localizeContent(locale, l.service.name))
       .join(' & ');
     return (
       <div className="container-page max-w-2xl py-16">
@@ -342,7 +344,7 @@ export default function BookingFlow() {
                         className="h-4 w-4 accent-brand-600"
                       />
                       <span>
-                        <span className="block font-medium text-gray-900">{s.name}</span>
+                        <span className="block font-medium text-gray-900">{localizeContent(locale, s.name)}</span>
                         <span className="block text-sm text-gray-500">
                           {t('minutes', { value: s.duration })}
                         </span>
@@ -474,8 +476,8 @@ export default function BookingFlow() {
                         className="h-4 w-4 rounded accent-brand-600"
                       />
                       <span>
-                        <span className="block font-medium text-gray-900">{a.name}</span>
-                        <span className="block text-sm text-gray-500">{a.description}</span>
+                        <span className="block font-medium text-gray-900">{localizeContent(locale, a.name)}</span>
+                        <span className="block text-sm text-gray-500">{localizeContent(locale, a.description)}</span>
                       </span>
                     </span>
                     <span className="flex shrink-0 items-center gap-3">
@@ -655,7 +657,7 @@ export default function BookingFlow() {
                   {cartSummary.map((line, i) => (
                     <div key={i} className="flex items-start justify-between gap-3 rounded-lg bg-gray-50 p-3">
                       <div className="min-w-0">
-                        <p className="font-medium text-gray-900">{line.name}</p>
+                        <p className="font-medium text-gray-900">{localizeContent(locale, line.name)}</p>
                         <p className="text-sm text-gray-500">
                           {line.addOns.length > 0 ? line.addOns.join(', ') : tc('noExtras')} ·{' '}
                           {tc('minutes', { value: line.duration })}
@@ -680,7 +682,7 @@ export default function BookingFlow() {
                         </option>
                         {services.map((s) => (
                           <option key={s._id} value={s._id}>
-                            {s.name} · {formatMoney(s.basePrice)}
+                            {localizeContent(locale, s.name)} · {formatMoney(s.basePrice)}
                           </option>
                         ))}
                       </Select>
@@ -710,7 +712,7 @@ export default function BookingFlow() {
                                   className="h-3.5 w-3.5 rounded accent-brand-600"
                                 />
                                 <span>
-                                  {a.name}{' '}
+                                  {localizeContent(locale, a.name)}{' '}
                                   <span className="text-gray-500">+{formatMoney(a.price)}</span>
                                 </span>
                               </label>

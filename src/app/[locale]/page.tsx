@@ -8,6 +8,7 @@ import { formatMoney } from '@/lib/money';
 import { serviceImagePath } from '@/lib/service-images';
 import type { AppLocale } from '@/i18n/routing';
 import type { CarService } from '@/lib/types';
+import { localizeContent } from '@/lib/localize-content';
 
 export const dynamic = 'force-dynamic';
 
@@ -134,7 +135,7 @@ export default async function HomePage() {
               >
                 <Image
                   src={serviceImagePath(featured.image)}
-                  alt={featured.name}
+                  alt={localizeContent(locale, featured.name)}
                   width={640}
                   height={800}
                   className="aspect-[4/5] w-full object-cover transition duration-500 group-hover:scale-[1.03]"
@@ -147,7 +148,7 @@ export default async function HomePage() {
                 <div className="flex items-center justify-between gap-4 border border-gray-800 bg-black px-5 py-4 text-white">
                   <div className="min-w-0">
                     <p className="truncate font-display text-base font-semibold uppercase tracking-wide">
-                      {featured.name}
+                      {localizeContent(locale, featured.name)}
                     </p>
                     <p className="mt-0.5 text-xs text-gray-400">
                       {formatMoney(locale, featured.basePrice, tc('currencyLabel'))}
@@ -200,7 +201,7 @@ export default async function HomePage() {
                 <div className="relative overflow-hidden">
                   <Image
                     src={serviceImagePath(service.image)}
-                    alt={service.name}
+                    alt={localizeContent(locale, service.name)}
                     width={640}
                     height={400}
                     className="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-[1.04]"
@@ -212,7 +213,7 @@ export default async function HomePage() {
                 <div className="flex items-center justify-between gap-4 p-5">
                   <div className="min-w-0">
                     <h3 className="truncate font-display text-base font-semibold uppercase tracking-wide text-gray-900 transition group-hover:text-brand-700 sm:text-lg">
-                      {service.name}
+                      {localizeContent(locale, service.name)}
                     </h3>
                     <p className="mt-0.5 text-sm text-gray-500">
                       {formatDuration(tc, service.duration)}
