@@ -22,18 +22,22 @@ export default function LogoMark({
       </defs>
       <rect x="1.5" y="1.5" width="45" height="45" rx="12" fill="#181716" />
       <path
-        d="M24 6.5 C30.8 15 35.2 20.3 35.2 26.4 A11.2 11.2 0 1 1 12.8 26.4 C12.8 20.3 17.2 15 24 6.5 Z"
+        d="M8 29.5 C9 26 11.5 24.3 15 23.8 L18.3 19.3 C19.2 18.1 20.6 17.5 22.2 17.5 H26.8 C28.7 17.5 30.3 18.3 31.4 19.9 L33.9 23.6 C36.7 24.2 38.2 25.8 38.8 28.2 C39 29.2 38.4 30 37.3 30 H34.8"
+        stroke="url(#mcc-logo-g)"
+        strokeWidth="2.5"
+        fill="none"
+        strokeLinecap="round"
+      />
+      <path d="M22.6 30 H25.4" stroke="url(#mcc-logo-g)" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M13.2 30 H8.6" stroke="url(#mcc-logo-g)" strokeWidth="2.5" strokeLinecap="round" />
+      <circle cx="16.2" cy="31.4" r="3.4" fill="#181716" stroke="url(#mcc-logo-g)" strokeWidth="2.4" />
+      <circle cx="31.8" cy="31.4" r="3.4" fill="#181716" stroke="url(#mcc-logo-g)" strokeWidth="2.4" />
+      <circle cx="16.2" cy="31.4" r="1.1" fill="url(#mcc-logo-g)" />
+      <circle cx="31.8" cy="31.4" r="1.1" fill="url(#mcc-logo-g)" />
+      <path
+        d="M39 8 L40 10.6 L42.6 11.6 L40 12.6 L39 15.2 L38 12.6 L35.4 11.6 L38 10.6 Z"
         fill="url(#mcc-logo-g)"
       />
-      <path
-        d="M16.5 29.5 h15 M18.5 26.2 l1.8-3.2 c0.5-0.9 1.4-1.4 2.4-1.4 h2.6 c1 0 1.9 0.5 2.4 1.4 l1.8 3.2"
-        stroke="#181716"
-        strokeWidth="2.4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <circle cx="19.5" cy="30.8" r="1.7" fill="#181716" />
-      <circle cx="28.5" cy="30.8" r="1.7" fill="#181716" />
     </svg>
   );
 }
