@@ -6,6 +6,7 @@ import { API_URL } from '@/lib/api';
 import { formatDuration } from '@/lib/duration';
 import { formatMoney } from '@/lib/money';
 import { serviceImagePath } from '@/lib/service-images';
+import heroCairo from '../../../public/images/hero-cairo.jpg';
 import type { AppLocale } from '@/i18n/routing';
 import type { CarService } from '@/lib/types';
 import { localizeContent } from '@/lib/localize-content';
@@ -78,28 +79,48 @@ export default async function HomePage() {
     { title: t('why4Title'), text: t('why4Text') },
   ];
 
-  const featured = services[0];
 
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────────── */}
-      <section className="border-b border-gray-200">
-        <div className="container-page grid items-center gap-12 py-16 sm:py-20 lg:grid-cols-2 lg:gap-16 lg:py-28">
-          <div>
-            <p className="eyebrow">Mobile Car Care</p>
-            <h1 className="display-title mt-5 text-4xl leading-[1.05] text-gray-900 sm:text-5xl xl:text-6xl">
+      <section className="relative overflow-hidden border-b border-gray-200 bg-gray-900">
+        <Image
+          src={heroCairo}
+          alt=""
+          fill
+          priority
+          placeholder="blur"
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/25 rtl:bg-gradient-to-l"
+        />
+        <div className="container-page relative py-20 sm:py-24 lg:py-32">
+          <div className="max-w-2xl">
+            <p className="eyebrow text-brand-400">
+              {locale === 'ar' ? 'موبايل كار كير · القاهرة' : 'Mobile Car Care · Cairo'}
+            </p>
+            <h1 className="display-title mt-5 text-4xl leading-[1.05] text-white sm:text-5xl xl:text-6xl">
               {t('title')}
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-gray-600">{t('subtitle')}</p>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-gray-200">{t('subtitle')}</p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Link href="/book" className="btn btn-lg bg-brand-600 text-white shadow-sm shadow-brand-600/30 hover:bg-brand-700">
+              <Link
+                href="/book"
+                className="btn btn-lg bg-brand-600 text-white shadow-sm shadow-brand-600/30 hover:bg-brand-700"
+              >
                 {t('book')}
               </Link>
-              <Link href="/services" className="btn-secondary btn-lg">
+              <Link
+                href="/services"
+                className="btn-secondary btn-lg border-white/50 bg-white/10 text-white hover:border-white hover:bg-white hover:text-gray-900"
+              >
                 {t('browse')}
               </Link>
             </div>
-            <ul className="mt-10 flex flex-col gap-3 border-t border-gray-200 pt-6 text-xs font-semibold uppercase tracking-[0.15em] text-gray-700 sm:flex-row sm:gap-8">
+            <ul className="mt-10 flex flex-col gap-3 border-t border-white/25 pt-6 text-xs font-semibold uppercase tracking-[0.15em] text-gray-100 sm:flex-row sm:gap-8">
               {features.map((f) => (
                 <li key={f} className="flex items-center gap-2">
                   <span className="flex h-4 w-4 items-center justify-center rounded-full bg-brand-600 text-white">
@@ -118,63 +139,6 @@ export default async function HomePage() {
               ))}
             </ul>
           </div>
-
-          {featured ? (
-            <div className="relative lg:ms-6">
-              <span
-                aria-hidden="true"
-                className="absolute -start-4 -top-4 h-28 w-28 rounded-3xl border border-gray-300"
-              />
-              <span
-                aria-hidden="true"
-                className="absolute -bottom-4 -end-4 h-16 w-16 bg-brand-600"
-              />
-              <Link
-                href={`/services/${featured.slug}`}
-                className="group relative block overflow-hidden rounded-3xl border border-gray-200 bg-gray-100 shadow-lift"
-              >
-                <Image
-                  src={serviceImagePath(featured.image)}
-                  alt={localizeContent(locale, featured.name)}
-                  width={640}
-                  height={800}
-                  className="aspect-[4/5] w-full object-cover transition duration-500 group-hover:scale-[1.03]"
-                />
-                <span className="absolute start-4 top-4 bg-black/90 px-2.5 py-1 font-display text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-400">
-                  01
-                </span>
-              </Link>
-              <div className="relative z-10 -mt-12 ms-4 me-4 sm:ms-8 sm:me-8">
-                <div className="flex items-center justify-between gap-4 border border-gray-800 bg-black px-5 py-4 text-white">
-                  <div className="min-w-0">
-                    <p className="truncate font-display text-base font-semibold uppercase tracking-wide">
-                      {localizeContent(locale, featured.name)}
-                    </p>
-                    <p className="mt-0.5 text-xs text-gray-400">
-                      {formatMoney(locale, featured.basePrice, tc('currencyLabel'))}
-                      <span className="mx-1.5 text-gray-500">·</span>
-                      {formatDuration(tc, featured.duration)}
-                    </p>
-                  </div>
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-brand-600 text-white">
-                    <ArrowIcon />
-                  </span>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="relative flex aspect-[4/5] items-center justify-center rounded-3xl border border-gray-200 bg-black text-brand-500">
-              <svg width="72" height="72" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M5 13l1.5-4.5A2 2 0 0 1 8.4 7h7.2a2 2 0 0 1 1.9 1.5L19 13m-14 0h14m-14 0v3m14-3v3"
-                  stroke="currentColor"
-                  strokeWidth="1.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-          )}
         </div>
       </section>
 
