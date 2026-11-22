@@ -61,8 +61,8 @@ export default function LoginForm() {
         <Input
           label={t("email")}
           name="email"
-          type="email"
-          autoComplete="email"
+          type="text"
+          autoComplete="username"
           required
           placeholder={t("emailPlaceholder")}
           value={email}
