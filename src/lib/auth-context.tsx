@@ -29,7 +29,7 @@ export interface RegisterResponse {
   devOtp?: string;
 }
 
-interface AuthContextValue {
+export interface AuthContextValue {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<User>;
@@ -108,4 +108,4 @@ export function useAuth(): AuthContextValue {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return ctx;
-}
+        }
