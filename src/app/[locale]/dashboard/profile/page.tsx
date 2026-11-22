@@ -16,7 +16,6 @@ export default function ProfilePage() {
   const formatDateTime = useDateTime();
 
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [profileError, setProfileError] = useState<string | null>(null);
   const [profileMessage, setProfileMessage] = useState<string | null>(null);
@@ -32,7 +31,6 @@ export default function ProfilePage() {
   useEffect(() => {
     if (user) {
       setName(user.name);
-      setEmail(user.email);
       setPhone(user.phone ?? '');
     }
   }, [user]);
@@ -53,7 +51,7 @@ export default function ProfilePage() {
     try {
       await apiRequest('/auth/me', {
         method: 'PATCH',
-        body: { name, email, phone: trimmedPhone || undefined },
+        body: { name, phone: trimmedPhone || undefined },
         auth: true,
       });
       await refresh();
@@ -164,10 +162,14 @@ export default function ProfilePage() {
             label={t('email')}
             name="email"
             type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={user.email}
+            readOnly
+            aria-describedby="profile-email-note"
+            className="bg-gray-100 text-gray-500"
           />
+          <p id="profile-email-note" className="-mt-2 mb-4 text-sm text-gray-500">
+            {t('emailReadonlyNote')}
+          </p>
           <Input
             label={t('phone')}
             name="phone"
