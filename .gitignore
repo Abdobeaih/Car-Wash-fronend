@@ -3,4 +3,4 @@ node_modules/
 out/
 .env.local
 .env*.local
-.env.local.bak
+.env.local.baktsconfig.tsbuildinfo
