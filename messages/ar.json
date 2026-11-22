@@ -223,8 +223,8 @@
   "Login": {
     "title": "تسجيل الدخول إلى حسابك",
     "subtitle": "استخدم بريدك الإلكتروني لتسجيل الدخول وإدارة حجوزاتك.",
-    "email": "البريد الإلكتروني",
-    "emailPlaceholder": "you@example.com",
+    "email": "البريد الإلكتروني أو اسم دخول الأدمن",
+    "emailPlaceholder": "البريد الإلكتروني أو admin",
     "password": "كلمة المرور",
     "passwordPlaceholder": "••••••••",
     "forgotPassword": "نسيت كلمة المرور؟",
