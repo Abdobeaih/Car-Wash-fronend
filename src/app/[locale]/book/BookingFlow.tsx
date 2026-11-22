@@ -190,6 +190,15 @@ export default function BookingFlow() {
     }
   };
 
+  // A failed initial load must surface the error instead of spinning forever.
+  if (error && (!services || !addOns)) {
+    return (
+      <div className="container-page max-w-3xl py-12">
+        <Alert type="error">{error}</Alert>
+      </div>
+    );
+  }
+
   if (loading || !services || !addOns) {
     return <LoadingState label={t('loading')} />;
   }
