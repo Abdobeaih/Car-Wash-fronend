@@ -223,8 +223,8 @@
   "Login": {
     "title": "Log in to your account",
     "subtitle": "Use your email address to sign in and manage your bookings.",
-    "email": "Email",
-    "emailPlaceholder": "you@example.com",
+    "email": "Email or admin username",
+    "emailPlaceholder": "Email address or admin",
     "password": "Password",
     "passwordPlaceholder": "••••••••",
     "forgotPassword": "Forgot password?",
