@@ -26,7 +26,9 @@ export default function LoginForm() {
     setSubmitting(true);
     try {
       const user = await login(email, password);
-      if (next && next.startsWith("/")) {
+      // Only same-site paths: reject protocol-relative (//host) and
+      // backslash variants (/\host), which browsers resolve externally.
+      if (next && next.startsWith("/") && !next.startsWith("//") && !next.includes("\\")) {
         router.push(next);
       } else {
         router.push(user.role === "ADMIN" ? "/admin" : "/dashboard");
