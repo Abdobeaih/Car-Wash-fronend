@@ -19,9 +19,10 @@ export const dynamic = 'force-dynamic';
 
 async function getServices(): Promise<CarService[]> {
   try {
-    const res = await fetch(`${API_URL}/services`, { next: { revalidate: 60 } });
+    const res = await fetch(`${API_URL}/services`, { next: { revalidate: 60 }, signal: AbortSignal.timeout(8000) });
     if (!res.ok) return [];
-    return (await res.json()) as CarService[];
+    const data: unknown = await res.json();
+    return Array.isArray(data) ? data as CarService[] : [];
   } catch {
     return [];
   }
