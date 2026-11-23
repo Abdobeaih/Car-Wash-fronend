@@ -115,7 +115,7 @@ describe('BookingFlow', () => {
         },
       }),
     );
-    expect(await screen.findByText('Booking confirmed!')).toBeInTheDocument();
+    expect(await screen.findByText('Booking request received')).toBeInTheDocument();
     expect(screen.getByText(/Booking ID: b1/)).toBeInTheDocument();
   });
 
