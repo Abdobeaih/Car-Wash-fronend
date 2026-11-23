@@ -114,8 +114,8 @@
   "Services": {
     "title": "Our Services",
     "subtitle": "Every service is performed at your location by trained professionals. Choose the package that fits your car.",
-    "emptyTitle": "No services available",
-    "emptyDescription": "Services are coming soon.",
+    "emptyTitle": "Services unavailable right now",
+    "emptyDescription": "The service list could not be loaded. Try again in a moment.",
     "backToDashboard": "Back to dashboard"
   },
   "ServiceDetail": {

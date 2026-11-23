@@ -14,8 +14,8 @@ export default async function AuthShell({ children }: { children: React.ReactNod
             <div className="flex min-h-full w-full flex-col justify-between gap-20 p-10 xl:p-14">
               <Link href="/" className="flex items-center gap-2.5">
                 <LogoMark size={36} className="shrink-0" />
-                <span className="font-display text-base font-semibold uppercase tracking-[0.08em] text-white">
-                  Mobile <span className="text-brand-500">CarCare</span>
+                <span className="font-display text-base font-semibold text-white">
+                  Mobile <span className="text-aqua-400">CarCare</span>
                 </span>
               </Link>
 
@@ -27,7 +27,7 @@ export default async function AuthShell({ children }: { children: React.ReactNod
                 <ul className="mt-9 space-y-4">
                   {features.map((f) => (
                     <li key={f} className="flex items-center gap-3">
-                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-600 text-white">
+                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-aqua-500 text-gray-900">
                         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                           <path
                             d="M5 13l4 4L19 7"
@@ -38,7 +38,7 @@ export default async function AuthShell({ children }: { children: React.ReactNod
                           />
                         </svg>
                       </span>
-                      <span className="text-xs font-semibold uppercase tracking-[0.12em] text-gray-300">
+                      <span className="text-sm font-medium text-gray-200">
                         {f}
                       </span>
                     </li>
@@ -48,7 +48,7 @@ export default async function AuthShell({ children }: { children: React.ReactNod
 
               <div
                 aria-hidden="true"
-                className="select-none font-display text-8xl font-semibold uppercase leading-[0.8] text-gray-900"
+                className="select-none font-display text-8xl font-semibold leading-[0.8] text-white/10"
               >
                 Car
                 <br />

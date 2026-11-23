@@ -7,7 +7,7 @@
 }
 
 ::selection {
-  @apply bg-brand-600 text-white;
+  @apply bg-aqua-400 text-gray-900;
 }
 
 html {
@@ -38,7 +38,7 @@ html[lang='ar'] .display-title {
 }
 
 :focus-visible {
-  outline: 2px solid #c45a2a;
+  outline: 2px solid #0e6672;
   outline-offset: 2px;
 }
 
@@ -48,15 +48,15 @@ html[lang='ar'] .display-title {
   }
 
   .eyebrow {
-    @apply text-xs font-bold uppercase tracking-[0.2em] text-brand-600;
+    @apply text-sm font-semibold text-brand-600;
   }
 
   .display-title {
-    @apply font-display font-semibold uppercase tracking-wide text-gray-900;
+    @apply font-display font-semibold text-gray-900;
   }
 
   .btn {
-    @apply inline-flex select-none items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60;
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-lg font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60;
   }
 
   .btn-primary {
@@ -80,7 +80,7 @@ html[lang='ar'] .display-title {
   }
 
   .input {
-    @apply w-full rounded-xl border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 transition placeholder:text-gray-400 hover:border-gray-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-70;
+    @apply w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 transition placeholder:text-gray-400 hover:border-gray-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-70;
   }
 
   .input-error {

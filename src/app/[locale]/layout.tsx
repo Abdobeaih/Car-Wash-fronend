@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Cairo, Inter, Oswald } from 'next/font/google';
+import { Barlow, Barlow_Semi_Condensed, IBM_Plex_Sans_Arabic } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { hasLocale } from 'next-intl';
 import { NextIntlClientProvider } from 'next-intl';
@@ -10,11 +10,23 @@ import Footer from '@/components/Footer';
 import { AuthProvider } from '@/lib/auth-context';
 import { routing } from '@/i18n/routing';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
+const barlow = Barlow({
+  weight: ['400', '500', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-sans',
+});
 
-const oswald = Oswald({ subsets: ['latin'], variable: '--font-display' });
+const barlowSemiCondensed = Barlow_Semi_Condensed({
+  weight: ['500', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-display',
+});
 
-const cairo = Cairo({ subsets: ['arabic', 'latin'], variable: '--font-arabic' });
+const plexArabic = IBM_Plex_Sans_Arabic({
+  weight: ['400', '500', '600', '700'],
+  subsets: ['arabic', 'latin'],
+  variable: '--font-arabic',
+});
 
 export async function generateMetadata({
   params,
@@ -57,7 +69,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
-  themeColor: '#181716',
+  themeColor: '#0e2a31',
 };
 
 export default async function LocaleLayout({
@@ -78,7 +90,7 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       dir={locale === 'ar' ? 'rtl' : 'ltr'}
-      className={`${inter.variable} ${oswald.variable} ${cairo.variable}`}
+      className={`${barlow.variable} ${barlowSemiCondensed.variable} ${plexArabic.variable}`}
       data-scroll-behavior="smooth"
     >
       <body className="flex min-h-screen flex-col">
