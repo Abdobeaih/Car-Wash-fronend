@@ -90,7 +90,7 @@ describe('ForgotPasswordForm', () => {
     renderWithIntl(<ForgotPasswordForm />);
     await user.type(screen.getByLabelText('Email'), 'ghost@test.com');
     await user.click(screen.getByRole('button', { name: 'Send reset code' }));
-    expect(await screen.findByRole('alert')).toHaveTextContent('No account with that email.');
+    expect(await screen.findByRole('alert')).toHaveTextContent('Failed to request a reset code.');
     expect(screen.queryByLabelText('Reset code')).not.toBeInTheDocument();
   });
 });

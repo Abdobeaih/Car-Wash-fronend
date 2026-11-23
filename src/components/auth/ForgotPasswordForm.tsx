@@ -1,5 +1,6 @@
 'use client';
 
+import {getAuthErrorMessage} from '@/lib/auth-errors';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { useState, type FormEvent } from 'react';
@@ -14,6 +15,7 @@ interface ForgotResponse {
 
 export default function ForgotPasswordForm() {
   const t = useTranslations('ForgotPassword');
+ const authErrors=useTranslations('AuthErrors');
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -39,7 +41,7 @@ export default function ForgotPasswordForm() {
       // returns it in the response. Move to the code+password step regardless.
       setCodeSent(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('requestError'));
+      setError(getAuthErrorMessage(err,t('requestError'),authErrors));
     } finally {
       setSubmitting(false);
     }
@@ -66,7 +68,7 @@ export default function ForgotPasswordForm() {
       setSuccess(res.message ?? t('success'));
       setCodeSent(false);
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('resetError'));
+      setError(getAuthErrorMessage(err,t('resetError'),authErrors));
     } finally {
       setSubmitting(false);
     }

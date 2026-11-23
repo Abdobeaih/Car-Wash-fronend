@@ -103,6 +103,6 @@ describe('RegisterForm', () => {
     renderWithIntl(<RegisterForm />);
     await fillValidForm(user);
     await user.click(screen.getByRole('button', { name: 'Create account' }));
-    expect(await screen.findByText('Email already registered.')).toBeInTheDocument();
+    expect(await screen.findByText('An account with this email already exists.')).toBeInTheDocument();
   });
 });

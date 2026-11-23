@@ -1,5 +1,6 @@
 'use client';
 
+import {getAuthErrorMessage} from '@/lib/auth-errors';
 import { useEffect, useState, type FormEvent } from 'react';
 import { useTranslations } from 'next-intl';
 import { apiRequest } from '@/lib/api';
@@ -13,6 +14,7 @@ import { useDateTime } from '@/lib/format';
 export default function ProfilePage() {
   const { user, loading, refresh } = useAuth();
   const t = useTranslations('Profile');
+ const authErrors=useTranslations('AuthErrors');
   const formatDateTime = useDateTime();
 
   const [name, setName] = useState('');
@@ -57,7 +59,7 @@ export default function ProfilePage() {
       await refresh();
       setProfileMessage(t('updated'));
     } catch (err) {
-      setProfileError(err instanceof Error ? err.message : t('updateFailed'));
+      setProfileError(getAuthErrorMessage(err,t('updateFailed'),authErrors));
     } finally {
       setSavingProfile(false);
     }
@@ -83,7 +85,7 @@ export default function ProfilePage() {
       setNewPassword('');
       setConfirmPassword('');
     } catch (err) {
-      setPasswordError(err instanceof Error ? err.message : t('passwordChangeFailed'));
+      setPasswordError(getAuthErrorMessage(err,t('passwordChangeFailed'),authErrors));
     } finally {
       setSavingPassword(false);
     }
