@@ -3,30 +3,22 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
+import {getPublicService} from '@/lib/public-service';
+import CatalogueRetry from '@/components/CatalogueRetry';
 import { API_URL } from '@/lib/api';
 import { formatDuration } from '@/lib/duration';
 import { formatMoney } from '@/lib/money';
 import { serviceImagePath, serviceImageUrl } from '@/lib/service-images';
 import type { AppLocale } from '@/i18n/routing';
-import type { AddOn, CarService } from '@/lib/types';
+import type { AddOn } from '@/lib/types';
 import BackToDashboard from '@/components/BackToDashboard';
 import { localizeContent } from '@/lib/localize-content';
 
 export const dynamic = 'force-dynamic';
 
-async function getService(slug: string): Promise<CarService | null> {
- try {
-  const res = await fetch(`${API_URL}/services/${slug}`, { next: { revalidate: 60 } });
-  if (!res.ok) return null;
-  return (await res.json()) as CarService;
- } catch {
-  return null;
- }
-}
-
 async function getAddOns(): Promise<AddOn[]> {
  try {
-  const res = await fetch(`${API_URL}/add-ons`, { next: { revalidate: 60 } });
+  const res = await fetch(`${API_URL}/add-ons`, { next: { revalidate: 60 }, signal:AbortSignal.timeout(8000) });
   if (!res.ok) return [];
   return (await res.json()) as AddOn[];
  } catch {
@@ -41,10 +33,12 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
  const { slug, locale } = await params;
  const t = await getTranslations({ locale, namespace: 'ServiceDetail' });
- const service = await getService(slug);
- if (!service) {
+ const result = await getPublicService(slug);
+ if(result.state==='unavailable') {const catalog=await getTranslations({locale,namespace:'Services'});return {title:catalog('emptyTitle'),robots:{index:false,follow:true}};}
+ if (result.state==='missing') {
   return { title: t('notFoundTitle') };
  }
+ const service=result.service;
  return {
   title: localizeContent(locale, service.name),
   description: localizeContent(locale, service.description),
@@ -59,14 +53,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ServiceDetailPage({ params }: PageProps) {
  const { slug } = await params;
- const [service, addOns] = await Promise.all([getService(slug), getAddOns()]);
+ const [result, addOns] = await Promise.all([getPublicService(slug), getAddOns()]);
  const locale = (await getLocale()) as AppLocale;
  const t = await getTranslations('ServiceDetail');
  const tc = await getTranslations('Common');
 
- if (!service) {
-  notFound();
- }
+ if(result.state==='unavailable') return <CatalogueRetry/>;
+ if(result.state==='missing') notFound();
+ const service=result.service;
 
  return (
   <div className="container-page py-12 sm:py-16">
