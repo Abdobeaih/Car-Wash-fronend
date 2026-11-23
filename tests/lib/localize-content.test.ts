@@ -12,6 +12,11 @@ describe('localizeContent', () => {
     );
   });
 
+  it('uses familiar car-care terms rather than literal tailoring terms', () => {
+    expect(localizeContent('ar', 'Full Car Detailing')).toBe('تنظيف وتلميع شامل للسيارة');
+    expect(localizeContent('ar', 'Premium Detailing')).toBe('باقة العناية الفاخرة');
+  });
+
   it('leaves English untouched in the English locale', () => {
     expect(localizeContent('en', 'Exterior Car Wash')).toBe('Exterior Car Wash');
   });
