@@ -453,6 +453,9 @@
     "loadFailed": "Failed to load bookings."
   },
   "BookingDetail": {
+    "serviceUnavailable": "Service details unavailable",
+    "addOnUnavailable": "Add-on details unavailable",
+    "vehicleUnavailable": "Vehicle details unavailable",
     "back": "← Back to bookings",
     "title": "Booking {id}",
     "services": "Services",
@@ -613,6 +616,10 @@
     "more": "+{count} more"
   },
   "AdminBookingDetail": {
+    "serviceUnavailable": "Service details unavailable",
+    "addOnUnavailable": "Add-on details unavailable",
+    "vehicleUnavailable": "Vehicle details unavailable",
+    "customerUnavailable": "Customer details unavailable",
     "back": "← Back to bookings",
     "title": "Booking {id}",
     "customer": "Customer",

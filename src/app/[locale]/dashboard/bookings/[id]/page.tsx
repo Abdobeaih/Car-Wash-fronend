@@ -65,8 +65,8 @@ export default function BookingDetailPage() {
  if (error && !booking) return <ErrorState message={error} onRetry={load} />;
  if (!booking) return <LoadingState />;
 
- const vehicle = booking.vehicleId as { brand?: string; model?: string; plateNumber?: string };
- const lines = bookingLines(booking);
+ const vehicle = typeof booking.vehicleId === 'object' ? booking.vehicleId : null;
+ const lines = bookingLines(booking, { service: t('serviceUnavailable'), addOn: t('addOnUnavailable') });
  const cancellable = booking.status === 'PENDING' || booking.status === 'CONFIRMED';
 
  return (
@@ -106,9 +106,9 @@ export default function BookingDetailPage() {
      <div>
       <h2 className="text-sm font-semibold text-gray-500">{t('vehicle')}</h2>
       <p className="mt-1.5 font-semibold text-gray-900">
-       {vehicle.brand} {vehicle.model}
+       {vehicle ? `${vehicle.brand ?? ''} ${vehicle.model ?? ''}`.trim() || t('vehicleUnavailable') : t('vehicleUnavailable')}
       </p>
-      <p className="text-sm text-gray-500">{vehicle.plateNumber}</p>
+      <p className="text-sm text-gray-500">{vehicle?.plateNumber}</p>
      </div>
      <div>
       <h2 className="text-sm font-semibold text-gray-500">{t('schedule')}</h2>

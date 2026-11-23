@@ -7,7 +7,7 @@ export interface BookingLine {
   subtotal?: number;
 }
 
-export function bookingLines(booking: Booking): BookingLine[] {
+export function bookingLines(booking: Booking, labels = { service: 'Service', addOn: 'Add-on' }): BookingLine[] {
   if (Array.isArray(booking.services) && booking.services.length > 0) {
     return booking.services.map((item) => {
       const svc = item.serviceId as { name?: string; basePrice?: number } | string;
@@ -17,10 +17,10 @@ export function bookingLines(booking: Booking): BookingLine[] {
       }>;
       return {
         service: {
-          name: typeof svc === 'object' && svc?.name ? svc.name : 'Service',
+          name: typeof svc === 'object' && svc?.name ? svc.name : labels.service,
           basePrice: typeof svc === 'object' ? svc?.basePrice : undefined,
         },
-        addOns: addOns.map((a) => ({ name: a?.name ?? 'Add-on', price: a?.price })),
+        addOns: addOns.map((a) => ({ name: a?.name ?? labels.addOn, price: a?.price })),
         duration: item.duration,
         subtotal: item.subtotal,
       };
@@ -35,10 +35,10 @@ export function bookingLines(booking: Booking): BookingLine[] {
   return [
     {
       service: {
-        name: typeof svc === 'object' && svc?.name ? svc.name : 'Service',
+        name: typeof svc === 'object' && svc?.name ? svc.name : labels.service,
         basePrice: undefined,
       },
-      addOns: addOns.map((a) => ({ name: a?.name ?? 'Add-on', price: a?.price })),
+      addOns: addOns.map((a) => ({ name: a?.name ?? labels.addOn, price: a?.price })),
       duration: booking.duration,
       subtotal: booking.subtotal,
     },
