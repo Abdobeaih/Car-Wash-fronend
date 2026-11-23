@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import { useFormatter, useLocale, useTranslations } from 'next-intl';
 import { apiRequest } from '@/lib/api';
 import { Link } from '@/i18n/navigation';
@@ -47,19 +47,25 @@ export default function AdminCalendarPage() {
     return { start: startDate, end: endDate };
   }, [view, anchor]);
 
+  const loadGeneration = useRef(0);
+
   const load = useCallback(async () => {
+    const generation = ++loadGeneration.current;
     setError(null);
     try {
       const qs = `start=${toISODate(start)}&end=${toISODate(end)}`;
       const data = await apiRequest<Booking[]>(`/admin/calendar?${qs}`, { auth: true });
+      if (generation !== loadGeneration.current) return;
       setBookings(data);
     } catch (err) {
+      if (generation !== loadGeneration.current) return;
       setError(err instanceof Error ? err.message : t('loadFailed'));
     }
   }, [start, end, t]);
 
   useEffect(() => {
     void load();
+    return () => { loadGeneration.current += 1; };
   }, [load]);
 
   const byDate = useMemo(() => {

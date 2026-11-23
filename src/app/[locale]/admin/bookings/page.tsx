@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { apiRequest } from '@/lib/api';
 import type { Booking, BookingStatus } from '@/lib/types';
 import Button from '@/components/Button';
@@ -29,7 +29,10 @@ export default function AdminBookingsPage() {
   const [appliedSearch, setAppliedSearch] = useState('');
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
+  const loadGeneration = useRef(0);
+
   const load = useCallback(async () => {
+    const generation = ++loadGeneration.current;
     setError(null);
     try {
       const params = new URLSearchParams();
@@ -37,14 +40,17 @@ export default function AdminBookingsPage() {
       if (appliedSearch) params.set('search', appliedSearch);
       const qs = params.toString();
       const data = await apiRequest<Booking[]>(`/admin/bookings${qs ? `?${qs}` : ''}`, { auth: true });
+      if (generation !== loadGeneration.current) return;
       setBookings(data);
     } catch (err) {
+      if (generation !== loadGeneration.current) return;
       setError(err instanceof Error ? err.message : t('loadFailed'));
     }
   }, [statusFilter, appliedSearch, t]);
 
   useEffect(() => {
     void load();
+    return () => { loadGeneration.current += 1; };
   }, [load]);
 
   const changeStatus = async (id: string, status: BookingStatus) => {
