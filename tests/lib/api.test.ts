@@ -100,11 +100,11 @@ describe('apiRequest', () => {
     expect((err as ApiError).message).toBe('Bad input');
   });
 
-  it('clears the stored token on 401', async () => {
+  it('does not clear session on individual action 401', async () => {
     setToken('stale');
     fetchMock.mockResolvedValueOnce(jsonResponse(401, { message: 'Unauthorized' }));
     await expect(apiRequest('/me', { auth: true })).rejects.toBeInstanceOf(ApiError);
-    expect(getToken()).toBeNull();
+    expect(getToken()).toBe('stale');
   });
 
   it('keeps the token on non-401 failures', async () => {

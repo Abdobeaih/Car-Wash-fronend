@@ -84,9 +84,8 @@ export async function apiRequest<T>(
 
   if (!res.ok) {
     const message = getErrorMessage(payload as ApiErrorShape, `Request failed with status ${res.status}`);
-    if (res.status === 401) {
-      clearToken();
-    }
+    // Individual action errors (e.g. wrong current password) must not log out
+    // a valid session. AuthProvider validates expiry through /auth/me.
     throw new ApiError(res.status, message);
   }
 

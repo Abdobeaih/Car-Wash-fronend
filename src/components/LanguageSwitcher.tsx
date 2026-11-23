@@ -15,7 +15,8 @@ export default function LanguageSwitcher({ className = '' }: { className?: strin
   const toggle = () => {
     const other = routing.locales.find((l) => l !== locale) ?? 'en';
     startTransition(() => {
-      router.replace(pathname, { locale: other });
+      const suffix=window.location.search+window.location.hash;
+      router.replace(pathname+suffix, { locale: other, scroll:false });
     });
   };
 
