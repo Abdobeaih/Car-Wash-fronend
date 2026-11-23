@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { apiRequest } from '@/lib/api';
 import type { AdminDashboard } from '@/lib/types';
 import { LoadingState, ErrorState } from '@/components/States';
+import AnalyticsPanel from '@/components/AnalyticsPanel';
 import { useMoney } from '@/lib/format';
 
 export default function AdminDashboardPage() {
@@ -33,6 +34,7 @@ export default function AdminDashboardPage() {
 
  const total = Math.max(data.totalBookings, 1);
  const segments = [
+  { label: t('cancelled'), value: data.cancelledBookings ?? 0, bar: 'bg-red-400', dot: 'bg-red-400' },
   { label: t('pending'), value: data.pendingBookings, bar: 'bg-amber-400', dot: 'bg-amber-400' },
   { label: t('confirmed'), value: data.confirmedBookings, bar: 'bg-gray-300', dot: 'bg-gray-300' },
   { label: t('completed'), value: data.completedBookings, bar: 'bg-green-400', dot: 'bg-green-400' },
@@ -85,7 +87,7 @@ export default function AdminDashboardPage() {
         <div
          key={seg.label}
          className={`${seg.bar} transition-all duration-500`}
-         style={{ width: `${Math.max((seg.value / total) * 100, 3)}%` }}
+         style={{ width: `${(seg.value / total) * 100}%` }}
          title={`${seg.label}: ${seg.value}`}
         />
        ) : null,
@@ -139,6 +141,8 @@ export default function AdminDashboardPage() {
      </div>
     ))}
    </div>
+
+   <AnalyticsPanel />
 
    {/* ── Quick actions ─────────────────────────────────────── */}
    <div className="grid gap-4 sm:grid-cols-3">

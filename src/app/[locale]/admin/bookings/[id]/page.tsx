@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { apiRequest } from '@/lib/api';
 import type { Booking, BookingStatus } from '@/lib/types';
+import PaymentRecord from '@/components/PaymentRecord';
 import Button from '@/components/Button';
 import { LoadingState, ErrorState, Alert } from '@/components/States';
 import { StatusBadge } from '@/components/Badges';
@@ -18,6 +19,7 @@ export default function AdminBookingDetailPage() {
  const t = useTranslations('AdminBookingDetail');
  const locale = useLocale();
  const ts = useTranslations('Status');
+ const tp = useTranslations('PaymentRecord');
  const tc = useTranslations('Common');
  const formatDate = useDate();
  const formatDateTime = useDateTime();
@@ -152,7 +154,7 @@ export default function AdminBookingDetailPage() {
      <div className="grid grid-cols-2 gap-3 border-t border-gray-100 pt-3">
       <div className="min-w-0">
        <p className="text-gray-500">{t('payment')}</p>
-       <p className="break-words font-medium text-gray-900">{booking.paymentStatus}</p>
+       <p className="break-words font-medium text-gray-900">{booking.paymentStatus === 'PAID' ? tp('paid') : tp('pending')}</p>
       </div>
       <div className="min-w-0">
        <p className="text-gray-500">{t('created')}</p>
@@ -161,6 +163,8 @@ export default function AdminBookingDetailPage() {
      </div>
     </section>
    </div>
+
+   <PaymentRecord booking={booking} onUpdate={setBooking} />
 
    <section className="card">
     <h2 className="display-title text-lg text-gray-900">{t('updateStatus')}</h2>
