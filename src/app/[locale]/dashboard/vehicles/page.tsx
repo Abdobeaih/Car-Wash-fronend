@@ -6,7 +6,7 @@ import { apiRequest } from '@/lib/api';
 import type { Vehicle, VehicleType } from '@/lib/types';
 import Button from '@/components/Button';
 import Input, { Select } from '@/components/Input';
-import { LoadingState, EmptyState, Alert } from '@/components/States';
+import { LoadingState, EmptyState, ErrorState, Alert } from '@/components/States';
 
 const vehicleTypes: VehicleType[] = ['SEDAN', 'SUV', 'PICKUP', 'LUXURY'];
 
@@ -119,6 +119,7 @@ export default function VehiclesPage() {
     }
   };
 
+  if (error && !vehicles) return <ErrorState message={error} onRetry={load} />;
   if (!vehicles) return <LoadingState />;
 
   const field = (key: keyof VehicleFormState) => ({
