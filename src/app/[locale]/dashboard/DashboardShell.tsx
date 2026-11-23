@@ -5,11 +5,12 @@ import { Link, usePathname } from '@/i18n/navigation';
 import { RequireRole } from '@/components/RouteGuard';
 import NotificationsNavLink from '@/components/NotificationsNavLink';
 
-export default function DashboardShell({ children }: { children: React.ReactNode }) {
+export default function DashboardShell({ children,plansEnabled=false }: { children: React.ReactNode;plansEnabled?:boolean }) {
   const pathname = usePathname();
   const t = useTranslations('DashboardShell');
 
   const links = [
+    ...(plansEnabled?[{href:'/dashboard/plans',label:t('plans'),key:'plans'}]:[]),
     { href: '/dashboard', label: t('overview') },
     { href: '/dashboard/profile', label: t('profile') },
     { href: '/dashboard/vehicles', label: t('vehicles') },

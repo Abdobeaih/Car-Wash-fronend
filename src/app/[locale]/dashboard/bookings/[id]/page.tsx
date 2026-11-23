@@ -52,7 +52,7 @@ function BookingDetailRecord({id}:{id:string}) {
   setMessage(null);
   setError(null);
   try {
-   const updated = await apiRequest<Booking>(`/bookings/${booking._id}/cancel`, {
+   const updated = await apiRequest<Booking>(booking.enrollmentId?`/plans/enrollments/${booking.enrollmentId}/visits/${booking._id}/cancel`:`/bookings/${booking._id}/cancel`, {
     method: 'POST',
     auth: true,
    });
@@ -60,7 +60,7 @@ function BookingDetailRecord({id}:{id:string}) {
    setMessage(t('cancelled'));
    setConfirming(false);
   } catch (err) {
-   setError(err instanceof Error ? err.message : t('cancelFailed'));
+   setError(booking.enrollmentId?(locale==='ar'?'تعذر إلغاء الزيارة. حاول مرة أخرى.':'Could not cancel the visit. Try again.'):err instanceof Error ? err.message : t('cancelFailed'));
   } finally {
    setCancelling(false);
   }
@@ -168,11 +168,13 @@ function BookingDetailRecord({id}:{id:string}) {
       </div>
      </div>
 
+     {booking.enrollmentId&&<p className="rounded-lg bg-brand-50 p-3 text-sm">{locale==='ar'?'زيارة مشمولة في الباقة، دون رسوم منفصلة.':'Plan-covered visit, with no separate charge.'}</p>}
+     {cancellable&&booking.enrollmentId&&<Button variant="secondary" onClick={()=>router.push(`/book?plan=${booking.enrollmentId}&reschedule=${booking._id}&service=${typeof booking.serviceId==='object'?booking.serviceId._id:booking.serviceId}`)}>{locale==='ar'?'تعديل الموعد':'Reschedule'}</Button>}
      {cancellable && (
       <div className="border-t border-gray-100 pt-4">
        {confirming ? (
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-red-200 bg-red-50 p-4">
-         <span className="text-sm font-medium text-red-700">{t('cancelPrompt')}</span>
+         <span className="text-sm font-medium text-red-700">{booking.enrollmentId?(locale==='ar'?'قبل 24 ساعة تُعاد الزيارة. الإلغاء المتأخر يحتسب الزيارة. تأكيد الإلغاء؟':'At least 24 hours before restores the visit. Late cancellation uses the visit. Cancel?'):t('cancelPrompt')}</span>
          <div className="flex items-center gap-2">
           <Button variant="danger" onClick={handleCancel} loading={cancelling}>
            {t('confirm')}

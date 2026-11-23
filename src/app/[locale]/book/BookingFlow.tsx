@@ -1,8 +1,9 @@
 'use client';
+import type {Enrollment} from '@/components/EnrollmentsPanel';
 
 import { useLocale, useTranslations } from 'next-intl';
 import { Link, useRouter } from '@/i18n/navigation';
-import { useEffect, useMemo, useState, type FormEvent, type KeyboardEvent } from 'react';
+import { useEffect, useMemo, useState, useRef, type FormEvent, type KeyboardEvent } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useAvailability } from '@/lib/use-availability';
 import { apiRequest } from '@/lib/api';
@@ -20,10 +21,17 @@ type Step = 'service' | 'vehicle' | 'addons' | 'location' | 'date' | 'time' | 'r
 
 const stepOrder: Step[] = ['service', 'vehicle', 'addons', 'location', 'date', 'time', 'review'];
 
-export default function BookingFlow() {
+export default function BookingFlow({plansEnabled=false}:{plansEnabled?:boolean}={}) {
  const router = useRouter();
  const searchParams = useSearchParams();
- const { user } = useAuth();
+ const { user,loading:authLoading } = useAuth();
+ const selectedService=searchParams.get('service');
+ const planId=searchParams.get('plan');
+ const rescheduleId=searchParams.get('reschedule');
+ const [plan,setPlan]=useState<Enrollment|null>(null);
+ const requestKey=useRef<string>('');
+ const requestPayload=useRef<string>('');
+ const planMode=!!planId;
  const t = useTranslations('Book');
  const locale = useLocale();
  const tc = useTranslations('Common');
@@ -45,7 +53,7 @@ export default function BookingFlow() {
  const [vehicles, setVehicles] = useState<Vehicle[] | null>(null);
 
  const [step, setStep] = useState<Step>('service');
- const [serviceId, setServiceId] = useState<string>(searchParams.get('service') ?? '');
+ const [serviceId, setServiceId] = useState<string>(selectedService ?? '');
  const [vehicleId, setVehicleId] = useState<string>('');
  const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
  const [cart, setCart] = useState<{ serviceId: string; addOnIds: string[] }[]>([]);
@@ -64,15 +72,30 @@ export default function BookingFlow() {
  const {slots,loading:loadingSlots,error:availabilityError,retry:retryAvailability}=useAvailability(step==='time',date,cartServiceIds);
 
  useEffect(() => {
+  if(planId&&authLoading)return;
+  let cancelled=false;
   async function init() {
+   setLoading(true);setError(null);
    try {
     const [svcs, ads] = await Promise.all([
      apiRequest<CarService[]>('/services'),
      apiRequest<AddOn[]>('/add-ons'),
     ]);
-    setServices(svcs);
+    if(planId){
+     if(!plansEnabled||!user)throw Error(t('loadFailed'));
+     const rows=await apiRequest<Enrollment[]>('/plans/enrollments',{auth:true});
+     const owned=rows.find(row=>row._id===planId);
+     if(!owned||!owned.vehicleId||new Date(owned.endsAt)<=new Date())throw Error(t('loadFailed'));
+     setPlan(owned);setVehicleId(owned.vehicleId._id);
+     if(rescheduleId){const original=await apiRequest<Booking>(`/bookings/${rescheduleId}`,{auth:true});if(original.enrollmentId!==planId)throw Error(t('loadFailed'));setLocation({...original.location,notes:original.location.notes??''});const originalService=typeof original.serviceId==='object'?original.serviceId._id:original.serviceId;setServiceId(originalService);setCart([{serviceId:originalService,addOnIds:[]}]);setStep('date');}
+
+     const eligible=svcs.filter(service=>Object.entries(owned.serviceIds).some(([slug,id])=>id===service._id&&(owned.remaining[slug]>0||!!rescheduleId)));
+     if(!eligible.length)throw Error(t('loadFailed'));
+     setServices(eligible);setServiceId(eligible.some(s=>s._id===selectedService)?selectedService!:eligible[0]._id);
+    }else setServices(svcs);
+    if(cancelled)return;
     setAddOns(ads);
-    if (!searchParams.get('service') && svcs.length > 0) {
+    if (!planId && !selectedService && svcs.length > 0) {
      setServiceId(svcs[0]._id);
     }
     if (user) {
@@ -84,13 +107,14 @@ export default function BookingFlow() {
      }
     }
    } catch (err) {
-    setError(err instanceof Error ? err.message : t('loadFailed'));
+    if(!cancelled)setError(planId?t('loadFailed'):err instanceof Error ? err.message : t('loadFailed'));
    } finally {
-    setLoading(false);
+    if(!cancelled)setLoading(false);
    }
   }
   void init();
- }, [user, searchParams, t]);
+  return()=>{cancelled=true;};
+ }, [user, selectedService, t, planId, plansEnabled, rescheduleId, authLoading]);
 
  const availableStarts = useMemo(
   () => (slots ? slots.filter((s) => s.available).map((s) => s.start) : []),
@@ -130,6 +154,7 @@ export default function BookingFlow() {
    return;
   }
   if(target==='time'){setTime('');setTimeInput('');}
+  if(planMode&&target==='vehicle'){setStep('addons');return;}
   setStep(target);
  };
 
@@ -148,10 +173,7 @@ export default function BookingFlow() {
   setError(null);
   setSubmitting(true);
   try {
-   const booking = await apiRequest<Booking>('/bookings', {
-    method: 'POST',
-    auth: true,
-    body: {
+   const payload = {
      vehicleId,
      services: cart.map(({ serviceId: sId, addOnIds }) => ({ serviceId: sId, addOnIds })),
      date,
@@ -162,12 +184,13 @@ export default function BookingFlow() {
       address: location.address,
       notes: location.notes || undefined,
      },
-    },
-   });
+   };
+   if(planMode){const signature=JSON.stringify(payload);if(signature!==requestPayload.current){requestPayload.current=signature;requestKey.current=crypto.randomUUID();}}
+   const booking=await apiRequest<Booking>(planMode?rescheduleId?`/plans/enrollments/${planId}/visits/${rescheduleId}/reschedule`:`/plans/enrollments/${planId}/visits`:'/bookings',{method:'POST',auth:true,body:planMode?{requestKey:requestKey.current,booking:payload}:payload});
    setCreatedBooking(booking);
    setStep('review');
   } catch (err) {
-   setError(err instanceof Error ? err.message : t('createFailed'));
+   setError(planMode?(locale==='ar'?'تعذر تأكيد الزيارة. تحقق من الرصيد والموعد ثم أعد المحاولة.': 'Could not confirm the visit. Check your allowance and appointment, then retry.'):err instanceof Error ? err.message : t('createFailed'));
   } finally {
    setSubmitting(false);
   }
@@ -235,14 +258,14 @@ export default function BookingFlow() {
    name: svc?.name ?? tc('service'),
    duration: svc?.duration ?? 0,
    addOns: lineAddOns.map((a) => a.name),
-   total: (svc?.basePrice ?? 0) + lineAddOns.reduce((sum, a) => sum + a.price, 0),
+   total: planMode ? 0 : (svc?.basePrice ?? 0) + lineAddOns.reduce((sum, a) => sum + a.price, 0),
   };
  });
  const cartTotal = cartSummary.reduce((sum, line) => sum + line.total, 0);
  const cartDuration = cartSummary.reduce((sum, line) => sum + line.duration, 0);
 
  const handleCommitLine = () => {
-  setCart((prev) => [...prev, { serviceId, addOnIds: selectedAddOns }]);
+  setCart((prev) => planMode?[{serviceId,addOnIds:[]}]:[...prev, { serviceId, addOnIds: selectedAddOns }]);
   goTo('location');
  };
 
@@ -312,6 +335,7 @@ export default function BookingFlow() {
 
    {error && <div className="mt-6"><Alert type="error">{error}</Alert></div>}
 
+   {planMode&&plan&&<p className="mt-6 rounded-xl bg-brand-50 p-4">{locale==='ar'?`زيارة من باقة ${plan.nameAr}. لا توجد رسوم منفصلة لهذه الزيارة.`:`Visit covered by ${plan.name}. No separate charge for this visit.`}</p>}
    <form onSubmit={handleConfirm} onKeyDown={preventImplicitSubmit} className="card mt-6">
     {step === 'service' && (
      <div>
@@ -343,7 +367,7 @@ export default function BookingFlow() {
            </span>
           </span>
           <span className="flex shrink-0 items-center gap-3">
-           <span className="font-semibold text-gray-900">{formatMoney(s.basePrice)}</span>
+           <span className="font-semibold text-gray-900">{formatMoney(planMode?0:s.basePrice)}</span>
            {serviceId === s._id && (
             <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand-600 text-white">
              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -444,8 +468,9 @@ export default function BookingFlow() {
     {step === 'addons' && (
      <div>
       <h2 className="display-title text-xl text-gray-900">{t('addExtras')}</h2>
+      {planMode&&<p>{locale==='ar'?'الزيارة تشمل الخدمة المحددة فقط دون إضافات.':'Covered visits include the selected service only, without add-ons.'}</p>}
       <ul className="mt-4 space-y-3">
-       {addOns.map((a) => (
+       {(planMode?[]:addOns).map((a) => (
         <li key={a._id}>
          <label
           className={`flex cursor-pointer items-center justify-between gap-4 rounded-xl border-2 p-4 transition focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-500/20 ${
@@ -660,7 +685,7 @@ export default function BookingFlow() {
            <span className="shrink-0 font-medium text-gray-900">{formatMoney(line.total)}</span>
           </div>
          ))}
-         {addingService ? (
+         {!planMode&&(addingService ? (
           <div className="space-y-3 rounded-lg border border-brand-200 bg-brand-50 p-3">
            <Select
             label={t('serviceToAdd')}
@@ -731,7 +756,7 @@ export default function BookingFlow() {
           >
            {t('addAnotherService')}
           </button>
-         )}
+         ))}
         </div>
        </div>
        <div className="flex flex-wrap items-center justify-between gap-3 p-4">
@@ -745,6 +770,7 @@ export default function BookingFlow() {
          </span>
          <button
           type="button"
+          disabled={planMode}
           onClick={() => goTo('vehicle')}
           className="rounded-lg border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-700 transition hover:border-brand-300 hover:text-brand-600"
          >

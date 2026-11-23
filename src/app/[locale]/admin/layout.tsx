@@ -16,5 +16,5 @@ export async function generateMetadata({
 }
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  return <AdminShell>{children}</AdminShell>;
+  return <AdminShell plansEnabled={process.env.ENABLE_PLAN_ENROLLMENTS==='true'}>{children}</AdminShell>;
 }

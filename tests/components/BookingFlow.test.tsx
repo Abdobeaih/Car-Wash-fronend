@@ -7,6 +7,7 @@ import type { AddOn, Booking, CarService, TimeSlot, User, Vehicle } from '@/lib/
 import { renderWithIntl } from '../test-utils';
 
 const h = vi.hoisted(() => ({
+  search: new URLSearchParams(),
   push: vi.fn(),
   apiRequest: vi.fn(),
   user: { _id: 'u1', name: 'Abdo', email: 'abdo@test.com', role: 'CUSTOMER' } as User | null,
@@ -26,7 +27,7 @@ vi.mock('@/i18n/navigation', () => ({
   ),
 }));
 vi.mock('next/navigation', () => ({
-  useSearchParams: () => new URLSearchParams(),
+  useSearchParams: () => h.search,
 }));
 
 const svc1: CarService = {
@@ -67,6 +68,7 @@ function routeApi() {
 
 describe('BookingFlow', () => {
   beforeEach(() => {
+    h.search=new URLSearchParams();
     h.push.mockReset();
     h.apiRequest.mockReset();
     h.user = { _id: 'u1', name: 'Abdo', email: 'abdo@test.com', role: 'CUSTOMER' };
@@ -135,4 +137,36 @@ describe('BookingFlow', () => {
     renderWithIntl(<BookingFlow />);
     expect(await screen.findByRole('alert')).toHaveTextContent('API down');
   });
+ it('redeems a plan through normal location and availability, not ordinary booking',async()=>{
+  h.search=new URLSearchParams('plan=p1&service=s1');
+  h.apiRequest.mockImplementation((path:string)=>{
+   if(path==='/plans/enrollments')return Promise.resolve([{_id:'p1',vehicleId:veh1,name:'Monthly Exterior',nameAr:'الخارجية الشهرية',endsAt:'2030-12-01',remaining:{'exterior-car-wash':4},serviceIds:{'exterior-car-wash':'s1'}}]);
+   if(path==='/services')return Promise.resolve([svc1,svc2]);
+   if(path==='/add-ons')return Promise.resolve([addon1]);
+   if(path==='/vehicles')return Promise.resolve([veh1]);
+   if(path.startsWith('/availability'))return Promise.resolve(slots);
+   if(path==='/plans/enrollments/p1/visits')return Promise.resolve({...createdBooking,total:0});
+   return Promise.reject(Error(path));
+  });
+  const user=userEvent.setup();renderWithIntl(<BookingFlow plansEnabled/>);
+  await screen.findByText('Exterior Car Wash');
+  expect(screen.queryByText('Interior Cleaning')).not.toBeInTheDocument();
+  await user.click(screen.getByRole('button',{name:'Continue'}));
+  await screen.findByText('Covered visits include the selected service only, without add-ons.');
+  expect(screen.queryByText('Tire Cleaning')).not.toBeInTheDocument();
+  await user.click(screen.getByRole('button',{name:'Continue'}));
+  await user.type(screen.getByLabelText('Country'),'Egypt');
+  await user.type(screen.getByLabelText('City'),'Cairo');
+  await user.type(screen.getByLabelText('Address'),'12 Test Street');
+  await user.click(screen.getByRole('button',{name:'Continue'}));
+  fireEvent.change(screen.getByLabelText('Date'),{target:{value:'2026-11-30'}});
+  await user.click(screen.getByRole('button',{name:'Continue'}));
+  await user.click(await screen.findByRole('button',{name:'10:00 – 11:00'}));
+  await user.click(screen.getByRole('button',{name:'Review booking'}));
+  expect(screen.queryByRole('button',{name:'Add another service'})).not.toBeInTheDocument();
+  await user.click(screen.getByRole('button',{name:'Confirm booking'}));
+  await waitFor(()=>expect(h.apiRequest).toHaveBeenCalledWith('/plans/enrollments/p1/visits',expect.objectContaining({method:'POST',body:expect.objectContaining({requestKey:expect.any(String),booking:expect.objectContaining({vehicleId:'v1',services:[{serviceId:'s1',addOnIds:[]}]})})})));
+  expect(h.apiRequest.mock.calls.some(call=>call[0]==='/bookings')).toBe(false);
+ });
+
 });

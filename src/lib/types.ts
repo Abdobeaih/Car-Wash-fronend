@@ -82,6 +82,7 @@ export interface BookingServiceItem {
 }
 
 export interface Booking {
+  enrollmentId?: string;
   _id: string;
   customerId: string;
   vehicleId: string | Vehicle;

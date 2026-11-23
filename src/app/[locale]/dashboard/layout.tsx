@@ -16,5 +16,5 @@ export async function generateMetadata({
 }
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  return <DashboardShell>{children}</DashboardShell>;
+  return <DashboardShell plansEnabled={process.env.ENABLE_PLAN_ENROLLMENTS==='true'}>{children}</DashboardShell>;
 }

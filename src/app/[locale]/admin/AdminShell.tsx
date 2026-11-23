@@ -5,11 +5,12 @@ import { Link, usePathname } from '@/i18n/navigation';
 import { RequireRole } from '@/components/RouteGuard';
 import NotificationsNavLink from '@/components/NotificationsNavLink';
 
-export default function AdminShell({ children }: { children: React.ReactNode }) {
+export default function AdminShell({ children,plansEnabled=false }: { children: React.ReactNode;plansEnabled?:boolean }) {
   const pathname = usePathname();
   const t = useTranslations('AdminShell');
 
   const links = [
+    ...(plansEnabled?[{href:'/admin/plans',label:t('plans'),key:'plans'}]:[]),
     { href: '/admin', label: t('dashboard'), key: 'dashboard' },
     { href: '/admin/services', label: t('services'), key: 'services' },
     { href: '/admin/add-ons', label: t('addOns'), key: 'addOns' },

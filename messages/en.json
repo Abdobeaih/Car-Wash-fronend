@@ -497,7 +497,8 @@
     "vehicles": "My Vehicles",
     "bookings": "My Bookings",
     "notifications": "Notifications",
-    "nav": "Dashboard navigation"
+    "nav": "Dashboard navigation",
+    "plans": "Plans"
   },
   "AdminShell": {
     "dashboard": "Dashboard",
@@ -507,7 +508,8 @@
     "messages": "Messages",
     "customers": "Customers",
     "calendar": "Calendar",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "plans": "Plans"
   },
   "AdminDashboard": {
     "title": "Admin Dashboard",

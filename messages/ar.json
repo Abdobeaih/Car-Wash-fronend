@@ -497,7 +497,8 @@
     "vehicles": "سياراتي",
     "bookings": "حجوزاتي",
     "notifications": "الإشعارات",
-    "nav": "تنقل لوحة التحكم"
+    "nav": "تنقل لوحة التحكم",
+    "plans": "الباقات"
   },
   "AdminShell": {
     "dashboard": "لوحة التحكم",
@@ -507,7 +508,8 @@
     "messages": "الرسائل",
     "customers": "العملاء",
     "calendar": "التقويم",
-    "notifications": "الإشعارات"
+    "notifications": "الإشعارات",
+    "plans": "الباقات"
   },
   "AdminDashboard": {
     "title": "لوحة تحكم المدير",
