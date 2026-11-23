@@ -25,7 +25,7 @@ export default function EngineFeedback() {
    // Navigation controls and native action buttons only, never typing or form edits.
    if(button.tagName==='A' && !button.hasAttribute('href')) return;
    const player=audio.current ?? new Audio('/audio/mcc-button-ignition.mp3');
-   audio.current=player; player.volume=.16; player.currentTime=0;
+   audio.current=player; player.volume=.20; player.currentTime=0;
    void player.play().then(()=>setEnabled(true)).catch(()=>{});
   };
   const sync=(event:Event)=>{const value=Boolean((event as CustomEvent<boolean>).detail);muted.current=value;setMuted(value);if(value)audio.current?.pause();};
