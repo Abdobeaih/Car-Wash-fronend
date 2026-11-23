@@ -31,3 +31,9 @@
 @keyframes mcc-rope-pull{0%,25%{opacity:0;transform:scaleX(.3)}28%,58%{opacity:.8;transform:scaleX(1)}65%,100%{opacity:0;transform:scaleX(.2)}}
 @keyframes mcc-driver-exhaust{0%,66%{opacity:0;transform:scaleX(.3)}72%,87%{opacity:1;transform:scaleX(1)}100%{opacity:0}}
 .mcc-driver{left:47%;top:-2%;width:14%;height:33%;overflow:hidden}.mcc-driver-rope{top:17%}
+
+/* Composite the two large moving layers. Avoid per-frame filtered shadows. */
+.mcc-intro{contain:layout paint style}.mcc-fabric-panel{will-change:transform;box-shadow:none}.mcc-intro-car,.mcc-driver{filter:none}.mcc-fold{box-shadow:none}.mcc-exhaust i{filter:none}.mcc-driver-rope{box-shadow:none}.mcc-intro-brand{contain:layout style}
+body:has(.mcc-intro) .mcc-motion-scene{visibility:hidden}body:has(.mcc-intro) .mcc-motion-scene *{animation-play-state:paused}
+@keyframes mcc-driver-depart{0%,13%{transform:translate3d(-105%,0,0)}22%{transform:translate3d(12vw,0,0)}64%{transform:translate3d(25vw,0,0)}72%{transform:translate3d(30vw,0,0)}100%{transform:translate3d(125vw,0,0)}}
+@keyframes mcc-person-curtain{0%,27%{transform:translate3d(0,0,0)}64%,100%{transform:translate3d(115vw,0,0)}}

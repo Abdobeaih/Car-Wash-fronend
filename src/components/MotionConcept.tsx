@@ -7,7 +7,7 @@ import { useLocale } from 'next-intl';
 function Car({ className = '' }: { className?: string }) {
  // Generated photorealistic asset, not a stock photograph or brand endorsement.
  // eslint-disable-next-line @next/next/no-img-element
- return <img className={className} src="/images/realistic-car-cutout.webp" width="800" height="235" alt="" aria-hidden="true" />;
+ return <img className={className} src="/images/realistic-car-cutout.webp" width="800" height="235" loading="eager" decoding="async" fetchPriority="high" alt="" aria-hidden="true" />;
 }
 
 export default function MotionConcept() {
