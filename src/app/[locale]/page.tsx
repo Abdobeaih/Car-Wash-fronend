@@ -1,3 +1,4 @@
+import WashScene from '@/components/WashScene';
 import PremiumGarage from '@/components/PremiumGarage';
 import type { Metadata } from 'next';
 import Image from 'next/image';
@@ -223,6 +224,7 @@ export default async function HomePage() {
       </section>
 
       <PremiumGarage locale={locale} wide />
+   <WashScene locale={locale} />
 
       {/* ── How it works ─────────────────────────────────────── */}
       <section className="border-b border-gray-200 bg-gray-50 py-16 sm:py-20">

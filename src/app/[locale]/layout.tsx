@@ -7,6 +7,7 @@ import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server
 import '../globals.css';
 import '../motion.css';
 import MotionConcept from '@/components/MotionConcept';
+import EngineFeedback from '@/components/EngineFeedback';
 import PageAccent from '@/components/PageAccent';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -102,6 +103,7 @@ export default async function LocaleLayout({
             <Header />
             <MotionConcept />
             <PageAccent />
+            <EngineFeedback />
             <main className="flex-1">{children}</main>
             <Footer />
           </AuthProvider>
