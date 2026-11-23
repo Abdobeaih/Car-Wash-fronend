@@ -169,4 +169,49 @@ describe('BookingFlow', () => {
   expect(h.apiRequest.mock.calls.some(call=>call[0]==='/bookings')).toBe(false);
  });
 
+ describe('interior plan rescheduling',()=>{
+  function interiorRoute(){
+   // A stale/malicious exterior query must not change the original visit.
+   h.search=new URLSearchParams('plan=p1&reschedule=b1&service=s1');
+   h.apiRequest.mockImplementation((path:string)=>{
+    if(path==='/services')return Promise.resolve([svc1,svc2]);
+    if(path==='/add-ons')return Promise.resolve([addon1]);
+    if(path==='/vehicles')return Promise.resolve([veh1]);
+    if(path==='/plans/enrollments')return Promise.resolve([{_id:'p1',vehicleId:veh1,name:'Interior & Exterior',endsAt:'2030-12-01',remaining:{exterior:4,interior:0},serviceIds:{exterior:'s1',interior:'s2'}}]);
+    if(path==='/bookings/b1')return Promise.resolve({...createdBooking,enrollmentId:'p1',serviceId:svc2,services:[{serviceId:svc2,addOnIds:[]}]});
+    if(path.startsWith('/availability'))return Promise.resolve(slots);
+    if(path==='/plans/enrollments/p1/visits/b1/reschedule')return Promise.resolve({...createdBooking,serviceId:svc2,total:0});
+    return Promise.reject(Error(path));
+   });
+  }
+  it('keeps the interior service when navigating back through service selection',async()=>{
+   interiorRoute();const user=userEvent.setup();renderWithIntl(<BookingFlow plansEnabled/>);
+   await screen.findByLabelText('Date');
+   await user.click(screen.getByRole('button',{name:'Back'})); // location
+   await user.click(screen.getByRole('button',{name:'Back'})); // add-ons
+   await user.click(screen.getByRole('button',{name:'Back'})); // must return to service, not loop
+   const radio=await screen.findByRole('radio',{name:/Interior Cleaning/});
+   expect(radio).toBeChecked();expect(screen.queryByText('Exterior Car Wash')).not.toBeInTheDocument();
+   await user.click(screen.getByRole('button',{name:'Continue'}));
+   await user.click(screen.getByRole('button',{name:'Continue'}));
+   await user.click(screen.getByRole('button',{name:'Continue'}));
+   fireEvent.change(await screen.findByLabelText('Date'),{target:{value:'2026-11-30'}});
+   await user.click(screen.getByRole('button',{name:'Continue'}));
+   await user.click(await screen.findByRole('button',{name:'10:00 – 11:00'}));
+   await user.click(screen.getByRole('button',{name:'Review booking'}));
+   await user.click(screen.getByRole('button',{name:'Confirm booking'}));
+   await waitFor(()=>expect(h.apiRequest).toHaveBeenCalledWith('/plans/enrollments/p1/visits/b1/reschedule',expect.objectContaining({body:expect.objectContaining({booking:expect.objectContaining({services:[{serviceId:'s2',addOnIds:[]}]})})})));
+  });
+  it('reschedules an exhausted interior allowance without using the exterior service',async()=>{
+   interiorRoute();const user=userEvent.setup();renderWithIntl(<BookingFlow plansEnabled/>);
+   fireEvent.change(await screen.findByLabelText('Date'),{target:{value:'2026-11-30'}});
+   await user.click(screen.getByRole('button',{name:'Continue'}));
+   await user.click(await screen.findByRole('button',{name:'10:00 – 11:00'}));
+   await user.click(screen.getByRole('button',{name:'Review booking'}));
+   expect(screen.getByText('Interior Cleaning')).toBeInTheDocument();
+   await user.click(screen.getByRole('button',{name:'Confirm booking'}));
+   await waitFor(()=>expect(h.apiRequest).toHaveBeenCalledWith('/plans/enrollments/p1/visits/b1/reschedule',expect.objectContaining({body:expect.objectContaining({booking:expect.objectContaining({services:[{serviceId:'s2',addOnIds:[]}]})})})));
+  });
+ });
+
 });

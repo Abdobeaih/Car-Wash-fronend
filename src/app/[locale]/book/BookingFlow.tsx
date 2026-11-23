@@ -87,9 +87,10 @@ export default function BookingFlow({plansEnabled=false}:{plansEnabled?:boolean}
      const owned=rows.find(row=>row._id===planId);
      if(!owned||!owned.vehicleId||new Date(owned.endsAt)<=new Date())throw Error(t('loadFailed'));
      setPlan(owned);setVehicleId(owned.vehicleId._id);
-     if(rescheduleId){const original=await apiRequest<Booking>(`/bookings/${rescheduleId}`,{auth:true});if(original.enrollmentId!==planId)throw Error(t('loadFailed'));setLocation({...original.location,notes:original.location.notes??''});const originalService=typeof original.serviceId==='object'?original.serviceId._id:original.serviceId;setServiceId(originalService);setCart([{serviceId:originalService,addOnIds:[]}]);setStep('date');}
+     let originalServiceId:string|undefined;
+     if(rescheduleId){const original=await apiRequest<Booking>(`/bookings/${rescheduleId}`,{auth:true});if(original.enrollmentId!==planId)throw Error(t('loadFailed'));setLocation({...original.location,notes:original.location.notes??''});const originalService=typeof original.serviceId==='object'?original.serviceId._id:original.serviceId;originalServiceId=originalService;setServiceId(originalService);setCart([{serviceId:originalService,addOnIds:[]}]);setStep('date');}
 
-     const eligible=svcs.filter(service=>Object.entries(owned.serviceIds).some(([slug,id])=>id===service._id&&(owned.remaining[slug]>0||!!rescheduleId)));
+     const eligible=svcs.filter(service=>Object.entries(owned.serviceIds).some(([slug,id])=>id===service._id&&(rescheduleId?service._id===originalServiceId:owned.remaining[slug]>0)));
      if(!eligible.length)throw Error(t('loadFailed'));
      setServices(eligible);setServiceId(eligible.some(s=>s._id===selectedService)?selectedService!:eligible[0]._id);
     }else setServices(svcs);
@@ -154,7 +155,7 @@ export default function BookingFlow({plansEnabled=false}:{plansEnabled?:boolean}
    return;
   }
   if(target==='time'){setTime('');setTimeInput('');}
-  if(planMode&&target==='vehicle'){setStep('addons');return;}
+  if(planMode&&target==='vehicle'){setStep(step==='addons'?'service':'addons');return;}
   setStep(target);
  };
 
