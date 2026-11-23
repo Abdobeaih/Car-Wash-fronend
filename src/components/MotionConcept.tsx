@@ -36,7 +36,7 @@ export default function MotionConcept() {
   if (!isHome || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {setIntro(false);return;}
   try { if (sessionStorage.getItem('mcc-motion-concept-seen')) {setIntro(false);return;} } catch {}
   setIntro(true);
-  const timer = window.setTimeout(() => { setIntro(false); try { sessionStorage.setItem('mcc-motion-concept-seen', '1'); } catch {} }, 4900);
+  const timer = window.setTimeout(() => { setIntro(false); try { sessionStorage.setItem('mcc-motion-concept-seen', '1'); } catch {} }, 6500);
   return () => window.clearTimeout(timer);
  }, [isHome]);
  useEffect(() => {
@@ -61,7 +61,7 @@ export default function MotionConcept() {
   <div className={`mcc-motion-scene ${paused ? 'mcc-paused' : ''}`} aria-hidden="true"><div className="mcc-orbit mcc-orbit-one"/><div className="mcc-orbit mcc-orbit-two"/><div className="mcc-track"/><Car className="mcc-cruiser"/><span className="mcc-spark mcc-spark-one"/><span className="mcc-spark mcc-spark-two"/></div>
   {intro && <div className="mcc-intro" role="dialog" aria-modal="true" aria-label={ar ? 'مقدمة موبايل كار كير' : 'Mobile Car Care introduction'}>
    <div className="mcc-fabric-panel"><div className="mcc-fabric" aria-hidden="true">{Array.from({length:12}, (_,i)=><div key={i} className="mcc-fold" style={{left:`${i*100/12}%`}}/>)}</div><div className="mcc-curtain"><div className="mcc-intro-brand"><span>MOBILE</span><strong>CAR CARE<span className="mcc-brand-dot">.</span></strong><p>{ar ? 'عناية تستحقها عربيتك' : 'CARE THAT MOVES WITH YOU'}</p></div><div className="mcc-intro-line"/><div className="mcc-grain"/></div></div>
-   <div className="mcc-drive"><span className="mcc-tow"/><div className="mcc-car-rig"><span className="mcc-tailpipe"/><span className="mcc-exhaust" aria-hidden="true"><i/><i/><i/></span><Car className="mcc-intro-car"/></div></div><button className="mcc-sound" onClick={toggleSound} aria-pressed={soundOn}>{ar ? (soundOn?"كتم الصوت":"تشغيل صوت المحرك") : (soundOn?"Mute":"Engine sound")}</button>
+   <div className="mcc-drive"><div className="mcc-car-rig"><span className="mcc-tailpipe"/><span className="mcc-exhaust" aria-hidden="true"><i/><i/><i/></span><Car className="mcc-intro-car"/><svg className="mcc-driver" viewBox="0 0 100 70" aria-hidden="true"><g className="mcc-driver-head"><circle cx="56" cy="21" r="11" fill="#E6EAD3"/><path d="M62 18L70 22L63 25" fill="#E6EAD3"/><path d="M49 14Q56 6 63 15" stroke="#29352A" strokeWidth="6" fill="none"/></g><path d="M52 33L40 61L74 61L65 36Z" fill="#21342B"/><path className="mcc-driver-arm" d="M55 39L36 37L12 26" fill="none" stroke="#DBE2C7" strokeWidth="7" strokeLinecap="round"/><path className="mcc-driver-steer" d="M57 39L77 43L84 36" fill="none" stroke="#DBE2C7" strokeWidth="6" strokeLinecap="round"/></svg><span className="mcc-driver-rope"/></div></div><button className="mcc-sound" onClick={toggleSound} aria-pressed={soundOn}>{ar ? (soundOn?"كتم الصوت":"تشغيل صوت المحرك") : (soundOn?"Mute":"Engine sound")}</button>
    <button className="mcc-skip" onClick={skip} autoFocus>{ar ? 'تخطي المقدمة' : 'Skip intro'} <span aria-hidden="true">↗</span></button>
   </div>}
 
