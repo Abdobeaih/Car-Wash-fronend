@@ -69,6 +69,9 @@ export async function apiRequest<T>(
 
   const res = await fetch(`${API_URL}${path}`, {
     method,
+    // Bound read-only waits so a stalled API cannot leave session restoration
+    // or a dashboard spinner pending forever. Mutations are never retried.
+    signal: method === 'GET' ? AbortSignal.timeout(15000) : undefined,
     headers,
     body: body !== undefined ? JSON.stringify(body) : undefined,
   });
