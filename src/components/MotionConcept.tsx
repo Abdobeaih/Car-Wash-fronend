@@ -16,7 +16,15 @@ export default function MotionConcept() {
  const isHome = pathname === '/';
  const audioRef = useRef<HTMLAudioElement | null>(null);
  const [soundOn, setSoundOn] = useState(false);
+ useEffect(()=>{
+  const sync=(event:Event)=>{if((event as CustomEvent<boolean>).detail){audioRef.current?.pause();setSoundOn(false);}};
+  window.addEventListener('mcc-engine-mute',sync);
+  return()=>window.removeEventListener('mcc-engine-mute',sync);
+ },[]);
  function toggleSound() {
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  try {if(sessionStorage.getItem('mcc-engine-muted')==='1') return;} catch {}
+
   if (soundOn) {audioRef.current?.pause(); setSoundOn(false); return;}
   const audio = new Audio('/audio/mcc-engine-rev.mp3'); audio.volume=.35; audioRef.current=audio;
   void audio.play().then(()=>setSoundOn(true)).catch(()=>setSoundOn(false));
