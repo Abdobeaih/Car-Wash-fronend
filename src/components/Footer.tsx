@@ -28,7 +28,6 @@ export default async function Footer() {
           <ul className="mt-4 space-y-2.5 text-sm">
             <li><Link className="transition hover:text-brand-400" href="/register">{t('register')}</Link></li>
             <li><Link className="transition hover:text-brand-400" href="/login">{t('login')}</Link></li>
-            <li><Link className="transition hover:text-brand-400" href="/dashboard">{t('dashboard')}</Link></li>
             <li><Link className="transition hover:text-brand-400" href="/book">{t('book')}</Link></li>
           </ul>
         </div>
