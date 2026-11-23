@@ -1,22 +1,26 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
-import { usePathname, useRouter } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 import { useTransition } from 'react';
+
+// Use one native navigation so the browser preserves query and fragment exactly.
+// localStorage authentication survives the locale page reload.
+export function replaceLocaleLocation(location: Pick<Location, 'href' | 'replace'>, locale: string) {
+  const target = new URL(location.href);
+  target.pathname = target.pathname.replace(/^\/(en|ar)(?=\/|$)/, `/${locale}`);
+  location.replace(target.href);
+}
 
 export default function LanguageSwitcher({ className = '' }: { className?: string }) {
   const locale = useLocale();
   const t = useTranslations('Header');
-  const router = useRouter();
-  const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
 
   const toggle = () => {
     const other = routing.locales.find((l) => l !== locale) ?? 'en';
     startTransition(() => {
-      const suffix=window.location.search+window.location.hash;
-      router.replace(pathname+suffix, { locale: other, scroll:false });
+      replaceLocaleLocation(window.location, other);
     });
   };
 
