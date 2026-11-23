@@ -165,11 +165,11 @@ export default function RegisterForm() {
   setError(null);
   setSubmitting(true);
   try {
-   const res = await apiRequest<VerifyOtpResponse>('/auth/verify-email', {
+   await apiRequest<VerifyOtpResponse>('/auth/verify-email', {
     method: 'POST',
     body: { email, otp },
    });
-   setSuccess(res.message ?? vt('success'));
+   setSuccess(vt('success'));
    setTimeout(() => router.push('/login'), 1500);
   } catch (err) {
    setError(getOtpErrorMessage(err, vt('verifyError'), vt));

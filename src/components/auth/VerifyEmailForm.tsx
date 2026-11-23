@@ -68,11 +68,11 @@ export default function VerifyEmailForm() {
   setError(null);
   setSubmitting(true);
   try {
-   const res = await apiRequest<VerifyOtpResponse>('/auth/verify-email', {
+   await apiRequest<VerifyOtpResponse>('/auth/verify-email', {
     method: 'POST',
     body: { email, otp },
    });
-   setSuccess(res.message ?? t('success'));
+   setSuccess(t('success'));
    setOtp('');
    setTimeout(() => router.push('/login'), 1500);
   } catch (err) {

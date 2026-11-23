@@ -26,6 +26,21 @@ async function reachCodeStep() {
 }
 
 describe('ForgotPasswordForm', () => {
+  it('uses Arabic reset status even when the API sends English success text',async()=>{
+    const user=userEvent.setup();h.apiRequest.mockResolvedValueOnce({message:'English server status'});
+    renderWithIntl(<ForgotPasswordForm/>,'ar');
+    await user.type(screen.getByLabelText('البريد الإلكتروني'),'fixture@test.com');
+    await user.click(screen.getByRole('button',{name:'إرسال رمز إعادة التعيين'}));
+    expect(await screen.findByText('إذا كان هناك حساب بهذا البريد، فسيتم إرسال رمز إعادة التعيين. راجع صندوق الوارد.')).toBeInTheDocument();
+    expect(screen.queryByText('English server status')).not.toBeInTheDocument();
+    h.apiRequest.mockResolvedValueOnce({message:'Password reset successfully. You can now log in.'});
+    await user.type(screen.getByLabelText('رمز إعادة التعيين'),'123456');
+    await user.type(screen.getByLabelText('كلمة المرور الجديدة'),'password123');
+    await user.type(screen.getByLabelText('تأكيد كلمة المرور الجديدة'),'password123');
+    await user.click(screen.getByRole('button',{name:'إعادة تعيين كلمة المرور'}));
+    expect(await screen.findByText('تمت إعادة تعيين كلمة المرور بنجاح.')).toBeInTheDocument();
+  });
+
   beforeEach(() => h.apiRequest.mockReset());
 
   it('requests a reset code for the entered email', async () => {

@@ -32,11 +32,11 @@ export default function ForgotPasswordForm() {
     setInfo(null);
     setSubmitting(true);
     try {
-      const res = await apiRequest<ForgotResponse>('/auth/forgot-password', {
+      await apiRequest<ForgotResponse>('/auth/forgot-password', {
         method: 'POST',
         body: { email },
       });
-      setInfo(res.message ?? '');
+      setInfo(t('codeSent'));
       // The reset code is delivered to the user's email box; the backend never
       // returns it in the response. Move to the code+password step regardless.
       setCodeSent(true);
@@ -61,11 +61,11 @@ export default function ForgotPasswordForm() {
     }
     setSubmitting(true);
     try {
-      const res = await apiRequest<{ message: string }>('/auth/reset-password', {
+      await apiRequest<{ message: string }>('/auth/reset-password', {
         method: 'POST',
         body: { email, otp, newPassword },
       });
-      setSuccess(res.message ?? t('success'));
+      setSuccess(t('success'));
       setCodeSent(false);
     } catch (err) {
       setError(getAuthErrorMessage(err,t('resetError'),authErrors));
