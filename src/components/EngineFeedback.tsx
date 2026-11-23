@@ -28,8 +28,10 @@ export default function EngineFeedback() {
    audio.current=player; player.volume=.16; player.currentTime=0;
    void player.play().then(()=>setEnabled(true)).catch(()=>{});
   };
+  const sync=(event:Event)=>{const value=Boolean((event as CustomEvent<boolean>).detail);muted.current=value;setMuted(value);if(value)audio.current?.pause();};
+  window.addEventListener('mcc-engine-mute',sync);
   document.addEventListener('click',click,true);
-  return()=>{document.removeEventListener('click',click,true);media.removeEventListener('change',preference);audio.current?.pause();};
+  return()=>{window.removeEventListener('mcc-engine-mute',sync);document.removeEventListener('click',click,true);media.removeEventListener('change',preference);audio.current?.pause();};
  },[]);
  function toggle() {
   const next=!isMuted; muted.current=next; setMuted(next);
