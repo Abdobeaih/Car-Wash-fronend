@@ -276,7 +276,8 @@
     "mismatchError": "New password and confirmation do not match.",
     "requestError": "Failed to request a reset code.",
     "otpError": "Enter the 6-digit code sent to your email.",
-    "resetError": "Failed to reset password."
+    "resetError": "Failed to reset password.",
+    "codeSent": "If an account exists for this email, a reset code will be sent. Check your inbox."
   },
   "VerifyEmail": {
     "title": "Verify your email",
