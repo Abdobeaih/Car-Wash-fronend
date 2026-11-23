@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
@@ -42,11 +43,13 @@ export interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const generation=useRef(0);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [sessionError,setSessionError] = useState<string|null>(null);
 
   const refresh = useCallback(async () => {
+    const requestId=++generation.current;
     const token = getToken();
     setLoading(true);
     setSessionError(null);
@@ -57,30 +60,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     try {
       const res = await apiRequest<MeResponse>('/auth/me', { auth: true });
-      if(getToken()===token) setUser(res.user);
+      if(generation.current===requestId && getToken()===token) setUser(res.user);
     } catch (error) {
       // Network failures and server errors are not evidence of session expiry.
       // Also ignore responses for an older login/logout that finished later.
-      if(getToken()!==token) return;
+      if(generation.current!==requestId || getToken()!==token) return;
       if(error instanceof ApiError && error.status===401) {
         clearToken(); setUser(null);
       } else {
         setSessionError('unavailable');
       }
     } finally {
-      setLoading(false);
+      if(generation.current===requestId) setLoading(false);
     }
   }, []);
 
   useEffect(() => {
+    const counter=generation;
     void refresh();
+    return()=>{counter.current++;};
   }, [refresh]);
 
   const login = useCallback(async (email: string, password: string) => {
+    const requestId=++generation.current;
     const res = await apiRequest<AuthResponse>('/auth/login', {
       method: 'POST',
       body: { email, password },
     });
+    if(generation.current!==requestId) return res.user;
+    setLoading(false);
     setSessionError(null);
     setToken(res.token);
     setUser(res.user);
@@ -96,11 +104,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const logout = useCallback(async () => {
+    const requestId=++generation.current;
     try {
       await apiRequest('/auth/logout', { method: 'POST', auth: true });
     } catch {
       // ignore — local state is cleared regardless
     }
+    if(generation.current!==requestId) return;
+    setLoading(false);
     clearToken();
     setSessionError(null);
     setUser(null);
