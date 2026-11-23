@@ -140,4 +140,19 @@ describe('public services empty state', () => {
     expect(screen.getByText('Exterior Car Wash')).toBeInTheDocument();
     expect(screen.queryByText(enMessages.Services.emptyTitle)).not.toBeInTheDocument();
   });
+  for (const payload of [null, {}, {message:'unexpected'}]) {
+    it(`recovers from an invalid catalog shape ${JSON.stringify(payload)}`, async () => {
+      vi.stubGlobal('fetch', vi.fn().mockImplementation(() => Promise.resolve({ok:true,json:async()=>payload})));
+      const {default: ServicesPage}=await import('@/app/[locale]/services/page');
+      renderWithIntl(await ServicesPage());
+      expect(screen.getByText(enMessages.Services.emptyTitle)).toBeInTheDocument();
+    });
+  }
+  it('attaches a deadline to the catalog read', async () => {
+    fetchWith('empty');
+    const {default: ServicesPage}=await import('@/app/[locale]/services/page');
+    await ServicesPage();
+    expect(fetch).toHaveBeenCalledWith(expect.any(String),expect.objectContaining({signal:expect.any(AbortSignal)}));
+  });
+
 });
