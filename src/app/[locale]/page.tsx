@@ -7,6 +7,7 @@ import { formatDuration } from '@/lib/duration';
 import { formatMoney } from '@/lib/money';
 import { serviceImagePath } from '@/lib/service-images';
 import heroCairo from '../../../public/images/hero-cairo.jpg';
+import { EmptyState } from '@/components/States';
 import type { AppLocale } from '@/i18n/routing';
 import type { CarService } from '@/lib/types';
 import { localizeContent } from '@/lib/localize-content';
@@ -120,10 +121,10 @@ export default async function HomePage() {
                 {t('browse')}
               </Link>
             </div>
-            <ul className="mt-10 flex flex-col gap-3 border-t border-white/25 pt-6 text-xs font-semibold uppercase tracking-[0.15em] text-gray-100 sm:flex-row sm:gap-8">
+            <ul className="mt-10 flex flex-col gap-3 border-t border-white/25 pt-6 text-sm font-medium text-gray-100 sm:flex-row sm:gap-8">
               {features.map((f) => (
                 <li key={f} className="flex items-center gap-2">
-                  <span className="flex h-4 w-4 items-center justify-center rounded-full bg-brand-600 text-white">
+                  <span className="flex h-4 w-4 items-center justify-center rounded-full bg-aqua-500 text-gray-900">
                     <svg width="9" height="9" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                       <path
                         d="M5 13l4 4L19 7"
@@ -155,8 +156,22 @@ export default async function HomePage() {
             </div>
           </div>
 
+          {services.length === 0 ? (
+            <div className="mt-12">
+              <EmptyState
+                title={ts('emptyTitle')}
+                description={ts('emptyDescription')}
+                action={
+                  <a href={`/${locale}`} className="btn-secondary">
+                    {tc('tryAgain')}
+                  </a>
+                }
+              />
+            </div>
+          ) : (
+            <>
           <div className="mt-12 grid gap-6 sm:grid-cols-2">
-            {services.slice(0, 4).map((service, i) => (
+            {services.slice(0, 4).map((service) => (
               <Link
                 key={service._id}
                 href={`/services/${service.slug}`}
@@ -170,13 +185,10 @@ export default async function HomePage() {
                     height={400}
                     className="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-[1.04]"
                   />
-                  <span className="absolute start-4 top-4 rounded-md bg-black/90 px-2.5 py-1 font-display text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-400">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
                 </div>
                 <div className="flex items-center justify-between gap-4 p-5">
                   <div className="min-w-0">
-                    <h3 className="truncate font-display text-base font-semibold uppercase tracking-wide text-gray-900 transition group-hover:text-brand-700 sm:text-lg">
+                    <h3 className="truncate font-display text-base font-semibold text-gray-900 transition group-hover:text-brand-700 sm:text-lg">
                       {localizeContent(locale, service.name)}
                     </h3>
                     <p className="mt-0.5 text-sm text-gray-500">
@@ -198,18 +210,18 @@ export default async function HomePage() {
 
           <div className="mt-8 flex justify-end">
             <Link href="/services" className="btn-secondary">
-              <ArrowIcon />
               {t('browse')}
             </Link>
           </div>
+            </>
+          )}
         </div>
       </section>
 
       {/* ── How it works ─────────────────────────────────────── */}
       <section className="border-b border-gray-200 bg-gray-50 py-16 sm:py-20">
         <div className="container-page">
-          <p className="eyebrow">01 — 03</p>
-          <h2 className="display-title mt-4 text-3xl text-gray-900 sm:text-4xl">{t('howTitle')}</h2>
+          <h2 className="display-title text-3xl text-gray-900 sm:text-4xl">{t('howTitle')}</h2>
           <ol className="mt-14 grid gap-10 sm:grid-cols-3 sm:gap-10">
             {howSteps.map((item) => (
               <li key={item.step}>
@@ -219,7 +231,7 @@ export default async function HomePage() {
                   </span>
                   <span className="h-px flex-1 bg-gray-300" aria-hidden="true" />
                 </div>
-                <h3 className="mt-6 font-display text-lg font-semibold uppercase tracking-wide text-gray-900">
+                <h3 className="mt-6 font-display text-lg font-semibold text-gray-900">
                   {item.title}
                 </h3>
                 <p className="mt-2 max-w-xs text-sm leading-relaxed text-gray-600">{item.text}</p>
@@ -239,15 +251,10 @@ export default async function HomePage() {
           <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-gray-200 bg-gray-200 shadow-card sm:grid-cols-2 lg:grid-cols-4">
             {why.map((item, i) => (
               <div key={item.title} className="bg-white p-7">
-                <div className="flex items-center justify-between">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 text-gray-900">
-                    <WhyIcon index={i} />
-                  </span>
-                  <span className="font-display text-xl font-semibold text-gray-300">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                </div>
-                <h3 className="mt-6 font-display text-lg font-semibold uppercase tracking-wide text-gray-900">
+                <span className="flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 text-brand-700">
+                  <WhyIcon index={i} />
+                </span>
+                <h3 className="mt-6 font-display text-lg font-semibold text-gray-900">
                   {item.title}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-gray-600">{item.text}</p>
@@ -283,10 +290,10 @@ export default async function HomePage() {
               </div>
             </div>
             <div
-              className="hidden select-none justify-self-center text-center font-display text-[9rem] font-semibold leading-none uppercase text-gray-900 lg:block"
+              className="hidden select-none justify-self-center text-center font-display text-[9rem] font-semibold leading-none text-white/10 lg:block"
               aria-hidden="true"
             >
-              <span className="block text-brand-600/80">Car</span>
+              <span className="block text-aqua-400/80">Car</span>
               <span className="block">Care</span>
             </div>
           </div>

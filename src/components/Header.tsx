@@ -38,7 +38,7 @@ export default function Header() {
       <div className="container-page flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5" onClick={close}>
           <LogoMark size={36} className="shrink-0" />
-          <span className="whitespace-nowrap font-display text-base font-semibold uppercase tracking-[0.08em] text-gray-900 sm:text-lg">
+          <span className="whitespace-nowrap font-display text-base font-semibold text-gray-900 sm:text-lg">
             Mobile <span className="text-brand-600">CarCare</span>
           </span>
         </Link>
