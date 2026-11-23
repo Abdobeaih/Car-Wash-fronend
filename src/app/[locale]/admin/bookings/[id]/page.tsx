@@ -67,9 +67,9 @@ export default function AdminBookingDetailPage() {
  if (error) return <ErrorState message={error} onRetry={load} />;
  if (!booking) return <LoadingState />;
 
- const customer = booking.customerId as { name?: string; email?: string };
- const vehicle = booking.vehicleId as { brand?: string; model?: string; plateNumber?: string };
- const lines = bookingLines(booking);
+ const customer = typeof booking.customerId === 'object' ? booking.customerId as { name?: string; email?: string } | null : null;
+ const vehicle = typeof booking.vehicleId === 'object' ? booking.vehicleId : null;
+ const lines = bookingLines(booking, { service: t('serviceUnavailable'), addOn: t('addOnUnavailable') });
 
  const canComplete = booking.status !== 'COMPLETED' && booking.status !== 'CANCELLED';
  const canConfirm = booking.status === 'PENDING';
@@ -94,8 +94,8 @@ export default function AdminBookingDetailPage() {
     <section className="card space-y-4 text-sm">
      <div>
       <h2 className="text-xs font-semibold text-gray-500">{t('customer')}</h2>
-      <p className="mt-1.5 font-semibold text-gray-900">{customer.name}</p>
-      <p className="text-gray-500">{customer.email}</p>
+      <p className="mt-1.5 font-semibold text-gray-900">{customer?.name || t('customerUnavailable')}</p>
+      <p className="text-gray-500">{customer?.email}</p>
      </div>
      <div>
       <h2 className="text-xs font-semibold text-gray-500">{t('services')}</h2>
@@ -113,8 +113,8 @@ export default function AdminBookingDetailPage() {
      </div>
      <div>
       <h2 className="text-xs font-semibold text-gray-500">{t('vehicle')}</h2>
-      <p className="mt-1.5 font-semibold text-gray-900">{vehicle.brand} {vehicle.model}</p>
-      <p className="text-gray-500">{vehicle.plateNumber}</p>
+      <p className="mt-1.5 font-semibold text-gray-900">{vehicle ? `${vehicle.brand ?? ''} ${vehicle.model ?? ''}`.trim() || t('vehicleUnavailable') : t('vehicleUnavailable')}</p>
+      <p className="text-gray-500">{vehicle?.plateNumber}</p>
      </div>
      <div>
       <h2 className="text-xs font-semibold text-gray-500">{t('schedule')}</h2>

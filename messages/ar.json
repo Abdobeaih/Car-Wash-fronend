@@ -453,6 +453,9 @@
     "loadFailed": "تعذر تحميل الحجوزات."
   },
   "BookingDetail": {
+    "serviceUnavailable": "بيانات الخدمة غير متاحة",
+    "addOnUnavailable": "بيانات الإضافة غير متاحة",
+    "vehicleUnavailable": "بيانات السيارة غير متاحة",
     "back": "العودة إلى الحجوزات →",
     "title": "الحجز {id}",
     "services": "الخدمات",
@@ -613,6 +616,10 @@
     "more": "+{count} أخرى"
   },
   "AdminBookingDetail": {
+    "serviceUnavailable": "بيانات الخدمة غير متاحة",
+    "addOnUnavailable": "بيانات الإضافة غير متاحة",
+    "vehicleUnavailable": "بيانات السيارة غير متاحة",
+    "customerUnavailable": "بيانات العميل غير متاحة",
     "back": "العودة إلى الحجوزات →",
     "title": "الحجز {id}",
     "customer": "العميل",
