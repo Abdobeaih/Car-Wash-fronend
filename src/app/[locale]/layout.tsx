@@ -5,6 +5,9 @@ import { hasLocale } from 'next-intl';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import '../globals.css';
+import '../motion.css';
+import MotionConcept from '@/components/MotionConcept';
+import PageAccent from '@/components/PageAccent';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { AuthProvider } from '@/lib/auth-context';
@@ -69,7 +72,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
-  themeColor: '#0e2a31',
+  themeColor: '#080D0A',
 };
 
 export default async function LocaleLayout({
@@ -97,6 +100,8 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           <AuthProvider>
             <Header />
+            <MotionConcept />
+            <PageAccent />
             <main className="flex-1">{children}</main>
             <Footer />
           </AuthProvider>
