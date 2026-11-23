@@ -119,3 +119,28 @@ describe('apiRequest', () => {
     await expect(apiRequest('/x')).rejects.toThrow('Request failed with status 502');
   });
 });
+
+describe('read request deadlines', () => {
+  it('aborts a stalled read and leaves the saved session intact', async () => {
+    const controller = new AbortController();
+    const deadline = vi.spyOn(AbortSignal, 'timeout').mockReturnValue(controller.signal);
+    vi.stubGlobal('fetch', vi.fn((_url: string, init: RequestInit) => new Promise((_resolve, reject) => {
+      init.signal?.addEventListener('abort', () => reject(new DOMException('Read timed out', 'TimeoutError')));
+    })));
+    setToken('saved-session');
+    const outcome = apiRequest('/auth/me', { auth: true }).catch((error: unknown) => error);
+    controller.abort();
+    expect(await outcome).toBeInstanceOf(DOMException);
+    expect(deadline).toHaveBeenCalledWith(15000);
+    expect(getToken()).toBe('saved-session');
+    deadline.mockRestore();
+  });
+
+  it('does not attach a deadline or retry a mutation', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response('{}', { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+    await apiRequest('/bookings', { method: 'POST', body: {} });
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock.mock.calls[0][1].signal).toBeUndefined();
+  });
+});
