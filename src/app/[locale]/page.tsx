@@ -1,3 +1,4 @@
+import PremiumGarage from '@/components/PremiumGarage';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { getLocale, getTranslations } from 'next-intl/server';
@@ -83,6 +84,7 @@ export default async function HomePage() {
 
   return (
     <>
+      
       {/* ── Hero ─────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-gray-200 bg-gray-900">
         <Image
@@ -142,6 +144,8 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <PremiumGarage locale={locale} />
 
       {/* ── Services index ───────────────────────────────────── */}
       <section className="border-b border-gray-200 bg-white py-16 sm:py-20">
@@ -217,6 +221,8 @@ export default async function HomePage() {
           )}
         </div>
       </section>
+
+      <PremiumGarage locale={locale} wide />
 
       {/* ── How it works ─────────────────────────────────────── */}
       <section className="border-b border-gray-200 bg-gray-50 py-16 sm:py-20">
