@@ -15,6 +15,10 @@ import { localizeContent } from '@/lib/localize-content';
 
 export default function BookingDetailPage() {
  const params = useParams<{ id: string }>();
+ return <BookingDetailRecord key={params.id} id={params.id} />;
+}
+
+function BookingDetailRecord({id}:{id:string}) {
  const router = useRouter();
  const t = useTranslations('BookingDetail');
  const locale = useLocale();
@@ -31,12 +35,12 @@ export default function BookingDetailPage() {
  const load = useCallback(async () => {
   setError(null);
   try {
-   const data = await apiRequest<Booking>(`/bookings/${params.id}`, { auth: true });
+   const data = await apiRequest<Booking>(`/bookings/${id}`, { auth: true });
    setBooking(data);
   } catch (err) {
    setError(err instanceof Error ? err.message : t('loadFailed'));
   }
- }, [params.id, t]);
+ }, [id, t]);
 
  useEffect(() => {
   void load();
