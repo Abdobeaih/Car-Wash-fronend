@@ -92,5 +92,10 @@ export async function apiRequest<T>(
     throw new ApiError(res.status, message);
   }
 
+  // A successful empty/malformed read is not usable data. Returning it would
+  // leave list pages in their loading state with no error or retry available.
+  if (method === 'GET' && payload == null) {
+    throw new ApiError(502, 'The service returned an invalid response. Please try again.');
+  }
   return payload as T;
 }

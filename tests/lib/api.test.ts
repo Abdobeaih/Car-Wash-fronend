@@ -78,7 +78,7 @@ describe('apiRequest', () => {
 
   it('attaches the bearer token only for authenticated calls', async () => {
     setToken('secret-token');
-    fetchMock.mockResolvedValue(jsonResponse(200, {}));
+    fetchMock.mockImplementation(() => Promise.resolve(jsonResponse(200, {})));
     await apiRequest('/me', { auth: true });
     const [, authed] = fetchMock.mock.calls[0] as [string, RequestInit];
     expect((authed.headers as Record<string, string>).Authorization).toBe('Bearer secret-token');
@@ -142,5 +142,12 @@ describe('read request deadlines', () => {
     await apiRequest('/bookings', { method: 'POST', body: {} });
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(fetchMock.mock.calls[0][1].signal).toBeUndefined();
+  });
+});
+
+describe('unusable read payloads', () => {
+  it.each(['not json', 'null', ''])('rejects unusable successful GET response %s', async (body) => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(body, { status: 200 })));
+    await expect(apiRequest('/vehicles', { auth: true })).rejects.toMatchObject({ status: 502 });
   });
 });
