@@ -2,11 +2,12 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import { Link, useRouter } from '@/i18n/navigation';
-import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
+import { useEffect, useMemo, useState, type FormEvent, type KeyboardEvent } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { useAvailability } from '@/lib/use-availability';
 import { apiRequest } from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
-import type { AddOn, Booking, CarService, TimeSlot, Vehicle } from '@/lib/types';
+import type { AddOn, Booking, CarService, Vehicle } from '@/lib/types';
 import Button from '@/components/Button';
 import Input, { Select } from '@/components/Input';
 import TimeInput, { currentTime, isValidTime } from '@/components/TimeInput';
@@ -42,7 +43,6 @@ export default function BookingFlow() {
  const [services, setServices] = useState<CarService[] | null>(null);
  const [addOns, setAddOns] = useState<AddOn[] | null>(null);
  const [vehicles, setVehicles] = useState<Vehicle[] | null>(null);
- const [slots, setSlots] = useState<TimeSlot[] | null>(null);
 
  const [step, setStep] = useState<Step>('service');
  const [serviceId, setServiceId] = useState<string>(searchParams.get('service') ?? '');
@@ -56,13 +56,12 @@ export default function BookingFlow() {
  const [addingService, setAddingService] = useState(false);
 
  const [error, setError] = useState<string | null>(null);
- const [loadingSlots, setLoadingSlots] = useState(false);
  const [submitting, setSubmitting] = useState(false);
  const [createdBooking, setCreatedBooking] = useState<Booking | null>(null);
  const [loading, setLoading] = useState(true);
 
- const loadedOnce = useRef(false);
- const slotsKey = useRef<string | null>(null);
+ const cartServiceIds = cart.map((line) => line.serviceId).join(',');
+ const {slots,loading:loadingSlots,error:availabilityError,retry:retryAvailability}=useAvailability(step==='time',date,cartServiceIds);
 
  useEffect(() => {
   async function init() {
@@ -88,7 +87,6 @@ export default function BookingFlow() {
     setError(err instanceof Error ? err.message : t('loadFailed'));
    } finally {
     setLoading(false);
-    loadedOnce.current = true;
    }
   }
   void init();
@@ -123,23 +121,7 @@ export default function BookingFlow() {
   handleTimeInputChange(currentTime());
  };
 
- const cartServiceIds = cart.map((line) => line.serviceId).join(',');
-
- useEffect(() => {
-  if (step !== 'time' || cart.length === 0 || !date) return;
-  const key = `${cartServiceIds}:${date}`;
-  if (slotsKey.current === key) return;
-  slotsKey.current = key;
-  setSlots(null);
-  setTime('');
-  setTimeInput('');
-  setLoadingSlots(true);
-  setError(null);
-  apiRequest<TimeSlot[]>(`/availability?date=${date}&serviceIds=${cartServiceIds}`)
-   .then(setSlots)
-   .catch((err) => setError(err instanceof Error ? err.message : t('availabilityFailed')))
-   .finally(() => setLoadingSlots(false));
- }, [step, cartServiceIds, cart.length, date, t]);
+ useEffect(()=>{setTime('');setTimeInput('');},[date,cartServiceIds]);
 
  const goTo = (target: Step) => {
   setError(null);
@@ -147,6 +129,7 @@ export default function BookingFlow() {
    router.push(`/login?next=/book`);
    return;
   }
+  if(target==='time'){setTime('');setTimeInput('');}
   setStep(target);
  };
 
@@ -606,6 +589,8 @@ export default function BookingFlow() {
       </p>
       {loadingSlots ? (
        <LoadingState label={t('checkingAvailability')} />
+      ) : availabilityError ? (
+       <div className="mt-4"><Alert type="error">{availabilityError}</Alert><Button type="button" onClick={retryAvailability}>{tc('tryAgain')}</Button></div>
       ) : !slots ? (
        <p className="mt-4 text-sm text-gray-500">{t('selectDateHint')}</p>
       ) : slots.filter((s) => s.available).length === 0 ? (

@@ -19,6 +19,15 @@ function wrapper({ children }: { children: ReactNode }) {
 }
 
 describe('AuthProvider', () => {
+  it('failed login cannot leave restoration loading stuck',async()=>{
+    window.localStorage.setItem('mcc_token','existing');
+    let finish!:(v:unknown)=>void;
+    h.apiRequest.mockImplementationOnce(()=>new Promise(r=>finish=r)).mockRejectedValueOnce(new Error('incorrect password')).mockResolvedValueOnce({user:customer});
+    const {result}=renderHook(()=>useAuth(),{wrapper});
+    await act(async()=>{await expect(result.current.login('a','bad')).rejects.toThrow('incorrect password');finish({user:customer});});
+    expect(result.current.loading).toBe(false);expect(getToken()).toBe('existing');
+  });
+
   it('older concurrent refresh cannot end loading or overwrite a newer profile',async()=>{
     window.localStorage.setItem('mcc_token','same');h.apiRequest.mockResolvedValueOnce({user:customer});
     const {result}=renderHook(()=>useAuth(),{wrapper});await waitFor(()=>expect(result.current.user).toEqual(customer));

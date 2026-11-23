@@ -83,17 +83,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = useCallback(async (email: string, password: string) => {
     const requestId=++generation.current;
-    const res = await apiRequest<AuthResponse>('/auth/login', {
-      method: 'POST',
-      body: { email, password },
-    });
+    let res:AuthResponse;
+    try {
+      res=await apiRequest<AuthResponse>('/auth/login',{
+        method:'POST',body:{email,password},
+      });
+    } catch(error) {
+      // This attempt superseded restoration. If it fails, restore any existing
+      // saved session rather than leaving its invalidated request loading forever.
+      if(generation.current===requestId) await refresh();
+      throw error;
+    }
     if(generation.current!==requestId) return res.user;
     setLoading(false);
     setSessionError(null);
     setToken(res.token);
     setUser(res.user);
     return res.user;
-  }, []);
+  }, [refresh]);
 
   const register = useCallback(async (input: RegisterInput) => {
     const res = await apiRequest<RegisterResponse>('/auth/register', {
