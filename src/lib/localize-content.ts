@@ -7,16 +7,16 @@ const AR_CONTENT: Record<string, string> = {
   // Services
   'Exterior Car Wash': 'غسيل خارجي للسيارة',
   'Interior Cleaning': 'تنظيف داخلي',
-  'Full Car Detailing': 'تفصيل كامل للسيارة',
-  'Premium Detailing': 'تفصيل بريميوم',
+  'Full Car Detailing': 'تنظيف وتلميع شامل للسيارة',
+  'Premium Detailing': 'باقة العناية الفاخرة',
   'A complete exterior wash including foam pre-wash, hand wash, wheel cleaning and spot-free rinse to leave your car shining.':
-    'غسيل خارجي متكامل يشمل رش الرغوة، الغسيل اليدوي، تنظيف الجنوط وشطفًا نهائيًا بدون بقع لتترك سيارتك لامعة.',
+    'غسيل خارجي متكامل يشمل الرغوة والغسيل اليدوي وتنظيف الجنوط، ثم شطفًا نهائيًا دون بقع لسيارة نظيفة ولامعة.',
   'Professional interior vacuum, dashboard and console wipe-down, seat cleaning and window polish for a fresh cabin.':
     'تنظيف داخلي احترافي بالمكنسة، مسح التابلوه والكونسول، تنظيف المقاعد وتلميع الزجاج لمقصورة منتعشة.',
   'A thorough exterior and interior detail including wash, wax, interior deep clean and trim restoration.':
-    'تفصيل شامل للخارج والداخل يشمل الغسيل والتلميع بالشمع والتنظيف العميق للمقصورة وترميم القطع البلاستيكية.',
+    'تنظيف شامل للسيارة من الداخل والخارج، يشمل الغسيل والتلميع بالشمع والتنظيف العميق للمقصورة وتجديد القطع البلاستيكية.',
   'Our top-tier package with machine polish, paint protection, leather conditioning and a showroom-quality finish.':
-    'باقتنا الأعلى: تلميع بالماكينة، حماية للدهان، ترطيب الجلد ولمسة نهائية بجودة صالات العرض.',
+    'باقتنا الفاخرة تشمل التلميع بالماكينة وحماية الدهان وترطيب الجلد، لنتيجة تضاهي سيارات العرض.',
   // Add-ons
   'Engine Bay Cleaning': 'تنظيف حجرة المحرك',
   'Leather Conditioning': 'ترطيب الجلد',
