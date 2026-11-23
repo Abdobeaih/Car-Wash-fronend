@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { apiRequest } from '@/lib/api';
 import type { AdminCustomer } from '@/lib/types';
@@ -17,19 +17,25 @@ export default function AdminCustomersPage() {
   const [search, setSearch] = useState('');
   const [appliedSearch, setAppliedSearch] = useState('');
 
+  const loadGeneration = useRef(0);
+
   const load = useCallback(async () => {
+    const generation = ++loadGeneration.current;
     setError(null);
     try {
       const params = appliedSearch ? `?search=${encodeURIComponent(appliedSearch)}` : '';
       const data = await apiRequest<AdminCustomer[]>(`/admin/customers${params}`, { auth: true });
+      if (generation !== loadGeneration.current) return;
       setCustomers(data);
     } catch (err) {
+      if (generation !== loadGeneration.current) return;
       setError(err instanceof Error ? err.message : t('loadFailed'));
     }
   }, [appliedSearch, t]);
 
   useEffect(() => {
     void load();
+    return () => { loadGeneration.current += 1; };
   }, [load]);
 
   if (error && !customers) return <ErrorState message={error} onRetry={load} />;
