@@ -1,3 +1,5 @@
+import {addOnDescription} from '@/lib/service-descriptions';
+import ServiceDescription from '@/components/ServiceDescription';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -94,7 +96,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
     <div>
      <p className="eyebrow">Mobile Car Care</p>
      <h1 className="display-title mt-4 text-3xl text-gray-900 sm:text-4xl">{localizeContent(locale, service.name)}</h1>
-     <p className="mt-4 max-w-xl leading-relaxed text-gray-600">{localizeContent(locale, service.description)}</p>
+     <ServiceDescription service={service} locale={locale}/>
      <div className="mt-7 flex flex-wrap items-center gap-3">
       <span className="inline-flex items-center gap-3 rounded-md border border-gray-800 bg-black px-5 py-2.5 text-white">
        <span className="text-xs font-semibold text-gray-500">
@@ -120,11 +122,11 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         {addOns.map((addon) => (
          <li
           key={addon._id}
-          className="flex items-center justify-between gap-3 py-3.5"
+          className="flex flex-wrap items-start justify-between gap-3 py-3.5"
          >
-          <span className="min-w-0">
-           <span className="font-semibold text-gray-900">{addon.name}</span>
-           <span className="ms-2 text-sm text-gray-500">{addon.description}</span>
+          <span className="min-w-0 flex-1 basis-48">
+           <span className="font-semibold text-gray-900">{localizeContent(locale,addon.name)}</span>
+           <span className="mt-1 block text-sm leading-relaxed text-gray-500">{addOnDescription(addon,locale) ?? localizeContent(locale,addon.description)}</span>
           </span>
           <span className="flex shrink-0 items-center gap-2">
            <span className="font-display font-semibold text-brand-600">

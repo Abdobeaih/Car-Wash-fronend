@@ -1,3 +1,4 @@
+import ServiceDescription from '@/components/ServiceDescription';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { getLocale, getTranslations } from 'next-intl/server';
@@ -95,9 +96,7 @@ export default async function ServicesPage() {
           <h2 className="display-title text-2xl text-gray-900 transition group-hover:text-brand-700 sm:text-3xl">
            {localizeContent(locale, service.name)}
           </h2>
-          <p className="mt-4 max-w-xl leading-relaxed text-gray-600">
-           {localizeContent(locale, service.description)}
-          </p>
+          <ServiceDescription service={service} locale={locale}/>
           <div className="mt-6 flex flex-wrap items-center gap-3">
            <span className="inline-flex items-center gap-3 rounded-md border border-gray-800 bg-black px-5 py-2.5 text-white">
             <span className="text-xs font-semibold text-gray-500">
