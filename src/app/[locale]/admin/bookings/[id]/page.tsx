@@ -50,13 +50,14 @@ function BookingDetailRecord({id}:{id:string}) {
 
  const changeStatus = async (status: BookingStatus) => {
   if (!booking) return;
+  if(booking.enrollmentId&&status==='CANCELLED'&&!window.confirm(locale==='ar'?'تأكيد الإلغاء؟ قبل 24 ساعة تُعاد الزيارة، والإلغاء المتأخر يحتسب الزيارة.':'Cancel? At least 24 hours before restores the visit. Late cancellation uses it.'))return;
   setUpdating(status);
   setStatusError(null);
   setMessage(null);
   try {
-   const updated = await apiRequest<Booking>(`/admin/bookings/${booking._id}/status`, {
-    method: 'PATCH',
-    body: { status },
+   const updated = await apiRequest<Booking>(booking.enrollmentId&&status==='CANCELLED'?`/plans/admin/enrollments/${booking.enrollmentId}/visits/${booking._id}/cancel`:`/admin/bookings/${booking._id}/status`, {
+    method: booking.enrollmentId&&status==='CANCELLED'?'POST':'PATCH',
+    body: booking.enrollmentId&&status==='CANCELLED'?undefined:{status},
     auth: true,
    });
    setBooking(updated);

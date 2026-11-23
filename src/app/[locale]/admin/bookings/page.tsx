@@ -54,13 +54,15 @@ export default function AdminBookingsPage() {
   }, [load]);
 
   const changeStatus = async (id: string, status: BookingStatus) => {
+    const plan=bookings?.find(b=>b._id===id)?.enrollmentId;
+    if(plan&&status==='CANCELLED'&&!window.confirm(locale==='ar'?'تأكيد الإلغاء؟ قبل 24 ساعة تُعاد الزيارة، والإلغاء المتأخر يحتسب الزيارة.':'Cancel? At least 24 hours before restores the visit. Late cancellation uses it.'))return;
     setUpdatingId(id);
     setMessage(null);
     setError(null);
     try {
-      await apiRequest(`/admin/bookings/${id}/status`, {
-        method: 'PATCH',
-        body: { status },
+      await apiRequest(plan&&status==='CANCELLED'?`/plans/admin/enrollments/${plan}/visits/${id}/cancel`:`/admin/bookings/${id}/status`, {
+        method: plan&&status==='CANCELLED'?'POST':'PATCH',
+        body: plan&&status==='CANCELLED'?undefined:{ status },
         auth: true,
       });
       setMessage(t('statusUpdated'));
@@ -172,7 +174,7 @@ export default function AdminBookingsPage() {
                   <select
                     className="input w-auto py-1.5 text-xs"
                     value={b.status}
-                    disabled={updatingId === b._id}
+                    disabled={updatingId === b._id || !!b.enrollmentId&&b.status==='CANCELLED'}
                     onChange={(e) => changeStatus(b._id, e.target.value as BookingStatus)}
                   >
                     {statuses.map((s) => (
@@ -246,7 +248,7 @@ export default function AdminBookingsPage() {
                         <select
                           className="input w-auto py-1.5 text-xs"
                           value={b.status}
-                          disabled={updatingId === b._id}
+                          disabled={updatingId === b._id || !!b.enrollmentId&&b.status==='CANCELLED'}
                           onChange={(e) => changeStatus(b._id, e.target.value as BookingStatus)}
                         >
                           {statuses.map((s) => (

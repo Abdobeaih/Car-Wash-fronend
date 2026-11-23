@@ -22,7 +22,7 @@ export default async function BookPage() {
   const t = await getTranslations('Book');
   return (
     <Suspense fallback={<LoadingState label={t('loading')} />}>
-      <BookingFlow />
+      <BookingFlow plansEnabled={process.env.ENABLE_PLAN_ENROLLMENTS==='true'} />
     </Suspense>
   );
 }
