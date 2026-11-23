@@ -119,6 +119,6 @@ describe('ProfilePage', () => {
     renderWithIntl(<ProfilePage />);
     const user = userEvent.setup();
     await user.click(screen.getByRole('button', { name: 'Save changes' }));
-    expect(await screen.findByText('Server rejected the update.')).toBeInTheDocument();
+    expect(await screen.findByText('Failed to update profile.')).toBeInTheDocument();
   });
 });

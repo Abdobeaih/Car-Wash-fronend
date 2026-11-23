@@ -1,5 +1,6 @@
 'use client';
 
+import {getAuthErrorMessage} from '@/lib/auth-errors';
 import { useLocale, useTranslations } from 'next-intl';
 import { Link, useRouter } from '@/i18n/navigation';
 import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
@@ -74,6 +75,7 @@ export default function RegisterForm() {
  const router = useRouter();
  const locale = useLocale();
  const t = useTranslations('Register');
+ const authErrors=useTranslations('AuthErrors');
  const vt = useTranslations('VerifyEmail');
 
  const [step, setStep] = useState<Step>('register');
@@ -152,7 +154,7 @@ export default function RegisterForm() {
    setStep('verify');
    startCooldown();
   } catch (err) {
-   setError(err instanceof Error ? err.message : t('error'));
+   setError(getAuthErrorMessage(err,t('error'),authErrors));
   } finally {
    setSubmitting(false);
   }

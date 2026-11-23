@@ -1,5 +1,6 @@
 "use client";
 
+import {getAuthErrorMessage} from '@/lib/auth-errors';
 import { useTranslations } from 'next-intl';
 import { Link, useRouter } from "@/i18n/navigation";
 import { useSearchParams } from "next/navigation";
@@ -14,6 +15,7 @@ export default function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const t = useTranslations('Login');
+ const authErrors=useTranslations('AuthErrors');
   const next = searchParams.get("next");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,7 +37,7 @@ export default function LoginForm() {
       }
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : t("error"),
+        getAuthErrorMessage(err,t("error"),authErrors),
       );
     } finally {
       setSubmitting(false);

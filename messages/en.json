@@ -753,5 +753,21 @@
     "markPaid": "Record full amount received",
     "correct": "Correct payment record",
     "history": "Record history"
+  },
+  "AuthErrors": {
+    "credentials": "Invalid email or password.",
+    "verifyEmail": "Verify your email before signing in. Check your inbox for the code.",
+    "emailExists": "An account with this email already exists.",
+    "currentPassword": "Your current password is incorrect.",
+    "passwordMismatch": "The passwords do not match.",
+    "passwordLong": "The password is too long. Use fewer characters.",
+    "passwordShort": "Use a password with at least 8 characters.",
+    "emailInvalid": "Enter a valid email address.",
+    "requestCode": "Request a new verification code and try again.",
+    "codeExpired": "This code has expired. Request a new one.",
+    "codeInvalid": "The verification code is incorrect.",
+    "rateLimited": "Too many attempts. Wait a minute and try again.",
+    "network": "Unable to reach the service. Check your connection and try again.",
+    "validation": "Check the details you entered and try again."
   }
 }

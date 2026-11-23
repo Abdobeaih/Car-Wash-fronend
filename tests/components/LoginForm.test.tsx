@@ -37,6 +37,17 @@ async function submitLogin(email: string, password: string) {
 }
 
 describe('LoginForm', () => {
+  it('shows invalid credentials in Arabic rather than the English server message',async()=>{
+    h.login.mockRejectedValueOnce(new Error('Invalid email or password.'));
+    renderWithIntl(<LoginForm/>,'ar');
+    const user=userEvent.setup();
+    await user.type(screen.getByLabelText('البريد الإلكتروني'),'c@test.com');
+    await user.type(screen.getByLabelText('كلمة المرور'),'wrong-password');
+    await user.click(screen.getByRole('button',{name:'تسجيل الدخول'}));
+    expect(await screen.findByRole('alert')).toHaveTextContent('البريد الإلكتروني أو كلمة المرور غير صحيحة.');
+    expect(screen.queryByText('Invalid email or password.')).not.toBeInTheDocument();
+  });
+
   beforeEach(() => {
     h.push.mockReset();
     h.login.mockReset();
