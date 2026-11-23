@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import WashScene from '@/components/WashScene';
 import PremiumGarage from '@/components/PremiumGarage';
 import type { Metadata } from 'next';
@@ -61,11 +62,8 @@ function ArrowIcon() {
 }
 
 export default async function HomePage() {
-  const services = await getServices();
   const locale = (await getLocale()) as AppLocale;
   const t = await getTranslations('Home');
-  const ts = await getTranslations('Services');
-  const tc = await getTranslations('Common');
 
   const features = [t('feature1'), t('feature2'), t('feature3')];
 
@@ -149,79 +147,9 @@ export default async function HomePage() {
       <PremiumGarage locale={locale} />
 
       {/* ── Services index ───────────────────────────────────── */}
-      <section className="border-b border-gray-200 bg-white py-16 sm:py-20">
-        <div className="container-page">
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="eyebrow">Mobile Car Care</p>
-              <h2 className="display-title mt-4 text-3xl text-gray-900 sm:text-4xl">
-                {ts('title')}
-              </h2>
-              <p className="mt-4 max-w-xl leading-relaxed text-gray-600">{ts('subtitle')}</p>
-            </div>
-          </div>
-
-          {services.length === 0 ? (
-            <div className="mt-12">
-              <EmptyState
-                title={ts('emptyTitle')}
-                description={ts('emptyDescription')}
-                action={
-                  <a href={`/${locale}`} className="btn-secondary">
-                    {tc('tryAgain')}
-                  </a>
-                }
-              />
-            </div>
-          ) : (
-            <>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2">
-            {services.slice(0, 4).map((service) => (
-              <Link
-                key={service._id}
-                href={`/services/${service.slug}`}
-                className="group card overflow-hidden p-0 transition-shadow duration-300 hover:shadow-lift"
-              >
-                <div className="relative overflow-hidden">
-                  <Image
-                    src={serviceImagePath(service.image)}
-                    alt={localizeContent(locale, service.name)}
-                    width={640}
-                    height={400}
-                    className="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-[1.04]"
-                  />
-                </div>
-                <div className="flex items-center justify-between gap-4 p-5">
-                  <div className="min-w-0">
-                    <h3 className="truncate font-display text-base font-semibold text-gray-900 transition group-hover:text-brand-700 sm:text-lg">
-                      {localizeContent(locale, service.name)}
-                    </h3>
-                    <p className="mt-0.5 text-sm text-gray-500">
-                      {formatDuration(tc, service.duration)}
-                    </p>
-                  </div>
-                  <div className="flex shrink-0 items-center gap-3">
-                    <p className="font-display text-base font-semibold sm:text-lg">
-                      {formatMoney(locale, service.basePrice, tc('currencyLabel'))}
-                    </p>
-                    <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-300 text-gray-500 transition group-hover:border-brand-600 group-hover:bg-brand-600 group-hover:text-white">
-                      <ArrowIcon />
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          <div className="mt-8 flex justify-end">
-            <Link href="/services" className="btn-secondary">
-              {t('browse')}
-            </Link>
-          </div>
-            </>
-          )}
-        </div>
-      </section>
+      <Suspense fallback={<section className="container-page py-16" aria-busy="true"><p className="eyebrow">Mobile Car Care</p><div className="mt-5 h-48 rounded-xl bg-gray-100" /></section>}>
+        <HomeServices locale={locale} />
+      </Suspense>
 
       <PremiumGarage locale={locale} wide />
    <WashScene locale={locale} />
@@ -352,4 +280,81 @@ function WhyIcon({ index }: { index: number }) {
       {icons[index % icons.length]}
     </svg>
   );
+}
+// Stream the catalogue independently: a cold API must not hold back the hero.
+async function HomeServices({locale}:{locale:AppLocale}) {
+ const [services,t,ts,tc]=await Promise.all([getServices(),getTranslations('Home'),getTranslations('Services'),getTranslations('Common')]);
+ return (      <section className="border-b border-gray-200 bg-white py-16 sm:py-20">
+        <div className="container-page">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="eyebrow">Mobile Car Care</p>
+              <h2 className="display-title mt-4 text-3xl text-gray-900 sm:text-4xl">
+                {ts('title')}
+              </h2>
+              <p className="mt-4 max-w-xl leading-relaxed text-gray-600">{ts('subtitle')}</p>
+            </div>
+          </div>
+
+          {services.length === 0 ? (
+            <div className="mt-12">
+              <EmptyState
+                title={ts('emptyTitle')}
+                description={ts('emptyDescription')}
+                action={
+                  <a href={`/${locale}`} className="btn-secondary">
+                    {tc('tryAgain')}
+                  </a>
+                }
+              />
+            </div>
+          ) : (
+            <>
+          <div className="mt-12 grid gap-6 sm:grid-cols-2">
+            {services.slice(0, 4).map((service) => (
+              <Link
+                key={service._id}
+                href={`/services/${service.slug}`}
+                className="group card overflow-hidden p-0 transition-shadow duration-300 hover:shadow-lift"
+              >
+                <div className="relative overflow-hidden">
+                  <Image
+                    src={serviceImagePath(service.image)}
+                    alt={localizeContent(locale, service.name)}
+                    width={640}
+                    height={400}
+                    className="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-[1.04]"
+                  />
+                </div>
+                <div className="flex items-center justify-between gap-4 p-5">
+                  <div className="min-w-0">
+                    <h3 className="truncate font-display text-base font-semibold text-gray-900 transition group-hover:text-brand-700 sm:text-lg">
+                      {localizeContent(locale, service.name)}
+                    </h3>
+                    <p className="mt-0.5 text-sm text-gray-500">
+                      {formatDuration(tc, service.duration)}
+                    </p>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-3">
+                    <p className="font-display text-base font-semibold sm:text-lg">
+                      {formatMoney(locale, service.basePrice, tc('currencyLabel'))}
+                    </p>
+                    <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-300 text-gray-500 transition group-hover:border-brand-600 group-hover:bg-brand-600 group-hover:text-white">
+                      <ArrowIcon />
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-8 flex justify-end">
+            <Link href="/services" className="btn-secondary">
+              {t('browse')}
+            </Link>
+          </div>
+            </>
+          )}
+        </div>
+      </section>);
 }

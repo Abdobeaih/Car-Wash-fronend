@@ -19,6 +19,36 @@ function wrapper({ children }: { children: ReactNode }) {
 }
 
 describe('AuthProvider', () => {
+  it('older concurrent refresh cannot end loading or overwrite a newer profile',async()=>{
+    window.localStorage.setItem('mcc_token','same');h.apiRequest.mockResolvedValueOnce({user:customer});
+    const {result}=renderHook(()=>useAuth(),{wrapper});await waitFor(()=>expect(result.current.user).toEqual(customer));
+    let oldResolve!:(v:unknown)=>void,newResolve!:(v:unknown)=>void;
+    h.apiRequest.mockImplementationOnce(()=>new Promise(r=>oldResolve=r)).mockImplementationOnce(()=>new Promise(r=>newResolve=r));
+    let old!:Promise<void>,fresh!:Promise<void>;
+    act(()=>{old=result.current.refresh();fresh=result.current.refresh();});
+    await act(async()=>{oldResolve({user:{...customer,name:'stale'}});await old;});
+    expect(result.current.loading).toBe(true);expect(result.current.user?.name).toBe('Abdo');
+    await act(async()=>{newResolve({user:{...customer,name:'updated'}});await fresh;});
+    expect(result.current.user?.name).toBe('updated');expect(result.current.loading).toBe(false);
+  });
+  it('slow logout cannot clear a newer successful login',async()=>{
+    h.apiRequest.mockResolvedValueOnce({user:customer,token:'first'});
+    const {result}=renderHook(()=>useAuth(),{wrapper});await waitFor(()=>expect(result.current.loading).toBe(false));
+    await act(async()=>{await result.current.login('a','b');});
+    let release!:()=>void;h.apiRequest.mockImplementationOnce(()=>new Promise<void>(r=>release=r));
+    let pending!:Promise<void>;act(()=>{pending=result.current.logout();});
+    h.apiRequest.mockResolvedValueOnce({user:{...customer,name:'new account'},token:'second'});
+    await act(async()=>{await result.current.login('new','password');release();await pending;});
+    expect(getToken()).toBe('second');expect(result.current.user?.name).toBe('new account');
+  });
+  it('latest login intent wins when responses arrive out of order',async()=>{
+    const {result}=renderHook(()=>useAuth(),{wrapper});await waitFor(()=>expect(result.current.loading).toBe(false));
+    let resolveOld!:(v:unknown)=>void;h.apiRequest.mockImplementationOnce(()=>new Promise(r=>resolveOld=r)).mockResolvedValueOnce({user:{...customer,name:'chosen'},token:'chosen'});
+    let old!:Promise<User>;act(()=>{old=result.current.login('old','p');});
+    await act(async()=>{await result.current.login('chosen','p');resolveOld({user:customer,token:'old'});await old;});
+    expect(getToken()).toBe('chosen');expect(result.current.user?.name).toBe('chosen');
+  });
+
   beforeEach(() => {
     h.apiRequest.mockReset();
     window.localStorage.clear();

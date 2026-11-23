@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { Children, cloneElement, isValidElement, Suspense, type ReactNode, type ReactElement } from 'react';
 import { screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { CarService } from '@/lib/types';
@@ -64,16 +64,42 @@ function fetchWith(result: 'fail' | 'empty' | 'services') {
   );
 }
 
+// Resolve async server children before handing the tree to the client-only test renderer.
+async function resolveServerTree(node: ReactNode): Promise<ReactNode> {
+  if (!isValidElement(node)) return node;
+  const element = node as ReactElement<{children?:ReactNode}>;
+  if (typeof element.type === 'function' && element.type.constructor.name === 'AsyncFunction') {
+    const component = element.type as (props:unknown)=>Promise<ReactNode>;
+    return resolveServerTree(await component(element.props));
+  }
+  if (element.props.children === undefined) return element;
+  const children = await Promise.all(Children.toArray(element.props.children).map(resolveServerTree));
+  return cloneElement(element, undefined, ...children);
+}
+
 describe('public services empty state', () => {
   beforeEach(() => {
     h.locale = 'en';
     vi.unstubAllGlobals();
   });
 
+  it('returns the hero and a services Suspense boundary without waiting on the API', async () => {
+    vi.stubGlobal('fetch', vi.fn(() => new Promise(() => {})));
+    const { default: HomePage } = await import('@/app/[locale]/page');
+    const tree = await HomePage();
+    const children = Children.toArray(tree.props.children);
+    const boundary = children.find(child => isValidElement(child) && child.type === Suspense);
+    expect(boundary).toBeDefined();
+    expect(fetch).not.toHaveBeenCalled();
+    const hero = children[0];
+    renderWithIntl(<>{hero}</>);
+    expect(screen.getByRole('heading', {level:1})).toHaveTextContent(enMessages.Home.title);
+  });
+
   it('home shows a clear unavailable message with a retry action when the fetch fails', async () => {
     fetchWith('fail');
     const { default: HomePage } = await import('@/app/[locale]/page');
-    renderWithIntl(await HomePage());
+    renderWithIntl(<>{await resolveServerTree(await HomePage())}</>);
     expect(screen.getByText(enMessages.Services.emptyTitle)).toBeInTheDocument();
     expect(screen.getByText(enMessages.Services.emptyDescription)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: enMessages.Common.tryAgain })).toBeInTheDocument();
@@ -83,7 +109,7 @@ describe('public services empty state', () => {
   it('home renders service cards when the fetch succeeds', async () => {
     fetchWith('services');
     const { default: HomePage } = await import('@/app/[locale]/page');
-    renderWithIntl(await HomePage());
+    renderWithIntl(<>{await resolveServerTree(await HomePage())}</>);
     expect(screen.getByText('Exterior Car Wash')).toBeInTheDocument();
     expect(screen.queryByText(enMessages.Services.emptyTitle)).not.toBeInTheDocument();
   });
@@ -92,7 +118,7 @@ describe('public services empty state', () => {
     h.locale = 'ar';
     fetchWith('fail');
     const { default: HomePage } = await import('@/app/[locale]/page');
-    renderWithIntl(await HomePage(), 'ar');
+    renderWithIntl(<>{await resolveServerTree(await HomePage())}</>, 'ar');
     expect(screen.getByText(arMessages.Services.emptyTitle)).toBeInTheDocument();
     expect(
       screen.getByRole('link', { name: arMessages.Common.tryAgain }),
